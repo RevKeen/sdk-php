@@ -1,0 +1,10 @@
+<?php
+
+namespace RevKeen\Types;
+
+enum InvoiceSubscriptionTermsDurationType: string
+{
+    case UntilCancelled = "until_cancelled";
+    case FixedCycles = "fixed_cycles";
+    case EndDate = "end_date";
+}
