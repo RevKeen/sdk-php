@@ -1,0 +1,50 @@
+<?php
+
+namespace RevKeen\Types;
+
+use RevKeen\Core\Json\JsonSerializableType;
+use RevKeen\Core\Json\JsonProperty;
+
+class EntitlementListResponseCustomer extends JsonSerializableType
+{
+    /**
+     * @var string $id
+     */
+    #[JsonProperty('id')]
+    public string $id;
+
+    /**
+     * @var string $email
+     */
+    #[JsonProperty('email')]
+    public string $email;
+
+    /**
+     * @var ?string $name
+     */
+    #[JsonProperty('name')]
+    public ?string $name;
+
+    /**
+     * @param array{
+     *   id: string,
+     *   email: string,
+     *   name?: ?string,
+     * } $values
+     */
+    public function __construct(
+        array $values,
+    ) {
+        $this->id = $values['id'];
+        $this->email = $values['email'];
+        $this->name = $values['name'] ?? null;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->toJson();
+    }
+}
