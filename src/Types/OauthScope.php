@@ -1,0 +1,74 @@
+<?php
+
+namespace RevKeen\Types;
+
+enum OauthScope: string
+{
+    case CheckoutRead = "checkout:read";
+    case CheckoutWrite = "checkout:write";
+    case PaymentLinksRead = "payment_links:read";
+    case PaymentLinksWrite = "payment_links:write";
+    case ChargesRead = "charges:read";
+    case ChargesWrite = "charges:write";
+    case PaymentsRead = "payments:read";
+    case PaymentsWrite = "payments:write";
+    case PaymentIntentsRead = "payment_intents:read";
+    case PaymentIntentsWrite = "payment_intents:write";
+    case SetupIntentsRead = "setup_intents:read";
+    case SetupIntentsWrite = "setup_intents:write";
+    case PaymentMethodsRead = "payment_methods:read";
+    case PaymentMethodsWrite = "payment_methods:write";
+    case InvoicesRead = "invoices:read";
+    case InvoicesWrite = "invoices:write";
+    case SubscriptionsRead = "subscriptions:read";
+    case SubscriptionsWrite = "subscriptions:write";
+    case SubscriptionSchedulesRead = "subscription_schedules:read";
+    case SubscriptionSchedulesWrite = "subscription_schedules:write";
+    case OrdersRead = "orders:read";
+    case OrdersWrite = "orders:write";
+    case CreditNotesRead = "credit_notes:read";
+    case CreditNotesWrite = "credit_notes:write";
+    case ProductsRead = "products:read";
+    case ProductsWrite = "products:write";
+    case PricesRead = "prices:read";
+    case PricesWrite = "prices:write";
+    case DiscountsRead = "discounts:read";
+    case DiscountsWrite = "discounts:write";
+    case TaxRatesRead = "tax_rates:read";
+    case TaxRatesWrite = "tax_rates:write";
+    case MetersRead = "meters:read";
+    case MetersWrite = "meters:write";
+    case UsageRead = "usage:read";
+    case UsageWrite = "usage:write";
+    case CustomersRead = "customers:read";
+    case CustomersWrite = "customers:write";
+    case BusinessesRead = "businesses:read";
+    case BusinessesWrite = "businesses:write";
+    case RefundsRead = "refunds:read";
+    case RefundsWrite = "refunds:write";
+    case VoidsRead = "voids:read";
+    case VoidsWrite = "voids:write";
+    case DisputesRead = "disputes:read";
+    case DisputesWrite = "disputes:write";
+    case PayoutsRead = "payouts:read";
+    case TerminalRead = "terminal:read";
+    case TerminalWrite = "terminal:write";
+    case ExportsRead = "exports:read";
+    case ExportsWrite = "exports:write";
+    case ImportsRead = "imports:read";
+    case ImportsWrite = "imports:write";
+    case AnalyticsRead = "analytics:read";
+    case FinanceRead = "finance:read";
+    case CommsRead = "comms:read";
+    case CommsWrite = "comms:write";
+    case AppsRead = "apps:read";
+    case AppsWrite = "apps:write";
+    case WebhooksRead = "webhooks:read";
+    case WebhooksWrite = "webhooks:write";
+    case IntegrationsRead = "integrations:read";
+    case IntegrationsWrite = "integrations:write";
+    case EventsRead = "events:read";
+    case EventsWrite = "events:write";
+    case SyncRead = "sync:read";
+    case SyncWrite = "sync:write";
+}
