@@ -1,141 +1,71 @@
 # RevKeen PHP SDK
 
-[![Packagist Version](https://img.shields.io/packagist/v/revkeen/sdk-php.svg)](https://packagist.org/packages/revkeen/sdk-php)
-[![PHP Version](https://img.shields.io/packagist/php-v/revkeen/sdk-php.svg)](https://packagist.org/packages/revkeen/sdk-php)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+The official PHP client for the [RevKeen API](https://docs.revkeen.com). PHP 8.1+, PSR-4 autoloading, typed response classes, PSR-3 logging hooks, auto-pagination, webhook verification, and production-grade retries.
 
-Official PHP client for the [RevKeen API](https://docs.revkeen.com/api-reference/openapi) — auto-generated from the OpenAPI specification via [OpenAPI Generator](https://openapi-generator.tech).
+[![Packagist](https://img.shields.io/packagist/v/revkeen/sdk-php?style=flat-square&color=000)](https://packagist.org/packages/revkeen/sdk-php)
+[![CI](https://img.shields.io/github/actions/workflow/status/RevKeen/sdk-php/ci.yml?branch=main&style=flat-square&label=ci)](https://github.com/RevKeen/sdk-php/actions)
+[![PHP Version](https://img.shields.io/packagist/php-v/revkeen/sdk-php?style=flat-square&color=000)](https://www.php.net/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-000?style=flat-square)](./LICENSE)
+[![Docs](https://img.shields.io/badge/docs-docs.revkeen.com-000?style=flat-square)](https://docs.revkeen.com/docs/sdks/php)
 
-## Installation
+## Install
 
 ```bash
 composer require revkeen/sdk-php
 ```
 
-Requires PHP 8.1 or later.
+Requires PHP 8.1+ with `ext-json` and `ext-mbstring`.
 
-## Quick Start
-
-```php
-<?php
-
-use RevKeen\Client;
-
-$client = new Client(getenv('REVKEEN_API_KEY'));
-
-$customers = $client->customers->list(['limit' => 10]);
-
-foreach ($customers->data as $customer) {
-    echo $customer->name . ' ' . $customer->email . "\n";
-}
-```
-
-## Authentication
-
-### API Key (recommended for server-to-server)
-
-```php
-$client = new Client(getenv('REVKEEN_API_KEY'));
-```
-
-### OAuth 2.1 (recommended for MCP and third-party integrations)
-
-```php
-$client = new Client(
-    options: new ClientOptions(
-        oauthClientId: getenv('REVKEEN_CLIENT_ID'),
-        oauthClientSecret: getenv('REVKEEN_CLIENT_SECRET'),
-        scopes: ['customers:read', 'invoices:read'],
-    )
-);
-```
-
-See the [OAuth guide](https://docs.revkeen.com/docs/developers/oauth) for details.
-
-## Resources
-
-Every API resource is available as a property on the client:
-
-| Resource | Method examples |
-|----------|----------------|
-| `$client->customers` | `list()`, `create()`, `get()`, `update()`, `delete()` |
-| `$client->invoices` | `list()`, `create()`, `get()`, `update()`, `finalize()`, `send()`, `void()` |
-| `$client->subscriptions` | `list()`, `create()`, `get()`, `update()`, `cancel()`, `pause()`, `resume()` |
-| `$client->products` | `list()`, `create()`, `get()`, `update()`, `delete()` |
-| `$client->payments` | `list()`, `create()`, `get()` |
-| `$client->checkoutSessions` | `create()`, `get()` |
-| `$client->discounts` | `list()`, `create()`, `get()`, `update()`, `delete()` |
-| `$client->creditNotes` | `list()`, `create()`, `get()` |
-| `$client->paymentLinks` | `list()`, `create()`, `get()`, `update()` |
-| `$client->paymentMethods` | `list()`, `get()`, `detach()` |
-| `$client->webhookEndpoints` | `list()`, `create()`, `delete()` |
-| `$client->events` | `list()`, `get()` |
-| `$client->entitlements` | `list()`, `check()` |
-
-## Webhook Verification
+## Quick start
 
 ```php
 <?php
 
-use RevKeen\Webhooks;
-use RevKeen\WebhookSignatureVerificationException;
+require __DIR__ . '/vendor/autoload.php';
 
-try {
-    $event = Webhooks::constructEvent(
-        $payload,
-        $signature,
-        getenv('REVKEEN_WEBHOOK_SECRET')
-    );
+use RevKeen\RevKeenClient;
 
-    if ($event['type'] === 'invoice.paid') {
-        echo 'Invoice paid: ' . $event['data']['id'];
-    }
-} catch (WebhookSignatureVerificationException $e) {
-    http_response_code(400);
-    echo $e->getMessage();
-}
+$client = new RevKeenClient([
+    'api_key' => getenv('REVKEEN_API_KEY'),
+]);
+
+$customer = $client->customers->create([
+    'email' => 'ops@acme.example',
+    'name'  => 'Acme Inc.',
+]);
+
+echo $customer->id;
 ```
 
-## Error Handling
+## Features
 
-```php
-<?php
+- **PSR-4 autoloading** — drop-in for any modern PHP framework
+- **Typed response objects** — hydrated into typed value classes, not `stdClass`
+- **PSR-3 logging** — inject any PSR-3 logger to audit requests
+- **Automatic pagination** — `$client->invoices->autoPagingList()` yields one at a time
+- **Automatic retries** — exponential backoff on `5xx`, `429`, network errors
+- **Idempotency keys** — attached automatically on safe-to-retry mutations
+- **Webhook verification** — `WebhookVerifier::verify($body, $signature, $secret)`
+- **OAuth 2.1 + API-key auth** — both first-class
+- **Framework adapters** — Laravel service provider, Symfony bundle, plain PHP
 
-use RevKeen\Exceptions\ApiException;
+## Documentation
 
-try {
-    $customer = $client->customers->get('cus_nonexistent');
-} catch (ApiException $e) {
-    echo "API error {$e->getStatusCode()}: {$e->getMessage()}";
-}
-```
+- [SDK docs](https://docs.revkeen.com/docs/sdks/php) — examples, recipes, and full API surface
+- [API reference](https://docs.revkeen.com/docs/api-reference) — every endpoint, from the OpenAPI spec
+- [Webhooks guide](https://docs.revkeen.com/docs/webhooks) — signature verification + event catalogue
+- [Versioning](https://docs.revkeen.com/docs/fundamentals/versioning) — API ↔ SDK compatibility matrix
 
-## Configuration
+## Generation
 
-```php
-<?php
+This SDK is generated from the [canonical OpenAPI spec](https://docs.revkeen.com/docs/api-reference). The generator runs on every spec change. A human-authored layer adds idiomatic helpers for pagination, retries, webhooks, and errors.
 
-use RevKeen\Client;
-use RevKeen\ClientOptions;
+## Contributing
 
-$client = new Client(
-    apiKey: getenv('REVKEEN_API_KEY'),
-    options: new ClientOptions(
-        // Staging environment
-        baseUrl: 'https://staging-api.revkeen.com',
-    )
-);
-```
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup, test instructions, and the release process.
 
-## Compatibility
+Please file issues and feature requests on the [issue tracker](https://github.com/RevKeen/sdk-php/issues). For security disclosures, see [SECURITY.md](./SECURITY.md).
 
-- **Runtime:** PHP 8.1+
-- **Frameworks:** Laravel, Symfony, WordPress, and general PHP
-- **PSR-4** autoloading
+## License
 
-## Links
-
-- [API Reference](https://docs.revkeen.com/api-reference/openapi)
-- [SDK Documentation](https://docs.revkeen.com/docs/developers/sdks/php)
-- [TypeScript SDK](https://github.com/revkeen/sdk-typescript)
-- [Go SDK](https://github.com/revkeen/sdk-go)
+[MIT](./LICENSE) — © RevKeen.
