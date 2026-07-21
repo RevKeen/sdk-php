@@ -1,0 +1,10 @@
+# # StorefrontStatusWebhooks
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**active_endpoints** | **int** |  |
+**unreachable_endpoints** | **int** |  |
+
+[[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)
