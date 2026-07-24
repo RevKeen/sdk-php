@@ -1,0 +1,16 @@
+# # DdMandateRequestConsumeResponseData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **string** |  |
+**customer_id** | **string** |  |
+**invoice_id** | **string** |  |
+**mandate_id** | **string** |  |
+**consumed_at** | **string** |  |
+**status** | **string** |  |
+**idempotent** | **bool** |  | [optional]
+**pdf_documents** | [**\RevKeen\Model\DdMandatePdfReference[]**](DdMandatePdfReference.md) |  | [optional]
+
+[[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)
