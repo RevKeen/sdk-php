@@ -1,0 +1,149 @@
+name: Publish reviewed PHP SDK
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - ".github/workflows/publish.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sdk-publish-php
+  cancel-in-progress: false
+
+jobs:
+  detect-release:
+    name: Detect and validate release candidate
+    runs-on: ubuntu-24.04
+    outputs:
+      release: ${{ steps.release.outputs.release }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Enforce publish-workflow credential isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          WORKFLOW=.github/workflows/publish.yml
+          if grep -Eq '\$\{\{[[:space:]]*secrets\.' "$WORKFLOW"; then
+            echo "::error::SDK publishing must not reference registry or repository secrets."
+            exit 1
+          fi
+          if grep -Eq '^[[:space:]]+(NPM_TOKEN|NODE_AUTH_TOKEN|PACKAGIST_TOKEN|PYPI_TOKEN):' "$WORKFLOW"; then
+            echo "::error::SDK publishing must not declare registry credential variables."
+            exit 1
+          fi
+          if grep -Eq '^[[:space:]]+workflow_dispatch:' "$WORKFLOW"; then
+            echo "::error::Out-of-band workflow_dispatch publishing is forbidden."
+            exit 1
+          fi
+
+      - name: Parse release marker
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" != "push" ]; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          SUBJECT=$(git log -1 --format=%s)
+          if [[ ! "$SUBJECT" =~ ^sdk\[release\]:\ ([0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?)$ ]]; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          VERSION="${BASH_REMATCH[1]}"
+          SOURCE_SHA=$(git log -1 --format=%B | sed -n 's/^Source: //p' | tail -1)
+          if [[ ! "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::A release candidate must carry a Source: <40-character SHA> trailer."
+            exit 1
+          fi
+
+          PACKAGE_VERSION=$(php -r '$json = json_decode(file_get_contents("composer.json"), true, flags: JSON_THROW_ON_ERROR); echo $json["version"];')
+          if [ "$PACKAGE_VERSION" != "$VERSION" ]; then
+            echo "::error::composer.json version $PACKAGE_VERSION does not match release marker $VERSION."
+            exit 1
+          fi
+
+          echo "release=true" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+  validate:
+    name: Validate PHP package
+    needs: detect-release
+    if: needs.detect-release.outputs.release == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+          extensions: curl, json, mbstring
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Validate, lint, format-check, and test
+        run: |
+          composer validate --strict
+          find src test -name '*.php' -type f -print0 | xargs -0 -n1 php -l
+          vendor/bin/php-cs-fixer check --diff --allow-risky=yes
+          vendor/bin/phpunit test
+
+  publish:
+    name: Approve and publish PHP SDK tag
+    needs:
+      - detect-release
+      - validate
+    if: needs.detect-release.outputs.release == 'true'
+    runs-on: ubuntu-24.04
+    environment: sdk-release-php
+    permissions:
+      contents: write
+    steps:
+      - name: Enforce reviewed release sentinel
+        env:
+          REVIEW_GATE: ${{ vars.SDK_RELEASE_REVIEW_GATE }}
+        run: |
+          if [ "$REVIEW_GATE" != "enabled" ]; then
+            echo "::error::sdk-release-php is missing the reviewed release sentinel."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Create immutable release tag
+        env:
+          VERSION: ${{ needs.detect-release.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v${VERSION}"
+          git config user.name "RevKeen Bot"
+          git config user.email "bot@revkeen.com"
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            git fetch origin "refs/tags/${TAG}:refs/tags/${TAG}"
+            test "$(git rev-list -n 1 "${TAG}")" = "$GITHUB_SHA"
+          else
+            git tag -a "${TAG}" -m "Release ${TAG}"
+            git push origin "refs/tags/${TAG}"
+          fi
+
+      - name: Release summary
+        env:
+          VERSION: ${{ needs.detect-release.outputs.version }}
+        run: |
+          echo "## Reviewed PHP SDK release" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Version: v${VERSION}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Package: revkeen/sdk-php" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Packagist ingestion: verify the repository integration observes this tag" >> "$GITHUB_STEP_SUMMARY"
