@@ -1,5 +1,10 @@
 # RevKeen PHP SDK
 
+> [!IMPORTANT]
+> This repository is a generated release mirror. Propose source changes in
+> [RevKeen/revkeen](https://github.com/RevKeen/revkeen); `main` here is updated only by an explicit reviewed SDK release.
+
+
 [![Packagist Version](https://img.shields.io/packagist/v/revkeen/sdk-php.svg)](https://packagist.org/packages/revkeen/sdk-php)
 [![PHP Version](https://img.shields.io/packagist/php-v/revkeen/sdk-php.svg)](https://packagist.org/packages/revkeen/sdk-php)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
