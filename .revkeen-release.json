@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "language": "php",
+  "version": "0.0.0-auditor-e2e",
+  "source": {
+    "repository": "RevKeen/revkeen",
+    "sha": "6e3537f6c9fa2c828c70509b285b9e431c8c5053",
+    "commitSubject": "auditor-e2e-not-a-release",
+    "openapiSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "publicSurfaceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "generatorConfigSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "generatorVersion": "0.0.0"
+  },
+  "contract": {
+    "breakingChanges": "",
+    "changelog": "Auditor end-to-end dry-run. Do not merge."
+  },
+  "maintainedSourceChanges": [],
+  "validationCommands": ["true"]
+}
