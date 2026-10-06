@@ -1,4 +1,4 @@
-# # CartCheckoutSession
+# CartCheckoutSession
 
 ## Properties
 
@@ -9,9 +9,10 @@ Name | Type | Description | Notes
 **merchant_id** | **string** |  |
 **customer_id** | **string** |  |
 **session_token** | **string** |  |
+**checkout_url** | **string** | Hosted checkout URL for this session, built server-side from the configured RevKeen checkout origin. Redirect the customer here. Null when the session has no token. | [optional]
 **status** | **string** |  |
 **mode** | **string** |  |
-**amount_minor** | **int** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **line_items** | [**\RevKeen\Model\CartLineItem[]**](CartLineItem.md) |  |
 **metadata** | **array<string,mixed>** |  |

@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -19,12 +19,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `paymentLinksActivate()`
 
 ```php
-paymentLinksActivate($id): \RevKeen\Model\PaymentLinksUpdate200Response
+paymentLinksActivate($id, $idempotency_key): \RevKeen\Model\PaymentLinksUpdate200Response
 ```
 
 Activate a payment link (deprecated)
 
-**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"active\"` instead.** This convenience endpoint will be removed in a future API version. Enable a payment link to accept payments. Cannot be used on archived links.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"active\"` instead.** This convenience endpoint will be removed in a future API version. Enable a payment link to accept payments. Cannot be used on archived links.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -52,9 +52,10 @@ $apiInstance = new RevKeen\Api\PaymentLinksApi(
     $config
 );
 $id = 'id_example'; // string | Payment link UUID or public_id
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->paymentLinksActivate($id);
+    $result = $apiInstance->paymentLinksActivate($id, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentLinksApi->paymentLinksActivate: ', $e->getMessage(), PHP_EOL;
@@ -66,6 +67,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment link UUID or public_id | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -87,12 +89,12 @@ try {
 ## `paymentLinksArchive()`
 
 ```php
-paymentLinksArchive($id): \RevKeen\Model\PaymentLinksUpdate200Response
+paymentLinksArchive($id, $idempotency_key): \RevKeen\Model\PaymentLinksUpdate200Response
 ```
 
 Archive a payment link (deprecated)
 
-**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"archived\"` instead.** This convenience endpoint will be removed in a future API version. Permanently disable a payment link. This action cannot be undone.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated)  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"archived\"` instead.** This convenience endpoint will be removed in a future API version. Permanently disable a payment link. This action cannot be undone.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated)  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -120,9 +122,10 @@ $apiInstance = new RevKeen\Api\PaymentLinksApi(
     $config
 );
 $id = 'id_example'; // string | Payment link UUID or public_id
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->paymentLinksArchive($id);
+    $result = $apiInstance->paymentLinksArchive($id, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentLinksApi->paymentLinksArchive: ', $e->getMessage(), PHP_EOL;
@@ -134,6 +137,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment link UUID or public_id | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -155,12 +159,12 @@ try {
 ## `paymentLinksCreate()`
 
 ```php
-paymentLinksCreate($payment_links_create_request): \RevKeen\Model\PaymentLinksList200ResponseDataInner
+paymentLinksCreate($idempotency_key, $payment_links_create_request): \RevKeen\Model\PaymentLinksList200ResponseDataInner
 ```
 
 Create a new payment link
 
-Create a new payment link for invoices, subscriptions, or custom amounts  ---  **Related endpoints**  - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Create a new payment link for invoices, subscriptions, or custom amounts  ---  **Related endpoints**  - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -187,10 +191,11 @@ $apiInstance = new RevKeen\Api\PaymentLinksApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $payment_links_create_request = new \RevKeen\Model\PaymentLinksCreateRequest(); // \RevKeen\Model\PaymentLinksCreateRequest
 
 try {
-    $result = $apiInstance->paymentLinksCreate($payment_links_create_request);
+    $result = $apiInstance->paymentLinksCreate($idempotency_key, $payment_links_create_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentLinksApi->paymentLinksCreate: ', $e->getMessage(), PHP_EOL;
@@ -201,6 +206,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **payment_links_create_request** | [**\RevKeen\Model\PaymentLinksCreateRequest**](../Model/PaymentLinksCreateRequest.md)|  | [optional] |
 
 ### Return type
@@ -223,12 +229,12 @@ try {
 ## `paymentLinksDeactivate()`
 
 ```php
-paymentLinksDeactivate($id): \RevKeen\Model\PaymentLinksUpdate200Response
+paymentLinksDeactivate($id, $idempotency_key): \RevKeen\Model\PaymentLinksUpdate200Response
 ```
 
 Deactivate a payment link (deprecated)
 
-**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"inactive\"` instead.** This convenience endpoint will be removed in a future API version. Temporarily disable a payment link. It can be reactivated later.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"inactive\"` instead.** This convenience endpoint will be removed in a future API version. Temporarily disable a payment link. It can be reactivated later.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -256,9 +262,10 @@ $apiInstance = new RevKeen\Api\PaymentLinksApi(
     $config
 );
 $id = 'id_example'; // string | Payment link UUID or public_id
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->paymentLinksDeactivate($id);
+    $result = $apiInstance->paymentLinksDeactivate($id, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentLinksApi->paymentLinksDeactivate: ', $e->getMessage(), PHP_EOL;
@@ -270,6 +277,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment link UUID or public_id | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -291,12 +299,12 @@ try {
 ## `paymentLinksExpire()`
 
 ```php
-paymentLinksExpire($id, $payment_links_expire_request): \RevKeen\Model\PaymentLinksList200ResponseDataInner
+paymentLinksExpire($id, $idempotency_key, $payment_links_expire_request): \RevKeen\Model\PaymentLinksList200ResponseDataInner
 ```
 
 Expire a payment link (deprecated)
 
-**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"expired\"` instead.** This convenience endpoint will be removed in a future API version. Mark a payment link as expired, preventing further use.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+**Deprecated — use `PATCH /v2/payment-links/{id}/status` with `status: \"expired\"` instead.** This convenience endpoint will be removed in a future API version. Mark a payment link as expired, preventing further use.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -324,10 +332,11 @@ $apiInstance = new RevKeen\Api\PaymentLinksApi(
     $config
 );
 $id = 'id_example'; // string | Payment link UUID or public_id
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $payment_links_expire_request = new \RevKeen\Model\PaymentLinksExpireRequest(); // \RevKeen\Model\PaymentLinksExpireRequest
 
 try {
-    $result = $apiInstance->paymentLinksExpire($id, $payment_links_expire_request);
+    $result = $apiInstance->paymentLinksExpire($id, $idempotency_key, $payment_links_expire_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentLinksApi->paymentLinksExpire: ', $e->getMessage(), PHP_EOL;
@@ -339,6 +348,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment link UUID or public_id | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **payment_links_expire_request** | [**\RevKeen\Model\PaymentLinksExpireRequest**](../Model/PaymentLinksExpireRequest.md)|  | [optional] |
 
 ### Return type
@@ -366,7 +376,7 @@ paymentLinksGet($id): \RevKeen\Model\PaymentLinksList200ResponseDataInner
 
 Get payment link by ID
 
-Retrieve a payment link by its UUID or public_id  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a payment link by its UUID or public_id  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -434,7 +444,7 @@ paymentLinksList($limit, $offset, $status, $mode, $search): \RevKeen\Model\Payme
 
 List payment links
 
-List payment links for the authenticated merchant with pagination and filters  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List payment links for the authenticated merchant with pagination and filters  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `PATCH /payment-links/{id}/status` — Update payment link status - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -505,12 +515,12 @@ try {
 ## `paymentLinksUpdate()`
 
 ```php
-paymentLinksUpdate($id, $payment_links_update_request): \RevKeen\Model\PaymentLinksUpdate200Response
+paymentLinksUpdate($id, $idempotency_key, $payment_links_update_request): \RevKeen\Model\PaymentLinksUpdate200Response
 ```
 
 Update payment link status
 
-Change the status of a payment link. Active links accept payments, inactive links are temporarily disabled, and archived links are permanently disabled and cannot be reactivated.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Change the status of a payment link. Active links accept payments, inactive links are temporarily disabled, and archived links are permanently disabled and cannot be reactivated.  ---  **Related endpoints**  - `POST /payment-links` — Create a new payment link - `GET /payment-links` — List payment links - `GET /payment-links/{id}` — Get payment link by ID - `POST /payment-links/{id}/expire` — Expire a payment link (deprecated) - `POST /payment-links/{id}/deactivate` — Deactivate a payment link (deprecated) - `POST /payment-links/{id}/activate` — Activate a payment link (deprecated) - `POST /payment-links/{id}/archive` — Archive a payment link (deprecated)  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -538,10 +548,11 @@ $apiInstance = new RevKeen\Api\PaymentLinksApi(
     $config
 );
 $id = 'id_example'; // string | Payment link UUID or public_id
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $payment_links_update_request = new \RevKeen\Model\PaymentLinksUpdateRequest(); // \RevKeen\Model\PaymentLinksUpdateRequest
 
 try {
-    $result = $apiInstance->paymentLinksUpdate($id, $payment_links_update_request);
+    $result = $apiInstance->paymentLinksUpdate($id, $idempotency_key, $payment_links_update_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentLinksApi->paymentLinksUpdate: ', $e->getMessage(), PHP_EOL;
@@ -553,6 +564,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment link UUID or public_id | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **payment_links_update_request** | [**\RevKeen\Model\PaymentLinksUpdateRequest**](../Model/PaymentLinksUpdateRequest.md)|  | [optional] |
 
 ### Return type

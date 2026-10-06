@@ -1,4 +1,4 @@
-# # SubscriptionSchedule
+# SubscriptionSchedule
 
 ## Properties
 

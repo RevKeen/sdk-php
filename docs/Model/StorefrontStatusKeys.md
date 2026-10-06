@@ -1,4 +1,4 @@
-# # StorefrontStatusKeys
+# StorefrontStatusKeys
 
 ## Properties
 

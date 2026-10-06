@@ -1,4 +1,4 @@
-# # PaymentIntentNextAction
+# PaymentIntentNextAction
 
 ## Properties
 

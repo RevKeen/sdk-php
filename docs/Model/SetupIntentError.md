@@ -1,4 +1,4 @@
-# # SetupIntentError
+# SetupIntentError
 
 ## Properties
 

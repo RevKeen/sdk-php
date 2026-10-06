@@ -1,4 +1,4 @@
-# # DdMandateRequestCancelResponseData
+# DdMandateRequestCancelResponseData
 
 ## Properties
 
@@ -8,9 +8,9 @@ Name | Type | Description | Notes
 **customer_id** | **string** |  |
 **invoice_id** | **string** |  |
 **status** | **string** |  |
-**cancelled_at** | **string** |  | [optional]
+**cancelled_at** | **\DateTime** |  | [optional]
 **cancelled_by** | **string** |  | [optional]
-**expired_at** | **string** |  | [optional]
+**expired_at** | **\DateTime** |  | [optional]
 **reason** | **string** |  | [optional]
 **idempotent** | **bool** |  | [optional]
 

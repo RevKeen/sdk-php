@@ -1,4 +1,4 @@
-# # CustomerMeterErrorResponse
+# CustomerMeterErrorResponse
 
 ## Properties
 

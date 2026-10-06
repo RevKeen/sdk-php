@@ -1,15 +1,14 @@
 # RevKeen PHP SDK
 
-> [!IMPORTANT]
-> This repository is a generated release mirror. Propose source changes in
-> [RevKeen/revkeen](https://github.com/RevKeen/revkeen); `main` here is updated only by an explicit reviewed SDK release.
-
-
 [![Packagist Version](https://img.shields.io/packagist/v/revkeen/sdk-php.svg)](https://packagist.org/packages/revkeen/sdk-php)
 [![PHP Version](https://img.shields.io/packagist/php-v/revkeen/sdk-php.svg)](https://packagist.org/packages/revkeen/sdk-php)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Official PHP client for the [RevKeen API](https://docs.revkeen.com/api-reference/openapi) — auto-generated from the OpenAPI specification via [OpenAPI Generator](https://openapi-generator.tech).
+
+> [!IMPORTANT]
+> This repository is a generated release mirror. Propose source changes in
+> [RevKeen/revkeen](https://github.com/RevKeen/revkeen); `main` here is updated only by an explicit reviewed SDK release.
 
 ## Installation
 
@@ -24,11 +23,16 @@ Requires PHP 8.1 or later.
 ```php
 <?php
 
-use RevKeen\Client;
+use GuzzleHttp\Client;
+use RevKeen\Api\CustomersApi;
+use RevKeen\Runtime\ClientFactory;
+use RevKeen\Runtime\Environment;
 
-$client = new Client(getenv('REVKEEN_API_KEY'));
+$config = ClientFactory::configuration(Environment::SANDBOX)
+    ->setApiKey('x-api-key', getenv('REVKEEN_API_KEY'));
+$customersApi = new CustomersApi(new Client(), $config);
 
-$customers = $client->customers->list(['limit' => 10]);
+$customers = $customersApi->customersList(limit: 10);
 
 foreach ($customers->data as $customer) {
     echo $customer->name . ' ' . $customer->email . "\n";
@@ -40,42 +44,15 @@ foreach ($customers->data as $customer) {
 ### API Key (recommended for server-to-server)
 
 ```php
-$client = new Client(getenv('REVKEEN_API_KEY'));
+$config = ClientFactory::configuration(Environment::PRODUCTION)
+    ->setApiKey('x-api-key', getenv('REVKEEN_API_KEY'));
 ```
-
-### OAuth 2.1 (recommended for MCP and third-party integrations)
-
-```php
-$client = new Client(
-    options: new ClientOptions(
-        oauthClientId: getenv('REVKEEN_CLIENT_ID'),
-        oauthClientSecret: getenv('REVKEEN_CLIENT_SECRET'),
-        scopes: ['customers:read', 'invoices:read'],
-    )
-);
-```
-
-See the [OAuth guide](https://docs.revkeen.com/docs/developers/oauth) for details.
 
 ## Resources
 
-Every API resource is available as a property on the client:
-
-| Resource | Method examples |
-|----------|----------------|
-| `$client->customers` | `list()`, `create()`, `get()`, `update()`, `delete()` |
-| `$client->invoices` | `list()`, `create()`, `get()`, `update()`, `finalize()`, `send()`, `void()` |
-| `$client->subscriptions` | `list()`, `create()`, `get()`, `update()`, `cancel()`, `pause()`, `resume()` |
-| `$client->products` | `list()`, `create()`, `get()`, `update()`, `delete()` |
-| `$client->payments` | `list()`, `create()`, `get()` |
-| `$client->checkoutSessions` | `create()`, `get()` |
-| `$client->discounts` | `list()`, `create()`, `get()`, `update()`, `delete()` |
-| `$client->creditNotes` | `list()`, `create()`, `get()` |
-| `$client->paymentLinks` | `list()`, `create()`, `get()`, `update()` |
-| `$client->paymentMethods` | `list()`, `get()`, `detach()` |
-| `$client->webhookEndpoints` | `list()`, `create()`, `delete()` |
-| `$client->events` | `list()`, `get()` |
-| `$client->entitlements` | `list()`, `check()` |
+OpenAPI Generator emits typed API classes such as `CustomersApi`, `InvoicesApi`,
+and `SubscriptionsApi`. Refer to the generated API docs for the current method
+list and model signatures.
 
 ## Webhook Verification
 
@@ -86,6 +63,7 @@ use RevKeen\Webhooks;
 use RevKeen\WebhookSignatureVerificationException;
 
 try {
+    // $payload must be the untouched request body, before json_decode().
     $event = Webhooks::constructEvent(
         $payload,
         $signature,
@@ -106,10 +84,10 @@ try {
 ```php
 <?php
 
-use RevKeen\Exceptions\ApiException;
+use RevKeen\ApiException;
 
 try {
-    $customer = $client->customers->get('cus_nonexistent');
+    $customer = $customersApi->customersGet('cus_nonexistent');
 } catch (ApiException $e) {
     echo "API error {$e->getStatusCode()}: {$e->getMessage()}";
 }
@@ -120,16 +98,15 @@ try {
 ```php
 <?php
 
-use RevKeen\Client;
-use RevKeen\ClientOptions;
+use RevKeen\Runtime\ClientFactory;
+use RevKeen\Runtime\Environment;
 
-$client = new Client(
-    apiKey: getenv('REVKEEN_API_KEY'),
-    options: new ClientOptions(
-        // Staging environment
-        baseUrl: 'https://staging-api.revkeen.com',
-    )
-);
+$config = ClientFactory::configuration(Environment::SANDBOX)
+    ->setApiKey('x-api-key', getenv('REVKEEN_API_KEY'));
+
+// Custom endpoints require the explicit escape hatch.
+$local = ClientFactory::configurationForCustomBaseUrl('http://localhost:4010/v2')
+    ->setApiKey('x-api-key', getenv('REVKEEN_API_KEY'));
 ```
 
 ## Compatibility

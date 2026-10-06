@@ -1,4 +1,4 @@
-# # CheckoutSessionCreateResponse
+# CheckoutSessionCreateResponse
 
 ## Properties
 

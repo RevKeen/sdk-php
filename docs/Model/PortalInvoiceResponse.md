@@ -1,4 +1,4 @@
-# # PortalInvoiceResponse
+# PortalInvoiceResponse
 
 ## Properties
 

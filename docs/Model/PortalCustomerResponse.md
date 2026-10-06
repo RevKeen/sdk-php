@@ -1,4 +1,4 @@
-# # PortalCustomerResponse
+# PortalCustomerResponse
 
 ## Properties
 

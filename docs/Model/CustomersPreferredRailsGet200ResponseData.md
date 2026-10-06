@@ -1,4 +1,4 @@
-# # CustomersPreferredRailsGet200ResponseData
+# CustomersPreferredRailsGet200ResponseData
 
 ## Properties
 
@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **customer_id** | **string** |  |
 **invoice_id** | **string** |  |
-**amount_minor** | **int** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **preferred_rails** | [**\RevKeen\Model\CustomersPreferredRailsGet200ResponseDataPreferredRailsInner[]**](CustomersPreferredRailsGet200ResponseDataPreferredRailsInner.md) |  |
 

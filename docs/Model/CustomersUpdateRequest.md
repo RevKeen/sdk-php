@@ -1,4 +1,4 @@
-# # CustomersUpdateRequest
+# CustomersUpdateRequest
 
 ## Properties
 

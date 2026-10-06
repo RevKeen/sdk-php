@@ -1,11 +1,11 @@
-# # CreatePriceRequest
+# CreatePriceRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **product_id** | **string** | ID of the product this price belongs to |
-**currency** | **string** | Three-letter ISO currency code | [optional] [default to 'usd']
+**currency** | **string** | Three-letter ISO currency code | [optional]
 **unit_amount** | **int** | Price in minor units (cents). Required for fixed pricing. | [optional]
 **type** | **string** | Price type | [optional] [default to 'one_time']
 **pricing_model** | **string** | Pricing model | [optional] [default to 'fixed']

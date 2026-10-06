@@ -2,7 +2,7 @@
 
 Read storefront products and availability, manage browser origin allowlists, and inspect integration readiness for RevKeen Cart.  **Required Scopes:** - &#x60;products:read&#x60; - Read storefront products and availability - &#x60;apps:read&#x60; - Inspect storefront integration status - &#x60;apps:write&#x60; - Manage allowed storefront origins
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -22,7 +22,7 @@ storefrontOriginsCreate($storefront_origin_create_request): \RevKeen\Model\Store
 
 Register a storefront origin
 
-Register an exact web origin (scheme://host[:port]) for publishable-key storefront calls. Wildcards are rejected; http is allowed only for localhost.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Register an exact web origin (scheme://host[:port]) for publishable-key storefront calls. Wildcards are rejected; http is allowed only for localhost.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -90,7 +90,7 @@ storefrontOriginsDelete($origin_id): \RevKeen\Model\StorefrontOriginDeleteRespon
 
 Remove a storefront origin
 
-Remove a registered storefront origin. Browser calls from it fail closed afterwards.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Remove a registered storefront origin. Browser calls from it fail closed afterwards.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -158,7 +158,7 @@ storefrontOriginsList(): \RevKeen\Model\StorefrontOriginListResponse
 
 List storefront origins
 
-List the browser origins registered for publishable-key storefront calls.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List the browser origins registered for publishable-key storefront calls.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -223,7 +223,7 @@ storefrontProductsGet($product_id): \RevKeen\Model\StorefrontProductResponse
 
 Get a storefront product
 
-Fetch one active, cart-eligible product by UUID, product reference, or slug. Same browser-safe projection as the list endpoint.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Fetch one active, cart-eligible product by UUID, URL handle (slug), or product reference. A UUID also finds a product hidden from the Storefront; a handle or reference only finds listed products, and the handle wins over another product's reference. Same browser-safe projection as the list endpoint.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -250,7 +250,7 @@ $apiInstance = new RevKeen\Api\StorefrontApi(
     new GuzzleHttp\Client(),
     $config
 );
-$product_id = 'product_id_example'; // string | Product UUID, merchant product reference, or slug.
+$product_id = 'product_id_example'; // string | Product UUID, URL handle (slug), or merchant product reference.
 
 try {
     $result = $apiInstance->storefrontProductsGet($product_id);
@@ -264,7 +264,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **product_id** | **string**| Product UUID, merchant product reference, or slug. | |
+| **product_id** | **string**| Product UUID, URL handle (slug), or merchant product reference. | |
 
 ### Return type
 
@@ -286,12 +286,12 @@ try {
 ## `storefrontProductsList()`
 
 ```php
-storefrontProductsList($limit): \RevKeen\Model\StorefrontProductListResponse
+storefrontProductsList($limit, $offset, $collection, $tag, $search, $sort): \RevKeen\Model\StorefrontProductListResponse
 ```
 
 List storefront products
 
-List active, cart-eligible products with browser-safe display data, active prices, and derived availability. Intended for publishable-key storefront and CMS-picker use; never returns product metadata or internal fields.  ---  **Related endpoints**  - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List active, cart-eligible products with browser-safe display data, active prices, and derived availability. Only products listed on the Storefront are returned (store_visibility visible, or scheduled and due). Intended for publishable-key storefront and CMS-picker use; never returns product metadata or internal fields.  ---  **Related endpoints**  - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin - `GET /storefront/status` — Get storefront integration status  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -319,9 +319,14 @@ $apiInstance = new RevKeen\Api\StorefrontApi(
     $config
 );
 $limit = 56; // int | Maximum products to return (default 50, max 100).
+$offset = 56; // int | Products to skip, for pagination.
+$collection = 'collection_example'; // string | Only products in this product collection (id or URL handle).
+$tag = 'tag_example'; // string | Only products carrying this tag.
+$search = 'search_example'; // string | Case-insensitive match on product name or description.
+$sort = 'sort_example'; // string | featured (collection order, else newest), newest, name, price_asc or price_desc.
 
 try {
-    $result = $apiInstance->storefrontProductsList($limit);
+    $result = $apiInstance->storefrontProductsList($limit, $offset, $collection, $tag, $search, $sort);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling StorefrontApi->storefrontProductsList: ', $e->getMessage(), PHP_EOL;
@@ -333,6 +338,11 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **limit** | **int**| Maximum products to return (default 50, max 100). | [optional] |
+| **offset** | **int**| Products to skip, for pagination. | [optional] |
+| **collection** | **string**| Only products in this product collection (id or URL handle). | [optional] |
+| **tag** | **string**| Only products carrying this tag. | [optional] |
+| **search** | **string**| Case-insensitive match on product name or description. | [optional] |
+| **sort** | **string**| featured (collection order, else newest), newest, name, price_asc or price_desc. | [optional] |
 
 ### Return type
 
@@ -359,7 +369,7 @@ storefrontStatusGet(): \RevKeen\Model\StorefrontStatusResponse
 
 Get storefront integration status
 
-Readiness report for the Cart/headless-storefront setup: activation, managed keys, registered origins, product-read readiness, webhook health, and availability tracking. CART_DISABLED / KEYS_MISSING / ORIGIN_MISSING / PRODUCT_READ_UNAVAILABLE are fail-level; WEBHOOK_MISSING / WEBHOOK_UNREACHABLE are warn-level. Never returns key material.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant.
+Readiness report for the Cart/headless-storefront setup: activation, managed keys, registered origins, product-read readiness, webhook health, and availability tracking. CART_DISABLED / KEYS_MISSING / ORIGIN_MISSING / PRODUCT_READ_UNAVAILABLE are fail-level; WEBHOOK_MISSING / WEBHOOK_UNREACHABLE are warn-level. Never returns key material.  ---  **Related endpoints**  - `GET /storefront/products` — List storefront products - `GET /storefront/products/{productId}` — Get a storefront product - `GET /storefront/origins` — List storefront origins - `POST /storefront/origins` — Register a storefront origin - `DELETE /storefront/origins/{originId}` — Remove a storefront origin  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`.
 
 ### Example
 

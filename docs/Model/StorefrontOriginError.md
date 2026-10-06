@@ -1,4 +1,4 @@
-# # StorefrontOriginError
+# StorefrontOriginError
 
 ## Properties
 

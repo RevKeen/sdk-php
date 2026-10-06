@@ -1,4 +1,4 @@
-# # ChargeListResponse
+# ChargeListResponse
 
 ## Properties
 

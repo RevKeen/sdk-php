@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -17,7 +17,7 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `paymentIntentsCancel()`
 
 ```php
-paymentIntentsCancel($id, $cancel_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsCancel($id, $idempotency_key, $cancel_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Cancel a payment intent
@@ -50,10 +50,11 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     $config
 );
 $id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $cancel_payment_intent_request = new \RevKeen\Model\CancelPaymentIntentRequest(); // \RevKeen\Model\CancelPaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsCancel($id, $cancel_payment_intent_request);
+    $result = $apiInstance->paymentIntentsCancel($id, $idempotency_key, $cancel_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsCancel: ', $e->getMessage(), PHP_EOL;
@@ -65,6 +66,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment intent ID (pi_xxx) | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **cancel_payment_intent_request** | [**\RevKeen\Model\CancelPaymentIntentRequest**](../Model/CancelPaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -87,7 +89,7 @@ try {
 ## `paymentIntentsCapture()`
 
 ```php
-paymentIntentsCapture($id, $capture_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsCapture($id, $idempotency_key, $capture_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Capture a payment intent
@@ -120,10 +122,11 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     $config
 );
 $id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $capture_payment_intent_request = new \RevKeen\Model\CapturePaymentIntentRequest(); // \RevKeen\Model\CapturePaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsCapture($id, $capture_payment_intent_request);
+    $result = $apiInstance->paymentIntentsCapture($id, $idempotency_key, $capture_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsCapture: ', $e->getMessage(), PHP_EOL;
@@ -135,6 +138,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment intent ID (pi_xxx) | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **capture_payment_intent_request** | [**\RevKeen\Model\CapturePaymentIntentRequest**](../Model/CapturePaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -157,7 +161,7 @@ try {
 ## `paymentIntentsConfirm()`
 
 ```php
-paymentIntentsConfirm($id, $confirm_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsConfirm($id, $idempotency_key, $confirm_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Confirm a payment intent
@@ -190,10 +194,11 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     $config
 );
 $id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $confirm_payment_intent_request = new \RevKeen\Model\ConfirmPaymentIntentRequest(); // \RevKeen\Model\ConfirmPaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsConfirm($id, $confirm_payment_intent_request);
+    $result = $apiInstance->paymentIntentsConfirm($id, $idempotency_key, $confirm_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsConfirm: ', $e->getMessage(), PHP_EOL;
@@ -205,6 +210,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Payment intent ID (pi_xxx) | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **confirm_payment_intent_request** | [**\RevKeen\Model\ConfirmPaymentIntentRequest**](../Model/ConfirmPaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -227,12 +233,12 @@ try {
 ## `paymentIntentsCreate()`
 
 ```php
-paymentIntentsCreate($create_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsCreate($idempotency_key, $create_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Create a payment intent
 
-Creates a payment intent to orchestrate payment collection with support for 3DS/SCA authentication.  ---  **Related endpoints**  - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Creates a payment intent to orchestrate payment collection with support for 3DS/SCA authentication.  ---  **Related endpoints**  - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -259,10 +265,11 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $create_payment_intent_request = new \RevKeen\Model\CreatePaymentIntentRequest(); // \RevKeen\Model\CreatePaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsCreate($create_payment_intent_request);
+    $result = $apiInstance->paymentIntentsCreate($idempotency_key, $create_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsCreate: ', $e->getMessage(), PHP_EOL;
@@ -273,6 +280,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **create_payment_intent_request** | [**\RevKeen\Model\CreatePaymentIntentRequest**](../Model/CreatePaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -368,7 +376,7 @@ paymentIntentsList($customer, $status, $created_gte, $created_lte, $limit, $star
 
 List payment intents
 
-Returns a list of payment intents with optional filtering.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Returns a list of payment intents with optional filtering.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 

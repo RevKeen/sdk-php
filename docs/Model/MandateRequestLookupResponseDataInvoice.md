@@ -1,4 +1,4 @@
-# # MandateRequestLookupResponseDataInvoice
+# MandateRequestLookupResponseDataInvoice
 
 ## Properties
 

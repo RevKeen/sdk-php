@@ -1,4 +1,4 @@
-# # ProductListResponse
+# ProductListResponse
 
 ## Properties
 

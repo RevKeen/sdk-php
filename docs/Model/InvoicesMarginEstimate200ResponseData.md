@@ -1,11 +1,11 @@
-# # InvoicesMarginEstimate200ResponseData
+# InvoicesMarginEstimate200ResponseData
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **invoice_id** | **string** |  |
-**amount_minor** | **int** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **estimates** | [**\RevKeen\Model\InvoicesMarginEstimate200ResponseDataEstimatesInner[]**](InvoicesMarginEstimate200ResponseDataEstimatesInner.md) |  |
 

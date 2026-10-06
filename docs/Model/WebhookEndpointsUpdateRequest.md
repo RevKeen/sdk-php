@@ -1,4 +1,4 @@
-# # WebhookEndpointsUpdateRequest
+# WebhookEndpointsUpdateRequest
 
 ## Properties
 

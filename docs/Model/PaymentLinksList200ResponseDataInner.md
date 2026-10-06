@@ -1,4 +1,4 @@
-# # PaymentLinksList200ResponseDataInner
+# PaymentLinksList200ResponseDataInner
 
 ## Properties
 
@@ -11,13 +11,13 @@ Name | Type | Description | Notes
 **slug** | **string** |  | [optional]
 **mode** | **string** |  |
 **status** | **string** |  |
-**amount_minor** | **int** |  | [optional]
-**currency** | **string** |  | [optional] [default to 'USD']
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
+**currency** | **string** | Three-letter ISO currency code, taken from the link&#39;s products. | [optional]
 **invoice_id** | **string** |  | [optional]
 **subscription_id** | **string** |  | [optional]
 **product_ids** | **string[]** |  | [optional]
 **line_items** | [**\RevKeen\Model\PaymentLinksList200ResponseDataInnerLineItemsInner[]**](PaymentLinksList200ResponseDataInnerLineItemsInner.md) |  | [optional]
-**success_url** | **string** | Custom URL to redirect after successful payment. Supports placeholders: {CHECKOUT_ID}, {TRANSACTION_ID}, {PAYMENT_ID}, {CUSTOMER_ID}, {AMOUNT}, {CURRENCY}, {PORTAL_URL}. If not set, redirects to RevKeen&#39;s default success page. | [optional]
+**success_url** | **string** | Custom URL to redirect after successful payment. Supports placeholders: {CHECKOUT_ID}, {TRANSACTION_ID}, {PAYMENT_ID}, {CUSTOMER_ID}, {AMOUNT}, {CURRENCY}, {PORTAL_URL}, {CHECKOUT_STATUS_TOKEN}. If not set, redirects to RevKeen&#39;s default success page. | [optional]
 **cancel_url** | **string** | Custom URL to redirect if customer cancels the checkout. If not set, no cancel redirect is configured. | [optional]
 **redirect_url** | **string** |  | [optional]
 **collect_shipping** | **bool** |  | [optional] [default to false]

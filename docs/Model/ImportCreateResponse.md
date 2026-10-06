@@ -1,4 +1,4 @@
-# # ImportCreateResponse
+# ImportCreateResponse
 
 ## Properties
 

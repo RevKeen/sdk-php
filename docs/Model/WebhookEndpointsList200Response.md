@@ -1,4 +1,4 @@
-# # WebhookEndpointsList200Response
+# WebhookEndpointsList200Response
 
 ## Properties
 

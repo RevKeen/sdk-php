@@ -1,4 +1,4 @@
-# # StorefrontAvailability
+# StorefrontAvailability
 
 ## Properties
 

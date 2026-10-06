@@ -1,4 +1,4 @@
-# # CreditNoteCreateResponse
+# CreditNoteCreateResponse
 
 ## Properties
 

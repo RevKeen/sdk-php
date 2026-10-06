@@ -2,7 +2,7 @@
 
 Entitlements grant customers access to features, benefits, or content tied to their subscription or purchase. Use these endpoints to list granted entitlements for a customer and to check whether a customer currently has access to a specific benefit.  **Required Scopes:** - &#x60;entitlements:read&#x60; - List and check customer entitlements
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -18,7 +18,7 @@ entitlementsCheck($customer_id, $benefit_key): \RevKeen\Model\EntitlementCheckRe
 
 Check entitlement access
 
-Check if a customer has access to a specific benefit by key. This is the primary endpoint for feature gating and licensing checks.  ---  **Related endpoints**  - `GET /customers/{customerId}/entitlements` — List customer entitlements - `POST /customers/{customerId}/entitlements` — Grant entitlement to customer - `DELETE /customers/{customerId}/entitlements` — Revoke entitlement by benefit key - `GET /customers/{customerId}/entitlements/check` — Check customer entitlement - `DELETE /customers/{customerId}/entitlements/{entitlementId}` — Revoke entitlement by ID - `GET /entitlements` — List entitlements  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Check if a customer has access to a specific benefit by key. This is the primary endpoint for feature gating and licensing checks.  ---  **Related endpoints**  - `GET /customers/{customerId}/entitlements` — List customer entitlements - `POST /customers/{customerId}/entitlements` — Grant entitlement to customer - `DELETE /customers/{customerId}/entitlements` — Revoke entitlement by benefit key - `GET /customers/{customerId}/entitlements/check` — Check customer entitlement - `DELETE /customers/{customerId}/entitlements/{entitlementId}` — Revoke entitlement by ID - `GET /entitlements` — List entitlements  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -88,7 +88,7 @@ entitlementsList($customer_id, $include_expired, $benefit_type, $category, $limi
 
 List entitlements
 
-Retrieve all entitlements for a customer. Pass `customer_id` as a query parameter. Includes computed access status based on subscription state.  ---  **Related endpoints**  - `GET /customers/{customerId}/entitlements` — List customer entitlements - `POST /customers/{customerId}/entitlements` — Grant entitlement to customer - `DELETE /customers/{customerId}/entitlements` — Revoke entitlement by benefit key - `GET /customers/{customerId}/entitlements/check` — Check customer entitlement - `DELETE /customers/{customerId}/entitlements/{entitlementId}` — Revoke entitlement by ID - `GET /entitlements/check` — Check entitlement access  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Retrieve all entitlements for a customer. Pass `customer_id` as a query parameter. Includes computed access status based on subscription state.  ---  **Related endpoints**  - `GET /customers/{customerId}/entitlements` — List customer entitlements - `POST /customers/{customerId}/entitlements` — Grant entitlement to customer - `DELETE /customers/{customerId}/entitlements` — Revoke entitlement by benefit key - `GET /customers/{customerId}/entitlements/check` — Check customer entitlement - `DELETE /customers/{customerId}/entitlements/{entitlementId}` — Revoke entitlement by ID - `GET /entitlements/check` — Check entitlement access  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 

@@ -1,4 +1,4 @@
-# # TerminalDeviceErrorResponse
+# TerminalDeviceErrorResponse
 
 ## Properties
 

@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -17,12 +17,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `creditNotesCreate()`
 
 ```php
-creditNotesCreate($create_credit_note_input): \RevKeen\Model\CreditNoteCreateResponse
+creditNotesCreate($idempotency_key, $create_credit_note_input): \RevKeen\Model\CreditNoteCreateResponse
 ```
 
 Create a credit note
 
-Issue a credit note for a paid or partially paid invoice. The credit can be applied via refund to payment method, customer balance, or marked as external.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Issue a credit note for a paid or partially paid invoice. The credit can be applied via refund to payment method, customer balance, or marked as external.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -49,10 +49,11 @@ $apiInstance = new RevKeen\Api\CreditNotesApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $create_credit_note_input = new \RevKeen\Model\CreateCreditNoteInput(); // \RevKeen\Model\CreateCreditNoteInput
 
 try {
-    $result = $apiInstance->creditNotesCreate($create_credit_note_input);
+    $result = $apiInstance->creditNotesCreate($idempotency_key, $create_credit_note_input);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CreditNotesApi->creditNotesCreate: ', $e->getMessage(), PHP_EOL;
@@ -63,6 +64,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **create_credit_note_input** | [**\RevKeen\Model\CreateCreditNoteInput**](../Model/CreateCreditNoteInput.md)|  | [optional] |
 
 ### Return type
@@ -90,7 +92,7 @@ creditNotesGet($id): \RevKeen\Model\CreditNoteRetrieveResponse
 
 Get credit note by ID
 
-Retrieve a single credit note by its UUID.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a single credit note by its UUID.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -158,7 +160,7 @@ creditNotesList($status, $invoice_id, $customer_id, $credit_method, $created_aft
 
 List credit notes
 
-Retrieve a paginated list of credit notes with optional filters. Results are ordered by creation date (newest first).  ---  **Related endpoints**  - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Retrieve a paginated list of credit notes with optional filters. Results are ordered by creation date (newest first).  ---  **Related endpoints**  - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -240,7 +242,7 @@ creditNotesListLines($id, $limit): \RevKeen\Model\CreditNoteLineList
 
 List line items on a credit note
 
-Returns the line items attached to a credit note. Each line describes a portion of the invoice that the credit applies to — either a whole invoice line or a prorated slice. Use this to reconstruct the credit's effect per invoice line (for example, when displaying the credit breakdown in your own UI).  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Returns the line items attached to a credit note. Each line describes a portion of the invoice that the credit applies to — either a whole invoice line or a prorated slice. Use this to reconstruct the credit's effect per invoice line (for example, when displaying the credit breakdown in your own UI).  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -305,12 +307,12 @@ try {
 ## `creditNotesPreview()`
 
 ```php
-creditNotesPreview($preview_credit_note_input): \RevKeen\Model\CreditNotePreviewResponse
+creditNotesPreview($preview_credit_note_input, $idempotency_key): \RevKeen\Model\CreditNotePreviewResponse
 ```
 
 Preview a credit note without creating it
 
-Compute what a credit note would look like against a specific invoice without persisting anything. Use this to validate amounts and show a \"here's what will happen\" UI before the merchant commits. No side effects — no DB writes, no events emitted, no refunds initiated. Mirrors Stripe's `POST /v1/credit_notes/preview`.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Compute what a credit note would look like against a specific invoice without persisting anything. Use this to validate amounts and show a \"here's what will happen\" UI before the merchant commits. No side effects — no DB writes, no events emitted, no refunds initiated. Mirrors Stripe's `POST /v1/credit_notes/preview`.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `POST /credit_notes/{id}/void` — Void a credit note - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -338,9 +340,10 @@ $apiInstance = new RevKeen\Api\CreditNotesApi(
     $config
 );
 $preview_credit_note_input = new \RevKeen\Model\PreviewCreditNoteInput(); // \RevKeen\Model\PreviewCreditNoteInput
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->creditNotesPreview($preview_credit_note_input);
+    $result = $apiInstance->creditNotesPreview($preview_credit_note_input, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CreditNotesApi->creditNotesPreview: ', $e->getMessage(), PHP_EOL;
@@ -352,6 +355,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **preview_credit_note_input** | [**\RevKeen\Model\PreviewCreditNoteInput**](../Model/PreviewCreditNoteInput.md)|  | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -373,12 +377,12 @@ try {
 ## `creditNotesVoid()`
 
 ```php
-creditNotesVoid($id): \RevKeen\Model\CreditNoteVoidResponse
+creditNotesVoid($id, $idempotency_key): \RevKeen\Model\CreditNoteVoidResponse
 ```
 
 Void a credit note
 
-Void a credit note that has been issued but not yet fully applied. This is an accounting void — it reverses the credit without creating a new financial transaction.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Void a credit note that has been issued but not yet fully applied. This is an accounting void — it reverses the credit without creating a new financial transaction.  ---  **Related endpoints**  - `GET /credit_notes` — List credit notes - `POST /credit_notes` — Create a credit note - `GET /credit_notes/{id}` — Get credit note by ID - `GET /credit_notes/invoice/{invoice_id}/eligibility` — Check credit note eligibility for an invoice - `GET /credit_notes/transaction/{transaction_id}/reversal-eligibility` — Check reversal eligibility for a transaction - `GET /credit_notes/{id}/lines` — List line items on a credit note - `POST /credit_notes/preview` — Preview a credit note without creating it  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -406,9 +410,10 @@ $apiInstance = new RevKeen\Api\CreditNotesApi(
     $config
 );
 $id = 'id_example'; // string | Credit note UUID
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->creditNotesVoid($id);
+    $result = $apiInstance->creditNotesVoid($id, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CreditNotesApi->creditNotesVoid: ', $e->getMessage(), PHP_EOL;
@@ -420,6 +425,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Credit note UUID | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 

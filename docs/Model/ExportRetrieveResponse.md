@@ -1,4 +1,4 @@
-# # ExportRetrieveResponse
+# ExportRetrieveResponse
 
 ## Properties
 

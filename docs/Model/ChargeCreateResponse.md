@@ -1,4 +1,4 @@
-# # ChargeCreateResponse
+# ChargeCreateResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # ImportRetrieveResponse
+# ImportRetrieveResponse
 
 ## Properties
 

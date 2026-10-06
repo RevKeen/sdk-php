@@ -1,4 +1,4 @@
-# # PreviewCollectionResponse
+# PreviewCollectionResponse
 
 ## Properties
 

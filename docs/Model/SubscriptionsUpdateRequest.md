@@ -1,11 +1,11 @@
-# # SubscriptionsUpdateRequest
+# SubscriptionsUpdateRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **string** |  | [optional]
-**amount_minor** | **int** |  | [optional]
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
 **quantity** | **int** |  | [optional]
 **next_billing_date** | **string** |  | [optional]
 **billing_anchor_day** | **int** |  | [optional]

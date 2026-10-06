@@ -1,4 +1,4 @@
-# # PaymentLinksList200Response
+# PaymentLinksList200Response
 
 ## Properties
 

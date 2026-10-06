@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -22,7 +22,7 @@ webhookEndpointsCreate($webhook_endpoints_create_request): \RevKeen\Model\Webhoo
 
 Create webhook endpoint
 
-Create a webhook endpoint to receive event notifications at the given URL. Returns the endpoint with its signing secret — store the secret securely, it is only shown once.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Create a webhook endpoint to receive event notifications at the given URL. Returns the endpoint with its signing secret — store the secret securely, it is only shown once.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -90,7 +90,7 @@ webhookEndpointsDelete($id): \RevKeen\Model\WebhookEndpointsDelete200Response
 
 Delete webhook endpoint
 
-Permanently delete a webhook endpoint and all its event subscriptions.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Permanently delete a webhook endpoint and all its event subscriptions.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -158,7 +158,7 @@ webhookEndpointsGet($id): \RevKeen\Model\WebhookEndpointsGet200Response
 
 Get webhook endpoint
 
-Retrieve a single webhook endpoint by ID, including delivery statistics.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a single webhook endpoint by ID, including delivery statistics.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -226,7 +226,7 @@ webhookEndpointsList($status, $limit, $offset): \RevKeen\Model\WebhookEndpointsL
 
 List webhook endpoints
 
-List all webhook endpoints for the authenticated merchant. Supports filtering by status and pagination.  ---  **Related endpoints**  - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List all webhook endpoints for the authenticated merchant. Supports filtering by status and pagination.  ---  **Related endpoints**  - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -298,7 +298,7 @@ webhookEndpointsRotateSecret($id): \RevKeen\Model\WebhookEndpointsCreate201Respo
 
 Rotate signing secret
 
-Generate a new signing secret for a webhook endpoint. The old secret is immediately invalidated. Store the new secret securely — it is only returned in this response.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Generate a new signing secret for a webhook endpoint. The old secret is immediately invalidated. Store the new secret securely — it is only returned in this response.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `PATCH /webhook-endpoints/{id}` — Update webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -366,7 +366,7 @@ webhookEndpointsUpdate($id, $webhook_endpoints_update_request): \RevKeen\Model\W
 
 Update webhook endpoint
 
-Update a webhook endpoint's URL, subscribed events, description, or enabled status.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Update a webhook endpoint's URL, subscribed events, description, or enabled status.  ---  **Related endpoints**  - `GET /webhook-endpoints` — List webhook endpoints - `POST /webhook-endpoints` — Create webhook endpoint - `GET /webhook-endpoints/{id}` — Get webhook endpoint - `DELETE /webhook-endpoints/{id}` — Delete webhook endpoint - `POST /webhook-endpoints/{id}/rotate-secret` — Rotate signing secret  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 

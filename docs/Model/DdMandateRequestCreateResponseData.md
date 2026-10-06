@@ -1,4 +1,4 @@
-# # DdMandateRequestCreateResponseData
+# DdMandateRequestCreateResponseData
 
 ## Properties
 
@@ -10,8 +10,8 @@ Name | Type | Description | Notes
 **invoice_id** | **string** |  |
 **token** | **string** | Signed mandate-request token for the emailed link |
 **signable_url** | **string** | Customer-facing URL that opens the sign flow |
-**created_at** | **string** |  |
-**expires_at** | **string** |  |
+**created_at** | **\DateTime** |  |
+**expires_at** | **\DateTime** |  |
 **status** | **string** |  |
 **idempotent** | **bool** | True when an existing live request was returned instead of creating a new one |
 

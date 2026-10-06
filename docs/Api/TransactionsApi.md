@@ -2,7 +2,7 @@
 
 Transactions represent all financial movements in the unified transaction model. This includes sales, refunds, voids, captures, disputes, and adjustments. Every transaction is linked to an invoice and child transactions reference their parent.  **Required Scopes:** - &#x60;payments:read&#x60; - List and retrieve transactions
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -18,7 +18,7 @@ transactionsGet($id): \RevKeen\Model\TransactionRetrieveResponse
 
 Get transaction by ID
 
-Retrieve a single transaction by its ID.  ---  **Related endpoints**  - `GET /transactions` — List transactions  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a single transaction by its ID.  ---  **Related endpoints**  - `GET /transactions` — List transactions  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -86,7 +86,7 @@ transactionsList($type, $status, $customer_id, $invoice_id, $created_gte, $creat
 
 List transactions
 
-List all transactions for the authenticated merchant. Transactions represent the unified financial truth — every sale, refund, void, capture, dispute, and adjustment.  ---  **Related endpoints**  - `GET /transactions/{id}` — Get transaction by ID  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List all transactions for the authenticated merchant. Transactions represent the unified financial truth — every sale, refund, void, capture, dispute, and adjustment.  ---  **Related endpoints**  - `GET /transactions/{id}` — Get transaction by ID  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 

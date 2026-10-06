@@ -1,4 +1,4 @@
-# # CartStartRule
+# CartStartRule
 
 ## Properties
 

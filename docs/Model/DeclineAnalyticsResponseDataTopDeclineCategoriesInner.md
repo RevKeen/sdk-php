@@ -1,4 +1,4 @@
-# # DeclineAnalyticsResponseDataTopDeclineCategoriesInner
+# DeclineAnalyticsResponseDataTopDeclineCategoriesInner
 
 ## Properties
 

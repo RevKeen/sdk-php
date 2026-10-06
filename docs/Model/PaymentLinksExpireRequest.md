@@ -1,4 +1,4 @@
-# # PaymentLinksExpireRequest
+# PaymentLinksExpireRequest
 
 ## Properties
 

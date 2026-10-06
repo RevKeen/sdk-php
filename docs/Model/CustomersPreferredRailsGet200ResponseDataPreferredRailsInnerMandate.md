@@ -1,4 +1,4 @@
-# # CustomersPreferredRailsGet200ResponseDataPreferredRailsInnerMandate
+# CustomersPreferredRailsGet200ResponseDataPreferredRailsInnerMandate
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # PaymentSecurityResult
+# PaymentSecurityResult
 
 ## Properties
 

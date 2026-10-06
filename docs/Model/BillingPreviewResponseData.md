@@ -1,4 +1,4 @@
-# # BillingPreviewResponseData
+# BillingPreviewResponseData
 
 ## Properties
 
@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **items** | [**\RevKeen\Model\SubscriptionPreviewRenewalResponseDataUpcomingRenewalsInner[]**](SubscriptionPreviewRenewalResponseDataUpcomingRenewalsInner.md) |  |
 **summary** | **string** |  |
-**total_amount_minor** | **int** |  |
+**total_amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **first_charge_date** | **\DateTime** |  |
 **trial_end_date** | **\DateTime** |  |
 **schedule_end_date** | **\DateTime** |  |

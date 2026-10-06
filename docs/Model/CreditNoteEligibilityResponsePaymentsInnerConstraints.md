@@ -1,4 +1,4 @@
-# # CreditNoteEligibilityResponsePaymentsInnerConstraints
+# CreditNoteEligibilityResponsePaymentsInnerConstraints
 
 ## Properties
 

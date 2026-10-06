@@ -1,4 +1,4 @@
-# # PortalMandateList
+# PortalMandateList
 
 ## Properties
 

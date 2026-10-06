@@ -1,4 +1,4 @@
-# # DdCaptureSession
+# DdCaptureSession
 
 ## Properties
 
@@ -22,10 +22,10 @@ Name | Type | Description | Notes
 **settlement_date** | **string** | Settlement date (YYYY-MM-DD) |
 **notice_days** | **int** |  |
 **mandate_id** | **string** | Mandate created from this capture session, once completed |
-**expires_at** | **string** |  |
-**completed_at** | **string** |  |
-**abandoned_at** | **string** |  |
-**created_at** | **string** |  |
-**updated_at** | **string** |  |
+**expires_at** | **\DateTime** |  |
+**completed_at** | **\DateTime** |  |
+**abandoned_at** | **\DateTime** |  |
+**created_at** | **\DateTime** |  |
+**updated_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

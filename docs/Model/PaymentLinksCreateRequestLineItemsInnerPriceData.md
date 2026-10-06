@@ -1,10 +1,10 @@
-# # PaymentLinksCreateRequestLineItemsInnerPriceData
+# PaymentLinksCreateRequestLineItemsInnerPriceData
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**currency** | **string** |  | [optional] [default to 'USD']
+**currency** | **string** | Three-letter ISO currency code. Defaults to the merchant&#39;s default currency. | [optional]
 **unit_amount** | **int** |  |
 **product_data** | [**\RevKeen\Model\PaymentLinksCreateRequestLineItemsInnerPriceDataProductData**](PaymentLinksCreateRequestLineItemsInnerPriceDataProductData.md) |  | [optional]
 **product** | **string** |  | [optional]

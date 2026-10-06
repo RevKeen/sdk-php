@@ -1,4 +1,4 @@
-# # SubscriptionCreateResponse
+# SubscriptionCreateResponse
 
 ## Properties
 

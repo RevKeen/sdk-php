@@ -1,4 +1,4 @@
-# # UpdateMeterRequest
+# UpdateMeterRequest
 
 ## Properties
 
@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **filter_conditions** | **array<string,mixed>[]** | Updated filter conditions | [optional]
 **unique_count_key** | **string** | Updated unique count key | [optional]
 **unit_name** | **string** | Updated unit name | [optional]
+**unit_of_measure_code** | **string** | Updated UN/ECE Rec 20 code. Does not rewrite historical match/line snapshots. | [optional]
 **carry_forward** | **bool** | Updated carry forward setting | [optional]
 **metadata** | **array<string,mixed>** | Updated metadata | [optional]
 **alert_thresholds** | **float[]** | Updated threshold percentages for usage.threshold.reached webhooks. | [optional]

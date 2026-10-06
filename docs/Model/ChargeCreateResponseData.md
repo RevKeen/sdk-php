@@ -1,4 +1,4 @@
-# # ChargeCreateResponseData
+# ChargeCreateResponseData
 
 ## Properties
 
@@ -8,9 +8,9 @@ Name | Type | Description | Notes
 **customer_id** | **string** |  |
 **invoice_id** | **string** |  |
 **payment_method_id** | **string** |  |
-**amount_minor** | **int** |  |
-**amount_captured_minor** | **int** |  |
-**amount_refunded_minor** | **int** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
+**amount_captured_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
+**amount_refunded_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **status** | **string** |  |
 **description** | **string** |  |

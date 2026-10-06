@@ -1,4 +1,4 @@
-# # InvoicesVoidRequest
+# InvoicesVoidRequest
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # TransactionListResponse
+# TransactionListResponse
 
 ## Properties
 

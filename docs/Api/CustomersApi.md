@@ -2,10 +2,11 @@
 
 Customer objects represent the individuals or businesses you bill. Use them to store contact information, attach payment methods, and track billing history across subscriptions and one-off payments. Every charge, invoice, and subscription belongs to a customer.  **Required Scopes:** - &#x60;customers:read&#x60; - List and retrieve customers - &#x60;customers:write&#x60; - Create, update, delete customers  **MCP Tools:** &#x60;customers_list&#x60;, &#x60;customers_get&#x60;, &#x60;customers_create&#x60;, &#x60;customers_update&#x60;
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
+| [**customerStateGet()**](CustomersApi.md#customerStateGet) | **GET** /customers/{id}/state | Get customer billing state |
 | [**customersCreate()**](CustomersApi.md#customersCreate) | **POST** /customers | Create a new customer |
 | [**customersGet()**](CustomersApi.md#customersGet) | **GET** /customers/{id} | Get customer by ID |
 | [**customersList()**](CustomersApi.md#customersList) | **GET** /customers | List customers |
@@ -15,6 +16,74 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 | [**customersUpdate()**](CustomersApi.md#customersUpdate) | **PATCH** /customers/{id} | Update customer details |
 
 
+## `customerStateGet()`
+
+```php
+customerStateGet($id): \RevKeen\Model\CustomerStateGet200Response
+```
+
+Get customer billing state
+
+Return the Polar-shaped job snapshot for one customer: identity, active and recent subscriptions, and recent invoices with overdue flags. Use this instead of chaining customers_get + subscriptions_list + invoices_list.  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: apiKey
+$config = RevKeen\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = RevKeen\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
+
+// Configure OAuth2 access token for authorization: oauth2
+$config = RevKeen\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
+
+// Configure OAuth2 access token for authorization: oauth2
+$config = RevKeen\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
+
+
+$apiInstance = new RevKeen\Api\CustomersApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$id = 'id_example'; // string | Customer UUID
+
+try {
+    $result = $apiInstance->customerStateGet($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CustomersApi->customerStateGet: ', $e->getMessage(), PHP_EOL;
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+| ------------- | ------------- | ------------- | ------------- |
+| **id** | **string**| Customer UUID | |
+
+### Return type
+
+[**\RevKeen\Model\CustomerStateGet200Response**](../Model/CustomerStateGet200Response.md)
+
+### Authorization
+
+[apiKey](../../README.md#apiKey), [oauth2](../../README.md#oauth2), [oauth2](../../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+[[Back to top]](#) [[Back to API list]](../../README.md#endpoints)
+[[Back to Model list]](../../README.md#models)
+[[Back to README]](../../README.md)
+
 ## `customersCreate()`
 
 ```php
@@ -23,7 +92,7 @@ customersCreate($customers_create_request): \RevKeen\Model\CustomerCreateRespons
 
 Create a new customer
 
-Create a new customer record in the merchant's account  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID - `PATCH /customers/{id}` — Update customer details  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Create a new customer record in the merchant's account  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -91,7 +160,7 @@ customersGet($id): \RevKeen\Model\CustomerRetrieveResponse
 
 Get customer by ID
 
-Retrieve detailed information about a specific customer  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers - `PATCH /customers/{id}` — Update customer details  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve detailed information about a specific customer  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -159,7 +228,7 @@ customersList($limit, $offset, $search): \RevKeen\Model\CustomerListResponse
 
 List customers
 
-Retrieve a paginated list of customers for the merchant  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers/{id}` — Get customer by ID - `PATCH /customers/{id}` — Update customer details  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Retrieve a paginated list of customers for the merchant  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -231,7 +300,7 @@ customersPaymentMethodsList($id): \RevKeen\Model\CustomerPaymentMethodsListRespo
 
 Get customer payment methods
 
-Retrieve all payment methods for a customer  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Retrieve all payment methods for a customer  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -299,7 +368,7 @@ customersPaymentRailsGet($id, $invoice_id): \RevKeen\Model\CustomersPaymentRails
 
 Get customer payment rail availability
 
-Return per-rail availability for a customer, including mandate state and last successful rail usage.  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Return per-rail availability for a customer, including mandate state and last successful rail usage.  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -369,7 +438,7 @@ customersPreferredRailsGet($id, $invoice_id, $amount, $amount_minor): \RevKeen\M
 
 Get preferred payment rails
 
-Return smart-pick rail recommendations with customer history, mandate state, and margin-aware reasoning.  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Return smart-pick rail recommendations with customer history, mandate state, and margin-aware reasoning.  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -398,8 +467,8 @@ $apiInstance = new RevKeen\Api\CustomersApi(
 );
 $id = 'id_example'; // string | Customer UUID
 $invoice_id = 'invoice_id_example'; // string | Optional invoice context used to apply invoice-level rail restrictions and amount.
-$amount = 56; // int | Optional amount in minor units. Use amount_minor for the explicit alias.
-$amount_minor = 56; // int | Optional amount in minor units. Overrides invoice total for margin-aware ranking.
+$amount = new \RevKeen\Model\MoneyMinor(); // MoneyMinor | Optional amount in minor units. Use amount_minor for the explicit alias.
+$amount_minor = new \RevKeen\Model\MoneyMinor(); // MoneyMinor | Optional amount in minor units. Overrides invoice total for margin-aware ranking.
 
 try {
     $result = $apiInstance->customersPreferredRailsGet($id, $invoice_id, $amount, $amount_minor);
@@ -415,8 +484,8 @@ try {
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Customer UUID | |
 | **invoice_id** | **string**| Optional invoice context used to apply invoice-level rail restrictions and amount. | [optional] |
-| **amount** | **int**| Optional amount in minor units. Use amount_minor for the explicit alias. | [optional] |
-| **amount_minor** | **int**| Optional amount in minor units. Overrides invoice total for margin-aware ranking. | [optional] |
+| **amount** | **MoneyMinor**| Optional amount in minor units. Use amount_minor for the explicit alias. | [optional] |
+| **amount_minor** | **MoneyMinor**| Optional amount in minor units. Overrides invoice total for margin-aware ranking. | [optional] |
 
 ### Return type
 
@@ -443,7 +512,7 @@ customersUpdate($id, $customers_update_request): \RevKeen\Model\CustomerUpdateRe
 
 Update customer details
 
-Update an existing customer's information  ---  **Related endpoints**  - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers - `GET /customers/{id}` — Get customer by ID  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Update an existing customer's information  ---  **Related endpoints**  - `GET /customers/{id}/state` — Get customer billing state - `GET /customers/{customerId}/invoices` — List customer invoices - `GET /customers/{customerId}/subscriptions` — List customer subscriptions - `GET /customers/{customerId}/orders` — List customer orders - `GET /customers/{customerId}/payments` — List customer payments - `PUT /customers/external/batch` — Batch upsert customers by external ID - `POST /customers` — Create a new customer - `GET /customers` — List customers  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 

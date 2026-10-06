@@ -1,4 +1,4 @@
-# # RefundListResponse
+# RefundListResponse
 
 ## Properties
 

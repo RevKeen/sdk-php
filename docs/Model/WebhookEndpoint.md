@@ -1,4 +1,4 @@
-# # WebhookEndpoint
+# WebhookEndpoint
 
 ## Properties
 
@@ -14,8 +14,8 @@ Name | Type | Description | Notes
 **total_deliveries** | **float** | Total number of delivery attempts |
 **successful_deliveries** | **float** | Number of successful deliveries |
 **failed_deliveries** | **float** | Number of failed deliveries |
-**last_delivery_at** | **string** | Timestamp of the most recent delivery attempt |
-**created_at** | **string** | When the endpoint was created |
-**updated_at** | **string** | When the endpoint was last modified |
+**last_delivery_at** | **\DateTime** | Timestamp of the most recent delivery attempt |
+**created_at** | **\DateTime** | When the endpoint was created |
+**updated_at** | **\DateTime** | When the endpoint was last modified |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

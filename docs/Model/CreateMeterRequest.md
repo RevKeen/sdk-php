@@ -1,4 +1,4 @@
-# # CreateMeterRequest
+# CreateMeterRequest
 
 ## Properties
 
@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **filter_conditions** | **array<string,mixed>[]** | Filter conditions for matching events | [optional]
 **unique_count_key** | **string** | Property key for count_unique aggregation | [optional]
 **unit_name** | **string** | Display unit name | [optional]
+**unit_of_measure_code** | **string** | UN/ECE Rec 20 code. Omitted &#x3D;&gt; C62. unit_name remains the display label. | [optional]
 **carry_forward** | **bool** | Carry forward last value across periods | [optional]
 **metadata** | **array<string,mixed>** | Arbitrary key-value metadata | [optional]
 **alert_thresholds** | **float[]** | Threshold percentages that trigger usage.threshold.reached webhooks. | [optional]

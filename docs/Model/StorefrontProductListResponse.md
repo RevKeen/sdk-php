@@ -1,4 +1,4 @@
-# # StorefrontProductListResponse
+# StorefrontProductListResponse
 
 ## Properties
 

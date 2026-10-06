@@ -2,7 +2,7 @@
 
 Revenue analytics including MRR summaries, time-series data, accounts receivable aging, days sales outstanding (DSO), and customer lifetime value (LTV). Use these endpoints to build dashboards and financial reports.  **Required Scopes:** - &#x60;analytics:read&#x60; - Access analytics endpoints
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |

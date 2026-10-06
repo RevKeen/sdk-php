@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MandatesApi
  * PHP version 8.1
@@ -12,12 +13,12 @@
 /**
  * RevKeen API
  *
- * RevKeen is a fintech-grade API for payments, subscriptions, invoices, and billing. The canonical production MCP server is available at `https://mcp.revkeen.com/mcp`.  **API Version:** `2026-05-01` — Pin with the `RevKeen-Version` header.  **Quick Links:** [Full Documentation](https://docs.revkeen.com) | [Authentication](https://docs.revkeen.com/authentication) | [OAuth](https://docs.revkeen.com/oauth) | [SDKs](https://docs.revkeen.com/sdks) | [Webhooks](#webhooks) | [MCP Guide](https://docs.revkeen.com/mcp)  ## Authentication  Two authentication methods are supported:  ### API Keys (recommended for server-to-server REST API integrations)  Send your API key in the `x-api-key` header. Get keys from the [Dashboard](https://app.revkeen.com/settings/api-keys). Use `rk_sandbox_*` for test mode and `rk_live_*` for production.  ### OAuth 2.1 (recommended for MCP and third-party integrations)  Use OAuth 2.1 with PKCE for authorization code flow or client credentials for server-to-server. Tokens are sent via `Authorization: Bearer rk_oauth_*`. See the [OAuth guide](https://docs.revkeen.com/oauth) for setup.  - **Authorization Code + PKCE** — user-facing integrations, MCP hosts - **Client Credentials** — server-to-server, automated workflows - **Dynamic Client Registration** — MCP hosts that auto-register  ## MCP Integration  RevKeen's canonical production MCP server is `https://mcp.revkeen.com/mcp` using Streamable HTTP and OAuth 2.1 bearer tokens.  - **Customer launch surface** — read-first customer v1 tools with least-privilege scopes - **Host setup guide** — see the [MCP guide](https://docs.revkeen.com/mcp) for ChatGPT, Claude, and compatible MCP hosts  ## API Key Scopes  Scopes follow `{resource}:{action}` format (e.g., `invoices:read`, `customers:*`). See [full scope reference](https://docs.revkeen.com/authentication#scopes).  | Category | Scope | Description | |----------|-------|-------------| | **Payments & Checkout** | `checkout:read` | View checkout session details | |  | `checkout:write` | Create and manage checkout sessions | |  | `cart:read` | View cart session details (REV-3511) | |  | `cart:write` | Create and mutate cart sessions, line items, add-ons (REV-3511) | |  | `payment_links:read` | View payment links | |  | `payment_links:write` | Create and manage payment links | |  | `charges:read` | View one-time charges | |  | `charges:write` | Create one-time charges for customers | |  | `payments:read` | View payment details | |  | `payments:write` | Capture or void payments | |  | `payment_intents:read` | View payment intent details | |  | `payment_intents:write` | Create, confirm, capture, and cancel payment intents | |  | `setup_intents:read` | View setup intent details | |  | `setup_intents:write` | Create, confirm, and cancel setup intents | |  | `payment_methods:read` | View saved payment methods | |  | `payment_methods:write` | Attach and detach payment methods | | **Billing** | `invoices:read` | View invoices | |  | `invoices:write` | Create, update, and manage invoices | |  | `subscriptions:read` | View subscriptions | |  | `subscriptions:write` | Create, update, pause, and cancel subscriptions | |  | `subscription_schedules:read` | View subscription schedule details | |  | `subscription_schedules:write` | Create, update, cancel, and release subscription schedules | |  | `orders:read` | View orders | |  | `orders:write` | Create and manage orders | |  | `credit_notes:read` | View credit notes | |  | `credit_notes:write` | Create and void credit notes | | **Products & Pricing** | `products:read` | View product catalog | |  | `products:write` | Create and update products | |  | `prices:read` | View pricing information | |  | `prices:write` | Create and update prices | |  | `discounts:read` | View discount codes | |  | `discounts:write` | Create and manage discount codes | |  | `tax_rates:read` | View tax rate configurations | |  | `tax_rates:write` | Configure tax rates | | **Usage & Metering** | `meters:read` | View meter configurations | |  | `meters:write` | Create and update meters | |  | `usage:read` | View usage events and balances | |  | `usage:write` | Ingest usage events | | **Customers** | `customers:read` | View customer information | |  | `customers:write` | Create and update customers | |  | `entitlements:read` | View customer entitlements / feature access | |  | `entitlements:write` | Grant and revoke customer entitlements | |  | `businesses:read` | View business entities | |  | `businesses:write` | Manage business entities | | **Money Movement** | `refunds:read` | View refund details | |  | `refunds:write` | Issue refunds | |  | `voids:read` | View voided transactions | |  | `voids:write` | Void unsettled transactions | |  | `disputes:read` | View chargebacks and disputes | |  | `disputes:write` | Respond to disputes | |  | `payouts:read` | View payout and settlement data | | **Direct Debit** | `mandates:read` | View Direct Debit mandates and collection status | |  | `mandates:write` | Create, suspend, reinstate, and cancel Direct Debit mandates | | **Terminal** | `terminal:read` | View terminal devices and card-present payments | |  | `terminal:write` | Initiate, cancel, refund, and void terminal payments | | **Data Exchange** | `exports:read` | View and download data exports | |  | `exports:write` | Create data exports | |  | `imports:read` | View import status and history | |  | `imports:write` | Upload and run data imports | | **Analytics & Reporting** | `analytics:read` | View analytics and reports | |  | `finance:read` | View financial reports | | **Communication** | `comms:read` | View SMS and email delivery logs | |  | `comms:write` | Send SMS, email, and WhatsApp messages | |  | `automations:read` | View automations, runs, approvals, and traces | |  | `automations:write` | Create automations and trigger runs | | **Integrations** | `apps:read` | View connected applications | |  | `apps:write` | Manage app connections | |  | `webhooks:read` | View webhook endpoints | |  | `webhooks:write` | Manage webhook endpoints | |  | `integrations:read` | View integration status and sync logs | |  | `integrations:write` | Activate, configure, and sync integrations | |  | `events:read` | View webhook event logs | |  | `events:write` | Resend and test webhook events | |  | `sync:read` | View sync watermarks and state | |  | `sync:write` | Update sync watermarks |  ## Environments  | Environment | Base URL | API Key Prefix | |-------------|----------|----------------| | **Staging** | `https://staging-api.revkeen.com/v2` | `rk_sandbox_*` | | **Production** | `https://api.revkeen.com/v2` | `rk_live_*` |  ## Idempotency  Include `Idempotency-Key` header (UUID) on mutation requests. Keys are valid for 24 hours.  ## Rate Limits  | Plan | Requests/min | Burst | |------|-------------|-------| | **Staging** | 100 | 200 | | **Production** | 1000 | 2000 | | **Enterprise** | Custom | Custom |
+ * RevKeen is a fintech-grade API for payments, subscriptions, invoices, and billing. The canonical production MCP server is available at `https://mcp.revkeen.com/mcp`.  **API Version:** `2026-05-01` — Pin with the `RevKeen-Version` header.  **Quick Links:** [Full Documentation](https://docs.revkeen.com) | [Authentication](https://docs.revkeen.com/authentication) | [OAuth](https://docs.revkeen.com/oauth) | [SDKs](https://docs.revkeen.com/sdks) | [Webhooks](#webhooks) | [MCP Guide](https://docs.revkeen.com/mcp)  ## Authentication  Two authentication methods are supported:  ### API Keys (recommended for server-to-server REST API integrations)  Send your merchant API key in the `x-api-key` header, or as `Authorization: Bearer <key>` — both are accepted. Create and manage keys in the [Dashboard](https://app.revkeen.com/dashboard/settings/general?tab=developer). Use `rk_sandbox_*` for staging/test and `rk_live_*` for production. Keys are scoped, rollable, IP-lockable and revocable; the raw secret is shown once, at creation.  ### OAuth 2.1 (recommended for MCP and third-party integrations)  Use OAuth 2.1 with PKCE for authorization code flow or client credentials for server-to-server. Access tokens are opaque, prefixed `rkoa_`, and sent via `Authorization: Bearer rkoa_*`. See the [OAuth guide](https://docs.revkeen.com/oauth) for setup.  - **Authorization Code + PKCE** — user-facing integrations, MCP hosts - **Client Credentials** — server-to-server, automated workflows - **Dynamic Client Registration** — MCP hosts that auto-register  ## MCP Integration  RevKeen's canonical production MCP server is `https://mcp.revkeen.com/mcp` using Streamable HTTP and OAuth 2.1 bearer tokens.  - **Customer launch surface** — read-first customer v1 tools with least-privilege scopes - **Host setup guide** — see the [MCP guide](https://docs.revkeen.com/mcp) for ChatGPT, Claude, and compatible MCP hosts  ## API Key Scopes  Scopes follow `{resource}:{action}` format (e.g., `invoices:read`, `customers:*`). See [full scope reference](https://docs.revkeen.com/authentication#scopes).  | Category | Scope | Description | |----------|-------|-------------| | **Payments & Checkout** | `checkout:read` | View checkout session details | |  | `checkout:write` | Create and manage checkout sessions | |  | `cart:read` | View cart session details | |  | `cart:write` | Create and mutate cart sessions, line items, add-ons | |  | `payment_links:read` | View payment links | |  | `payment_links:write` | Create and manage payment links | |  | `charges:read` | View one-time charges | |  | `charges:write` | Create one-time charges for customers | |  | `payments:read` | View payment details | |  | `payments:write` | Capture or void payments | |  | `payment_intents:read` | View payment intent details | |  | `payment_intents:write` | Create, confirm, capture, and cancel payment intents | |  | `setup_intents:read` | View setup intent details | |  | `setup_intents:write` | Create, confirm, and cancel setup intents | |  | `payment_methods:read` | View saved payment methods | |  | `payment_methods:write` | Attach and detach payment methods | | **Billing** | `invoices:read` | View invoices | |  | `invoices:write` | Create, update, and manage invoices | |  | `subscriptions:read` | View subscriptions | |  | `subscriptions:write` | Create, update, pause, and cancel subscriptions | |  | `subscription_schedules:read` | View subscription schedule details | |  | `subscription_schedules:write` | Create, update, cancel, and release subscription schedules | |  | `orders:read` | View orders | |  | `orders:write` | Create and manage orders | |  | `credit_notes:read` | View credit notes | |  | `credit_notes:write` | Create and void credit notes | | **Products & Pricing** | `products:read` | View product catalog | |  | `products:write` | Create and update products | |  | `prices:read` | View pricing information | |  | `prices:write` | Create and update prices | |  | `discounts:read` | View discount codes | |  | `discounts:write` | Create and manage discount codes | |  | `tax_rates:read` | View tax rate configurations | |  | `tax_rates:write` | Configure tax rates | | **Usage & Metering** | `meters:read` | View meter configurations | |  | `meters:write` | Create and update meters | |  | `usage:read` | View usage events and balances | |  | `usage:write` | Ingest usage events | | **Customers** | `customers:read` | View customer information | |  | `customers:write` | Create and update customers | |  | `entitlements:read` | View customer entitlements / feature access | |  | `entitlements:write` | Grant and revoke customer entitlements | |  | `businesses:read` | View business entities | |  | `businesses:write` | Manage business entities | | **Money Movement** | `refunds:read` | View refund details | |  | `refunds:write` | Issue refunds | |  | `voids:read` | View voided transactions | |  | `voids:write` | Void unsettled transactions | |  | `disputes:read` | View chargebacks and disputes | |  | `disputes:write` | Respond to disputes | |  | `payouts:read` | View payout and settlement data | | **Direct Debit** | `mandates:read` | View Direct Debit mandates and collection status | |  | `mandates:write` | Create, suspend, reinstate, and cancel Direct Debit mandates | | **Terminal** | `terminal:read` | View terminal devices and card-present payments | |  | `terminal:write` | Initiate, cancel, refund, and void terminal payments | | **Data Exchange** | `exports:read` | View and download data exports | |  | `exports:write` | Create data exports | |  | `imports:read` | View import status and history | |  | `imports:write` | Upload and run data imports | | **Analytics & Reporting** | `analytics:read` | View analytics and reports | |  | `finance:read` | View financial reports | | **Communication** | `comms:read` | View SMS and email delivery logs | |  | `comms:write` | Send SMS, email, and WhatsApp messages | |  | `automations:read` | View automations, runs, approvals, and traces | |  | `automations:write` | Create automations and trigger runs | | **Integrations** | `apps:read` | View connected applications | |  | `apps:write` | Manage app connections | |  | `webhooks:read` | View webhook endpoints | |  | `webhooks:write` | Manage webhook endpoints | |  | `integrations:read` | View integration status and sync logs | |  | `integrations:write` | Activate, configure, and sync integrations | |  | `events:read` | View webhook event logs | |  | `events:write` | Resend and test webhook events | |  | `sync:read` | View sync watermarks and state | |  | `sync:write` | Update sync watermarks |  ## Errors  Every non-2xx response uses one envelope: `{ \"error\": { \"type\", \"code\", \"message\", ... } }`. Branch on `error.type` and `error.code`; treat `error.message` as display text only. Error bodies never echo the credential you presented.  | Status | `error.type` | Notes | |--------|--------------|-------| | `400` | `invalid_request_error` | Schema validation failed. `details.fields` maps each rejected parameter to its reasons. | | `401` | `authentication_error` | Missing, invalid, expired or revoked credential. Always carries `WWW-Authenticate: Bearer realm=\"revkeen-api\"`. | | `402` | `card_error` | Declined by the issuer or processor; see `decline_code`. | | `403` | `authorization_error` | The caller is identified but the action is denied — scope, IP allowlist, origin, or merchant mismatch. | | `409` | `invalid_request_error` or `idempotency_error` | Resource-state conflict, or an `Idempotency-Key` replayed with a different body. | | `429` | `rate_limit_error` | See Rate Limits below. | | `500` | `api_error` | Retry with exponential backoff, quoting `error.request_id`. |  `401` codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`.  `403` codes: `insufficient_permissions`, `forbidden`, `ip_not_allowed`, `tenant_scope_mismatch`, `no_organization`, `no_merchant`, `merchant_mismatch`, `cart_disabled`, `origin_not_allowed`, `verification_required`, `read_only_impersonation_blocked`, `publishable_key_restricted`, `internal_only`.  ## Environments  | Environment | Base URL | API Key Prefix | |-------------|----------|----------------| | **Staging** | `https://staging-api.revkeen.com/v2` | `rk_sandbox_*` | | **Production** | `https://api.revkeen.com/v2` | `rk_live_*` |  ## Idempotency  Include `Idempotency-Key` header (UUID) on mutation requests. Keys are valid for 24 hours.  ## Rate Limits  Each API key (`rk_live_*`, `rk_sandbox_*`, `rk_pk_*`) may make **600 requests per minute**, in production and staging alike. The limit is per key, counted over a 60-second window, with no separate burst allowance. Some endpoints apply their own, lower limits.  An over-limit key is still valid: it receives `429`, never `401`. Wait for `Retry-After` and retry; do not re-authenticate or rotate the key.  A rate-limited request returns `429` with `type: rate_limit_error`, `code: rate_limit_exceeded` and `details.retry_after` in whole seconds.  | Header | Meaning | |--------|---------| | `Retry-After` | Whole seconds to wait before retrying. Present on every `429`. | | `X-RateLimit-Limit` | Requests permitted in the current window, when the limiter publishes one. | | `X-RateLimit-Remaining` | Requests left in the current window. | | `X-RateLimit-Reset` | UNIX timestamp in **seconds** at which the window resets. |
  *
  * The version of the OpenAPI document: 2026-05-01
- * Contact: info@revkeen.com
+ * Contact: support@revkeen.com
  * Generated by: https://openapi-generator.tech
- * Generator version: 7.18.0
+ * Generator version: 7.24.0
  */
 
 /**
@@ -42,6 +43,8 @@ use RevKeen\Configuration;
 use RevKeen\FormDataProcessor;
 use RevKeen\HeaderSelector;
 use RevKeen\ObjectSerializer;
+use RevKeen\Runtime\ClientFactory;
+use RevKeen\Runtime\RequestOptions as RevKeenRequestOptions;
 
 /**
  * MandatesApi Class Doc Comment
@@ -110,8 +113,8 @@ class MandatesApi
         ?HeaderSelector $selector = null,
         int $hostIndex = 0
     ) {
-        $this->client = $client ?: new Client();
         $this->config = $config ?: Configuration::getDefaultConfiguration();
+        $this->client = ClientFactory::wrap($client ?: new Client(), $this->config);
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
     }
@@ -150,16 +153,17 @@ class MandatesApi
      * Cancel a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesCancel'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\MandateActionResponse
+     * @return \RevKeen\Model\MandateActionResponse|\RevKeen\Model\AuthenticationError
      */
-    public function mandatesCancel($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0])
+    public function mandatesCancel($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesCancelWithHttpInfo($id, $mandate_action_request, $contentType);
+        list($response) = $this->mandatesCancelWithHttpInfo($id, $mandate_action_request, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -169,44 +173,44 @@ class MandatesApi
      * Cancel a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesCancel'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\MandateActionResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\MandateActionResponse|\RevKeen\Model\AuthenticationError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesCancelWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0])
+    public function mandatesCancelWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->mandatesCancelRequest($id, $mandate_action_request, $contentType);
+        $request = $this->mandatesCancelRequest($id, $mandate_action_request, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\MandateActionResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
                         $request,
                         $response,
                     );
@@ -242,6 +246,14 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -255,15 +267,16 @@ class MandatesApi
      * Cancel a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesCancel'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesCancelAsync($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0])
+    public function mandatesCancelAsync($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesCancelAsyncWithHttpInfo($id, $mandate_action_request, $contentType)
+        return $this->mandatesCancelAsyncWithHttpInfo($id, $mandate_action_request, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -277,19 +290,23 @@ class MandatesApi
      * Cancel a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesCancel'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesCancelAsyncWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0])
+    public function mandatesCancelAsyncWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\MandateActionResponse';
-        $request = $this->mandatesCancelRequest($id, $mandate_action_request, $contentType);
+        $request = $this->mandatesCancelRequest($id, $mandate_action_request, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -308,18 +325,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -328,13 +337,14 @@ class MandatesApi
      * Create request for operation 'mandatesCancel'
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesCancel'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function mandatesCancelRequest($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0])
+    public function mandatesCancelRequest($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesCancel'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'id' is set
@@ -344,9 +354,14 @@ class MandatesApi
             );
         }
 
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling MandatesApi.mandatesCancel, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
 
 
         $resourcePath = '/mandates/{id}/cancel';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -354,11 +369,15 @@ class MandatesApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -441,11 +460,11 @@ class MandatesApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\MandateResponse
+     * @return \RevKeen\Model\MandateResponse|\RevKeen\Model\AuthenticationError
      */
-    public function mandatesCreate($idempotency_key, $create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0])
+    public function mandatesCreate($create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesCreateWithHttpInfo($idempotency_key, $create_mandate_request, $contentType);
+        list($response) = $this->mandatesCreateWithHttpInfo($create_mandate_request, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -460,39 +479,38 @@ class MandatesApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\MandateResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\MandateResponse|\RevKeen\Model\AuthenticationError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesCreateWithHttpInfo($idempotency_key, $create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0])
+    public function mandatesCreateWithHttpInfo($create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->mandatesCreateRequest($idempotency_key, $create_mandate_request, $contentType);
+        $request = $this->mandatesCreateRequest($create_mandate_request, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 201:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\MandateResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
                         $request,
                         $response,
                     );
@@ -528,6 +546,14 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -547,9 +573,9 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesCreateAsync($idempotency_key, $create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0])
+    public function mandatesCreateAsync($create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesCreateAsyncWithHttpInfo($idempotency_key, $create_mandate_request, $contentType)
+        return $this->mandatesCreateAsyncWithHttpInfo($create_mandate_request, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -569,13 +595,16 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesCreateAsyncWithHttpInfo($idempotency_key, $create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0])
+    public function mandatesCreateAsyncWithHttpInfo($create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\MandateResponse';
-        $request = $this->mandatesCreateRequest($idempotency_key, $create_mandate_request, $contentType);
+        $request = $this->mandatesCreateRequest($create_mandate_request, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -594,18 +623,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -620,7 +641,7 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function mandatesCreateRequest($idempotency_key, $create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0])
+    public function mandatesCreateRequest($create_mandate_request = null, string $contentType = self::contentTypes['mandatesCreate'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'idempotency_key' is set
@@ -636,6 +657,7 @@ class MandatesApi
 
 
         $resourcePath = '/mandates';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -725,11 +747,11 @@ class MandatesApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\MandateResponse
+     * @return \RevKeen\Model\MandateResponse|\RevKeen\Model\AuthenticationError
      */
-    public function mandatesGet($id, string $contentType = self::contentTypes['mandatesGet'][0])
+    public function mandatesGet($id, string $contentType = self::contentTypes['mandatesGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesGetWithHttpInfo($id, $contentType);
+        list($response) = $this->mandatesGetWithHttpInfo($id, $contentType, $request_options);
         return $response;
     }
 
@@ -743,39 +765,38 @@ class MandatesApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\MandateResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\MandateResponse|\RevKeen\Model\AuthenticationError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesGetWithHttpInfo($id, string $contentType = self::contentTypes['mandatesGet'][0])
+    public function mandatesGetWithHttpInfo($id, string $contentType = self::contentTypes['mandatesGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $request = $this->mandatesGetRequest($id, $contentType);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\MandateResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
                         $request,
                         $response,
                     );
@@ -811,6 +832,14 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -829,9 +858,9 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesGetAsync($id, string $contentType = self::contentTypes['mandatesGet'][0])
+    public function mandatesGetAsync($id, string $contentType = self::contentTypes['mandatesGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesGetAsyncWithHttpInfo($id, $contentType)
+        return $this->mandatesGetAsyncWithHttpInfo($id, $contentType, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -850,13 +879,16 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesGetAsyncWithHttpInfo($id, string $contentType = self::contentTypes['mandatesGet'][0])
+    public function mandatesGetAsyncWithHttpInfo($id, string $contentType = self::contentTypes['mandatesGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\MandateResponse';
         $request = $this->mandatesGetRequest($id, $contentType);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -875,18 +907,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -912,6 +936,7 @@ class MandatesApi
 
 
         $resourcePath = '/mandates/{id}';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -923,7 +948,7 @@ class MandatesApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -999,11 +1024,11 @@ class MandatesApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\MandateListResponse
+     * @return \RevKeen\Model\MandateListResponse|\RevKeen\Model\AuthenticationError
      */
-    public function mandatesList($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0])
+    public function mandatesList($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesListWithHttpInfo($customer_id, $status, $contentType);
+        list($response) = $this->mandatesListWithHttpInfo($customer_id, $status, $contentType, $request_options);
         return $response;
     }
 
@@ -1018,39 +1043,38 @@ class MandatesApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\MandateListResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\MandateListResponse|\RevKeen\Model\AuthenticationError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesListWithHttpInfo($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0])
+    public function mandatesListWithHttpInfo($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $request = $this->mandatesListRequest($customer_id, $status, $contentType);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\MandateListResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
                         $request,
                         $response,
                     );
@@ -1086,6 +1110,14 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -1105,9 +1137,9 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesListAsync($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0])
+    public function mandatesListAsync($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesListAsyncWithHttpInfo($customer_id, $status, $contentType)
+        return $this->mandatesListAsyncWithHttpInfo($customer_id, $status, $contentType, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1127,13 +1159,16 @@ class MandatesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesListAsyncWithHttpInfo($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0])
+    public function mandatesListAsyncWithHttpInfo($customer_id = null, $status = null, string $contentType = self::contentTypes['mandatesList'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\MandateListResponse';
         $request = $this->mandatesListRequest($customer_id, $status, $contentType);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -1152,18 +1187,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -1185,6 +1212,7 @@ class MandatesApi
 
 
         $resourcePath = '/mandates';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1277,16 +1305,17 @@ class MandatesApi
      * Reinstate a suspended Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesReinstate'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\MandateActionResponse
+     * @return \RevKeen\Model\MandateActionResponse|\RevKeen\Model\AuthenticationError
      */
-    public function mandatesReinstate($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0])
+    public function mandatesReinstate($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesReinstateWithHttpInfo($id, $mandate_action_request, $contentType);
+        list($response) = $this->mandatesReinstateWithHttpInfo($id, $mandate_action_request, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -1296,44 +1325,44 @@ class MandatesApi
      * Reinstate a suspended Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesReinstate'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\MandateActionResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\MandateActionResponse|\RevKeen\Model\AuthenticationError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesReinstateWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0])
+    public function mandatesReinstateWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->mandatesReinstateRequest($id, $mandate_action_request, $contentType);
+        $request = $this->mandatesReinstateRequest($id, $mandate_action_request, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\MandateActionResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
                         $request,
                         $response,
                     );
@@ -1369,6 +1398,14 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -1382,15 +1419,16 @@ class MandatesApi
      * Reinstate a suspended Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesReinstate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesReinstateAsync($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0])
+    public function mandatesReinstateAsync($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesReinstateAsyncWithHttpInfo($id, $mandate_action_request, $contentType)
+        return $this->mandatesReinstateAsyncWithHttpInfo($id, $mandate_action_request, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1404,19 +1442,23 @@ class MandatesApi
      * Reinstate a suspended Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesReinstate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesReinstateAsyncWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0])
+    public function mandatesReinstateAsyncWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\MandateActionResponse';
-        $request = $this->mandatesReinstateRequest($id, $mandate_action_request, $contentType);
+        $request = $this->mandatesReinstateRequest($id, $mandate_action_request, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -1435,18 +1477,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -1455,13 +1489,14 @@ class MandatesApi
      * Create request for operation 'mandatesReinstate'
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesReinstate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function mandatesReinstateRequest($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0])
+    public function mandatesReinstateRequest($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesReinstate'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'id' is set
@@ -1471,9 +1506,14 @@ class MandatesApi
             );
         }
 
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling MandatesApi.mandatesReinstate, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
 
 
         $resourcePath = '/mandates/{id}/reinstate';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1481,11 +1521,15 @@ class MandatesApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -1563,16 +1607,17 @@ class MandatesApi
      * Schedule a one-off Direct Debit collection
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\ScheduleCollectionRequest|null $schedule_collection_request schedule_collection_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesScheduleCollection'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\ScheduleCollectionResponse|\RevKeen\Model\ScheduleCollectionResponse
+     * @return \RevKeen\Model\ScheduleCollectionResponse|\RevKeen\Model\ScheduleCollectionResponse|\RevKeen\Model\AuthenticationError|\RevKeen\Model\ForbiddenError
      */
-    public function mandatesScheduleCollection($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0])
+    public function mandatesScheduleCollection($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesScheduleCollectionWithHttpInfo($id, $schedule_collection_request, $contentType);
+        list($response) = $this->mandatesScheduleCollectionWithHttpInfo($id, $schedule_collection_request, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -1582,41 +1627,35 @@ class MandatesApi
      * Schedule a one-off Direct Debit collection
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\ScheduleCollectionRequest|null $schedule_collection_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesScheduleCollection'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\ScheduleCollectionResponse|\RevKeen\Model\ScheduleCollectionResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\ScheduleCollectionResponse|\RevKeen\Model\ScheduleCollectionResponse|\RevKeen\Model\AuthenticationError|\RevKeen\Model\ForbiddenError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesScheduleCollectionWithHttpInfo($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0])
+    public function mandatesScheduleCollectionWithHttpInfo($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->mandatesScheduleCollectionRequest($id, $schedule_collection_request, $contentType);
+        $request = $this->mandatesScheduleCollectionRequest($id, $schedule_collection_request, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\ScheduleCollectionResponse',
@@ -1626,6 +1665,18 @@ class MandatesApi
                 case 201:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\ScheduleCollectionResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\ForbiddenError',
                         $request,
                         $response,
                     );
@@ -1669,6 +1720,22 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\ForbiddenError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -1682,15 +1749,16 @@ class MandatesApi
      * Schedule a one-off Direct Debit collection
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\ScheduleCollectionRequest|null $schedule_collection_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesScheduleCollection'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesScheduleCollectionAsync($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0])
+    public function mandatesScheduleCollectionAsync($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesScheduleCollectionAsyncWithHttpInfo($id, $schedule_collection_request, $contentType)
+        return $this->mandatesScheduleCollectionAsyncWithHttpInfo($id, $schedule_collection_request, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1704,19 +1772,23 @@ class MandatesApi
      * Schedule a one-off Direct Debit collection
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\ScheduleCollectionRequest|null $schedule_collection_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesScheduleCollection'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesScheduleCollectionAsyncWithHttpInfo($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0])
+    public function mandatesScheduleCollectionAsyncWithHttpInfo($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\ScheduleCollectionResponse';
-        $request = $this->mandatesScheduleCollectionRequest($id, $schedule_collection_request, $contentType);
+        $request = $this->mandatesScheduleCollectionRequest($id, $schedule_collection_request, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -1735,18 +1807,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -1755,13 +1819,14 @@ class MandatesApi
      * Create request for operation 'mandatesScheduleCollection'
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\ScheduleCollectionRequest|null $schedule_collection_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesScheduleCollection'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function mandatesScheduleCollectionRequest($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0])
+    public function mandatesScheduleCollectionRequest($id, $schedule_collection_request = null, string $contentType = self::contentTypes['mandatesScheduleCollection'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'id' is set
@@ -1771,9 +1836,14 @@ class MandatesApi
             );
         }
 
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling MandatesApi.mandatesScheduleCollection, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
 
 
         $resourcePath = '/mandates/{id}/collections';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1781,11 +1851,15 @@ class MandatesApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -1863,16 +1937,17 @@ class MandatesApi
      * Suspend a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesSuspend'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\MandateActionResponse
+     * @return \RevKeen\Model\MandateActionResponse|\RevKeen\Model\AuthenticationError
      */
-    public function mandatesSuspend($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0])
+    public function mandatesSuspend($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->mandatesSuspendWithHttpInfo($id, $mandate_action_request, $contentType);
+        list($response) = $this->mandatesSuspendWithHttpInfo($id, $mandate_action_request, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -1882,44 +1957,44 @@ class MandatesApi
      * Suspend a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesSuspend'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\MandateActionResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\MandateActionResponse|\RevKeen\Model\AuthenticationError, HTTP status code, HTTP response headers (array of strings)
      */
-    public function mandatesSuspendWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0])
+    public function mandatesSuspendWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->mandatesSuspendRequest($id, $mandate_action_request, $contentType);
+        $request = $this->mandatesSuspendRequest($id, $mandate_action_request, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\MandateActionResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
                         $request,
                         $response,
                     );
@@ -1955,6 +2030,14 @@ class MandatesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
 
 
@@ -1968,15 +2051,16 @@ class MandatesApi
      * Suspend a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesSuspend'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesSuspendAsync($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0])
+    public function mandatesSuspendAsync($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->mandatesSuspendAsyncWithHttpInfo($id, $mandate_action_request, $contentType)
+        return $this->mandatesSuspendAsyncWithHttpInfo($id, $mandate_action_request, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1990,19 +2074,23 @@ class MandatesApi
      * Suspend a Direct Debit mandate
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesSuspend'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function mandatesSuspendAsyncWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0])
+    public function mandatesSuspendAsyncWithHttpInfo($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\MandateActionResponse';
-        $request = $this->mandatesSuspendRequest($id, $mandate_action_request, $contentType);
+        $request = $this->mandatesSuspendRequest($id, $mandate_action_request, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -2021,18 +2109,10 @@ class MandatesApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -2041,13 +2121,14 @@ class MandatesApi
      * Create request for operation 'mandatesSuspend'
      *
      * @param  string $id Mandate ID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\MandateActionRequest|null $mandate_action_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['mandatesSuspend'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function mandatesSuspendRequest($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0])
+    public function mandatesSuspendRequest($id, $mandate_action_request = null, string $contentType = self::contentTypes['mandatesSuspend'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'id' is set
@@ -2057,9 +2138,14 @@ class MandatesApi
             );
         }
 
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling MandatesApi.mandatesSuspend, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
 
 
         $resourcePath = '/mandates/{id}/suspend';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -2067,11 +2153,15 @@ class MandatesApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );

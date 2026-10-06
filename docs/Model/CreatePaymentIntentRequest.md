@@ -1,11 +1,11 @@
-# # CreatePaymentIntentRequest
+# CreatePaymentIntentRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **amount** | **int** | Amount in cents. Must be greater than 0. |
-**currency** | **string** | Three-letter ISO currency code. Defaults to USD. | [optional] [default to 'USD']
+**currency** | **string** | Three-letter ISO currency code. Defaults to the merchant&#39;s default currency. | [optional]
 **customer** | **string** | Customer ID to charge |
 **payment_method** | **string** | Payment method ID. If not provided, status will be requires_payment_method. | [optional]
 **capture_method** | **string** | Capture method. Defaults to automatic. | [optional] [default to 'automatic']

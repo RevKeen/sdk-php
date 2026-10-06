@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Product
  *
@@ -13,12 +14,12 @@
 /**
  * RevKeen API
  *
- * RevKeen is a fintech-grade API for payments, subscriptions, invoices, and billing. The canonical production MCP server is available at `https://mcp.revkeen.com/mcp`.  **API Version:** `2026-05-01` — Pin with the `RevKeen-Version` header.  **Quick Links:** [Full Documentation](https://docs.revkeen.com) | [Authentication](https://docs.revkeen.com/authentication) | [OAuth](https://docs.revkeen.com/oauth) | [SDKs](https://docs.revkeen.com/sdks) | [Webhooks](#webhooks) | [MCP Guide](https://docs.revkeen.com/mcp)  ## Authentication  Two authentication methods are supported:  ### API Keys (recommended for server-to-server REST API integrations)  Send your API key in the `x-api-key` header. Get keys from the [Dashboard](https://app.revkeen.com/settings/api-keys). Use `rk_sandbox_*` for test mode and `rk_live_*` for production.  ### OAuth 2.1 (recommended for MCP and third-party integrations)  Use OAuth 2.1 with PKCE for authorization code flow or client credentials for server-to-server. Tokens are sent via `Authorization: Bearer rk_oauth_*`. See the [OAuth guide](https://docs.revkeen.com/oauth) for setup.  - **Authorization Code + PKCE** — user-facing integrations, MCP hosts - **Client Credentials** — server-to-server, automated workflows - **Dynamic Client Registration** — MCP hosts that auto-register  ## MCP Integration  RevKeen's canonical production MCP server is `https://mcp.revkeen.com/mcp` using Streamable HTTP and OAuth 2.1 bearer tokens.  - **Customer launch surface** — read-first customer v1 tools with least-privilege scopes - **Host setup guide** — see the [MCP guide](https://docs.revkeen.com/mcp) for ChatGPT, Claude, and compatible MCP hosts  ## API Key Scopes  Scopes follow `{resource}:{action}` format (e.g., `invoices:read`, `customers:*`). See [full scope reference](https://docs.revkeen.com/authentication#scopes).  | Category | Scope | Description | |----------|-------|-------------| | **Payments & Checkout** | `checkout:read` | View checkout session details | |  | `checkout:write` | Create and manage checkout sessions | |  | `cart:read` | View cart session details (REV-3511) | |  | `cart:write` | Create and mutate cart sessions, line items, add-ons (REV-3511) | |  | `payment_links:read` | View payment links | |  | `payment_links:write` | Create and manage payment links | |  | `charges:read` | View one-time charges | |  | `charges:write` | Create one-time charges for customers | |  | `payments:read` | View payment details | |  | `payments:write` | Capture or void payments | |  | `payment_intents:read` | View payment intent details | |  | `payment_intents:write` | Create, confirm, capture, and cancel payment intents | |  | `setup_intents:read` | View setup intent details | |  | `setup_intents:write` | Create, confirm, and cancel setup intents | |  | `payment_methods:read` | View saved payment methods | |  | `payment_methods:write` | Attach and detach payment methods | | **Billing** | `invoices:read` | View invoices | |  | `invoices:write` | Create, update, and manage invoices | |  | `subscriptions:read` | View subscriptions | |  | `subscriptions:write` | Create, update, pause, and cancel subscriptions | |  | `subscription_schedules:read` | View subscription schedule details | |  | `subscription_schedules:write` | Create, update, cancel, and release subscription schedules | |  | `orders:read` | View orders | |  | `orders:write` | Create and manage orders | |  | `credit_notes:read` | View credit notes | |  | `credit_notes:write` | Create and void credit notes | | **Products & Pricing** | `products:read` | View product catalog | |  | `products:write` | Create and update products | |  | `prices:read` | View pricing information | |  | `prices:write` | Create and update prices | |  | `discounts:read` | View discount codes | |  | `discounts:write` | Create and manage discount codes | |  | `tax_rates:read` | View tax rate configurations | |  | `tax_rates:write` | Configure tax rates | | **Usage & Metering** | `meters:read` | View meter configurations | |  | `meters:write` | Create and update meters | |  | `usage:read` | View usage events and balances | |  | `usage:write` | Ingest usage events | | **Customers** | `customers:read` | View customer information | |  | `customers:write` | Create and update customers | |  | `entitlements:read` | View customer entitlements / feature access | |  | `entitlements:write` | Grant and revoke customer entitlements | |  | `businesses:read` | View business entities | |  | `businesses:write` | Manage business entities | | **Money Movement** | `refunds:read` | View refund details | |  | `refunds:write` | Issue refunds | |  | `voids:read` | View voided transactions | |  | `voids:write` | Void unsettled transactions | |  | `disputes:read` | View chargebacks and disputes | |  | `disputes:write` | Respond to disputes | |  | `payouts:read` | View payout and settlement data | | **Direct Debit** | `mandates:read` | View Direct Debit mandates and collection status | |  | `mandates:write` | Create, suspend, reinstate, and cancel Direct Debit mandates | | **Terminal** | `terminal:read` | View terminal devices and card-present payments | |  | `terminal:write` | Initiate, cancel, refund, and void terminal payments | | **Data Exchange** | `exports:read` | View and download data exports | |  | `exports:write` | Create data exports | |  | `imports:read` | View import status and history | |  | `imports:write` | Upload and run data imports | | **Analytics & Reporting** | `analytics:read` | View analytics and reports | |  | `finance:read` | View financial reports | | **Communication** | `comms:read` | View SMS and email delivery logs | |  | `comms:write` | Send SMS, email, and WhatsApp messages | |  | `automations:read` | View automations, runs, approvals, and traces | |  | `automations:write` | Create automations and trigger runs | | **Integrations** | `apps:read` | View connected applications | |  | `apps:write` | Manage app connections | |  | `webhooks:read` | View webhook endpoints | |  | `webhooks:write` | Manage webhook endpoints | |  | `integrations:read` | View integration status and sync logs | |  | `integrations:write` | Activate, configure, and sync integrations | |  | `events:read` | View webhook event logs | |  | `events:write` | Resend and test webhook events | |  | `sync:read` | View sync watermarks and state | |  | `sync:write` | Update sync watermarks |  ## Environments  | Environment | Base URL | API Key Prefix | |-------------|----------|----------------| | **Staging** | `https://staging-api.revkeen.com/v2` | `rk_sandbox_*` | | **Production** | `https://api.revkeen.com/v2` | `rk_live_*` |  ## Idempotency  Include `Idempotency-Key` header (UUID) on mutation requests. Keys are valid for 24 hours.  ## Rate Limits  | Plan | Requests/min | Burst | |------|-------------|-------| | **Staging** | 100 | 200 | | **Production** | 1000 | 2000 | | **Enterprise** | Custom | Custom |
+ * RevKeen is a fintech-grade API for payments, subscriptions, invoices, and billing. The canonical production MCP server is available at `https://mcp.revkeen.com/mcp`.  **API Version:** `2026-05-01` — Pin with the `RevKeen-Version` header.  **Quick Links:** [Full Documentation](https://docs.revkeen.com) | [Authentication](https://docs.revkeen.com/authentication) | [OAuth](https://docs.revkeen.com/oauth) | [SDKs](https://docs.revkeen.com/sdks) | [Webhooks](#webhooks) | [MCP Guide](https://docs.revkeen.com/mcp)  ## Authentication  Two authentication methods are supported:  ### API Keys (recommended for server-to-server REST API integrations)  Send your merchant API key in the `x-api-key` header, or as `Authorization: Bearer <key>` — both are accepted. Create and manage keys in the [Dashboard](https://app.revkeen.com/dashboard/settings/general?tab=developer). Use `rk_sandbox_*` for staging/test and `rk_live_*` for production. Keys are scoped, rollable, IP-lockable and revocable; the raw secret is shown once, at creation.  ### OAuth 2.1 (recommended for MCP and third-party integrations)  Use OAuth 2.1 with PKCE for authorization code flow or client credentials for server-to-server. Access tokens are opaque, prefixed `rkoa_`, and sent via `Authorization: Bearer rkoa_*`. See the [OAuth guide](https://docs.revkeen.com/oauth) for setup.  - **Authorization Code + PKCE** — user-facing integrations, MCP hosts - **Client Credentials** — server-to-server, automated workflows - **Dynamic Client Registration** — MCP hosts that auto-register  ## MCP Integration  RevKeen's canonical production MCP server is `https://mcp.revkeen.com/mcp` using Streamable HTTP and OAuth 2.1 bearer tokens.  - **Customer launch surface** — read-first customer v1 tools with least-privilege scopes - **Host setup guide** — see the [MCP guide](https://docs.revkeen.com/mcp) for ChatGPT, Claude, and compatible MCP hosts  ## API Key Scopes  Scopes follow `{resource}:{action}` format (e.g., `invoices:read`, `customers:*`). See [full scope reference](https://docs.revkeen.com/authentication#scopes).  | Category | Scope | Description | |----------|-------|-------------| | **Payments & Checkout** | `checkout:read` | View checkout session details | |  | `checkout:write` | Create and manage checkout sessions | |  | `cart:read` | View cart session details | |  | `cart:write` | Create and mutate cart sessions, line items, add-ons | |  | `payment_links:read` | View payment links | |  | `payment_links:write` | Create and manage payment links | |  | `charges:read` | View one-time charges | |  | `charges:write` | Create one-time charges for customers | |  | `payments:read` | View payment details | |  | `payments:write` | Capture or void payments | |  | `payment_intents:read` | View payment intent details | |  | `payment_intents:write` | Create, confirm, capture, and cancel payment intents | |  | `setup_intents:read` | View setup intent details | |  | `setup_intents:write` | Create, confirm, and cancel setup intents | |  | `payment_methods:read` | View saved payment methods | |  | `payment_methods:write` | Attach and detach payment methods | | **Billing** | `invoices:read` | View invoices | |  | `invoices:write` | Create, update, and manage invoices | |  | `subscriptions:read` | View subscriptions | |  | `subscriptions:write` | Create, update, pause, and cancel subscriptions | |  | `subscription_schedules:read` | View subscription schedule details | |  | `subscription_schedules:write` | Create, update, cancel, and release subscription schedules | |  | `orders:read` | View orders | |  | `orders:write` | Create and manage orders | |  | `credit_notes:read` | View credit notes | |  | `credit_notes:write` | Create and void credit notes | | **Products & Pricing** | `products:read` | View product catalog | |  | `products:write` | Create and update products | |  | `prices:read` | View pricing information | |  | `prices:write` | Create and update prices | |  | `discounts:read` | View discount codes | |  | `discounts:write` | Create and manage discount codes | |  | `tax_rates:read` | View tax rate configurations | |  | `tax_rates:write` | Configure tax rates | | **Usage & Metering** | `meters:read` | View meter configurations | |  | `meters:write` | Create and update meters | |  | `usage:read` | View usage events and balances | |  | `usage:write` | Ingest usage events | | **Customers** | `customers:read` | View customer information | |  | `customers:write` | Create and update customers | |  | `entitlements:read` | View customer entitlements / feature access | |  | `entitlements:write` | Grant and revoke customer entitlements | |  | `businesses:read` | View business entities | |  | `businesses:write` | Manage business entities | | **Money Movement** | `refunds:read` | View refund details | |  | `refunds:write` | Issue refunds | |  | `voids:read` | View voided transactions | |  | `voids:write` | Void unsettled transactions | |  | `disputes:read` | View chargebacks and disputes | |  | `disputes:write` | Respond to disputes | |  | `payouts:read` | View payout and settlement data | | **Direct Debit** | `mandates:read` | View Direct Debit mandates and collection status | |  | `mandates:write` | Create, suspend, reinstate, and cancel Direct Debit mandates | | **Terminal** | `terminal:read` | View terminal devices and card-present payments | |  | `terminal:write` | Initiate, cancel, refund, and void terminal payments | | **Data Exchange** | `exports:read` | View and download data exports | |  | `exports:write` | Create data exports | |  | `imports:read` | View import status and history | |  | `imports:write` | Upload and run data imports | | **Analytics & Reporting** | `analytics:read` | View analytics and reports | |  | `finance:read` | View financial reports | | **Communication** | `comms:read` | View SMS and email delivery logs | |  | `comms:write` | Send SMS, email, and WhatsApp messages | |  | `automations:read` | View automations, runs, approvals, and traces | |  | `automations:write` | Create automations and trigger runs | | **Integrations** | `apps:read` | View connected applications | |  | `apps:write` | Manage app connections | |  | `webhooks:read` | View webhook endpoints | |  | `webhooks:write` | Manage webhook endpoints | |  | `integrations:read` | View integration status and sync logs | |  | `integrations:write` | Activate, configure, and sync integrations | |  | `events:read` | View webhook event logs | |  | `events:write` | Resend and test webhook events | |  | `sync:read` | View sync watermarks and state | |  | `sync:write` | Update sync watermarks |  ## Errors  Every non-2xx response uses one envelope: `{ \"error\": { \"type\", \"code\", \"message\", ... } }`. Branch on `error.type` and `error.code`; treat `error.message` as display text only. Error bodies never echo the credential you presented.  | Status | `error.type` | Notes | |--------|--------------|-------| | `400` | `invalid_request_error` | Schema validation failed. `details.fields` maps each rejected parameter to its reasons. | | `401` | `authentication_error` | Missing, invalid, expired or revoked credential. Always carries `WWW-Authenticate: Bearer realm=\"revkeen-api\"`. | | `402` | `card_error` | Declined by the issuer or processor; see `decline_code`. | | `403` | `authorization_error` | The caller is identified but the action is denied — scope, IP allowlist, origin, or merchant mismatch. | | `409` | `invalid_request_error` or `idempotency_error` | Resource-state conflict, or an `Idempotency-Key` replayed with a different body. | | `429` | `rate_limit_error` | See Rate Limits below. | | `500` | `api_error` | Retry with exponential backoff, quoting `error.request_id`. |  `401` codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`.  `403` codes: `insufficient_permissions`, `forbidden`, `ip_not_allowed`, `tenant_scope_mismatch`, `no_organization`, `no_merchant`, `merchant_mismatch`, `cart_disabled`, `origin_not_allowed`, `verification_required`, `read_only_impersonation_blocked`, `publishable_key_restricted`, `internal_only`.  ## Environments  | Environment | Base URL | API Key Prefix | |-------------|----------|----------------| | **Staging** | `https://staging-api.revkeen.com/v2` | `rk_sandbox_*` | | **Production** | `https://api.revkeen.com/v2` | `rk_live_*` |  ## Idempotency  Include `Idempotency-Key` header (UUID) on mutation requests. Keys are valid for 24 hours.  ## Rate Limits  Each API key (`rk_live_*`, `rk_sandbox_*`, `rk_pk_*`) may make **600 requests per minute**, in production and staging alike. The limit is per key, counted over a 60-second window, with no separate burst allowance. Some endpoints apply their own, lower limits.  An over-limit key is still valid: it receives `429`, never `401`. Wait for `Retry-After` and retry; do not re-authenticate or rotate the key.  A rate-limited request returns `429` with `type: rate_limit_error`, `code: rate_limit_exceeded` and `details.retry_after` in whole seconds.  | Header | Meaning | |--------|---------| | `Retry-After` | Whole seconds to wait before retrying. Present on every `429`. | | `X-RateLimit-Limit` | Requests permitted in the current window, when the limiter publishes one. | | `X-RateLimit-Remaining` | Requests left in the current window. | | `X-RateLimit-Reset` | UNIX timestamp in **seconds** at which the window resets. |
  *
  * The version of the OpenAPI document: 2026-05-01
- * Contact: info@revkeen.com
+ * Contact: support@revkeen.com
  * Generated by: https://openapi-generator.tech
- * Generator version: 7.18.0
+ * Generator version: 7.24.0
  */
 
 /**
@@ -47,17 +48,17 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     public const DISCRIMINATOR = null;
 
     /**
-      * The original name of the model.
-      *
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $openAPIModelName = 'Product';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @var string[]
+     */
     protected static $openAPITypes = [
         'id' => 'string',
         'object' => 'string',
@@ -66,7 +67,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'description' => 'string',
         'kind' => 'string',
         'pricing_model' => 'string',
-        'amount_minor' => 'int',
+        'amount_minor' => 'MoneyMinor',
         'currency' => 'string',
         'interval' => 'string',
         'interval_count' => 'int',
@@ -74,6 +75,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'fulfillment_type' => 'string',
         'track_inventory' => 'bool',
         'stock_quantity' => 'int',
+        'tags' => 'string[]',
         'billing_anchor_rule' => 'string',
         'billing_anchor_day' => 'int',
         'first_charge_behavior' => 'string',
@@ -84,6 +86,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'is_active' => 'bool',
         'is_archived' => 'bool',
         'image_url' => 'string',
+        'images' => '\RevKeen\Model\ProductImageResponse[]',
+        'seo_title' => 'string',
+        'seo_description' => 'string',
+        'store_visibility' => 'string',
+        'store_visible_from' => '\DateTime',
         'tax_behavior' => 'string',
         'tax_code' => 'string',
         'metadata' => 'array<string,mixed>',
@@ -92,12 +99,12 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      * @phpstan-var array<string, string|null>
-      * @psalm-var array<string, string|null>
-      */
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @var string[]
+     * @phpstan-var array<string, string|null>
+     * @psalm-var array<string, string|null>
+     */
     protected static $openAPIFormats = [
         'id' => 'uuid',
         'object' => null,
@@ -106,7 +113,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'description' => null,
         'kind' => null,
         'pricing_model' => null,
-        'amount_minor' => null,
+        'amount_minor' => 'int64',
         'currency' => null,
         'interval' => null,
         'interval_count' => null,
@@ -114,6 +121,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'fulfillment_type' => null,
         'track_inventory' => null,
         'stock_quantity' => null,
+        'tags' => null,
         'billing_anchor_rule' => null,
         'billing_anchor_day' => null,
         'first_charge_behavior' => null,
@@ -124,6 +132,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'is_active' => null,
         'is_archived' => null,
         'image_url' => null,
+        'images' => null,
+        'seo_title' => null,
+        'seo_description' => null,
+        'store_visibility' => null,
+        'store_visible_from' => 'date-time',
         'tax_behavior' => null,
         'tax_code' => null,
         'metadata' => null,
@@ -132,10 +145,10 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-      * Array of nullable properties. Used for (de)serialization
-      *
-      * @var boolean[]
-      */
+     * Array of nullable properties. Used for (de)serialization
+     *
+     * @var boolean[]
+     */
     protected static array $openAPINullables = [
         'id' => false,
         'object' => false,
@@ -152,6 +165,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'fulfillment_type' => false,
         'track_inventory' => false,
         'stock_quantity' => true,
+        'tags' => false,
         'billing_anchor_rule' => true,
         'billing_anchor_day' => true,
         'first_charge_behavior' => true,
@@ -162,6 +176,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'is_active' => false,
         'is_archived' => false,
         'image_url' => true,
+        'images' => false,
+        'seo_title' => true,
+        'seo_description' => true,
+        'store_visibility' => false,
+        'store_visible_from' => true,
         'tax_behavior' => true,
         'tax_code' => true,
         'metadata' => false,
@@ -170,10 +189,10 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-      * If a nullable field gets set to null, insert it here
-      *
-      * @var boolean[]
-      */
+     * If a nullable field gets set to null, insert it here
+     *
+     * @var boolean[]
+     */
     protected array $openAPINullablesSetToNull = [];
 
     /**
@@ -270,6 +289,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'fulfillment_type' => 'fulfillment_type',
         'track_inventory' => 'track_inventory',
         'stock_quantity' => 'stock_quantity',
+        'tags' => 'tags',
         'billing_anchor_rule' => 'billing_anchor_rule',
         'billing_anchor_day' => 'billing_anchor_day',
         'first_charge_behavior' => 'first_charge_behavior',
@@ -280,6 +300,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'is_active' => 'is_active',
         'is_archived' => 'is_archived',
         'image_url' => 'image_url',
+        'images' => 'images',
+        'seo_title' => 'seo_title',
+        'seo_description' => 'seo_description',
+        'store_visibility' => 'store_visibility',
+        'store_visible_from' => 'store_visible_from',
         'tax_behavior' => 'tax_behavior',
         'tax_code' => 'tax_code',
         'metadata' => 'metadata',
@@ -308,6 +333,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'fulfillment_type' => 'setFulfillmentType',
         'track_inventory' => 'setTrackInventory',
         'stock_quantity' => 'setStockQuantity',
+        'tags' => 'setTags',
         'billing_anchor_rule' => 'setBillingAnchorRule',
         'billing_anchor_day' => 'setBillingAnchorDay',
         'first_charge_behavior' => 'setFirstChargeBehavior',
@@ -318,6 +344,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'is_active' => 'setIsActive',
         'is_archived' => 'setIsArchived',
         'image_url' => 'setImageUrl',
+        'images' => 'setImages',
+        'seo_title' => 'setSeoTitle',
+        'seo_description' => 'setSeoDescription',
+        'store_visibility' => 'setStoreVisibility',
+        'store_visible_from' => 'setStoreVisibleFrom',
         'tax_behavior' => 'setTaxBehavior',
         'tax_code' => 'setTaxCode',
         'metadata' => 'setMetadata',
@@ -346,6 +377,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'fulfillment_type' => 'getFulfillmentType',
         'track_inventory' => 'getTrackInventory',
         'stock_quantity' => 'getStockQuantity',
+        'tags' => 'getTags',
         'billing_anchor_rule' => 'getBillingAnchorRule',
         'billing_anchor_day' => 'getBillingAnchorDay',
         'first_charge_behavior' => 'getFirstChargeBehavior',
@@ -356,6 +388,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         'is_active' => 'getIsActive',
         'is_archived' => 'getIsArchived',
         'image_url' => 'getImageUrl',
+        'images' => 'getImages',
+        'seo_title' => 'getSeoTitle',
+        'seo_description' => 'getSeoDescription',
+        'store_visibility' => 'getStoreVisibility',
+        'store_visible_from' => 'getStoreVisibleFrom',
         'tax_behavior' => 'getTaxBehavior',
         'tax_code' => 'getTaxCode',
         'metadata' => 'getMetadata',
@@ -422,6 +459,9 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     public const FIRST_CHARGE_BEHAVIOR_PRORATE = 'prorate';
     public const END_BEHAVIOR_UNTIL_CANCELED = 'until_canceled';
     public const END_BEHAVIOR_FIXED_PAYMENTS = 'fixed_payments';
+    public const STORE_VISIBILITY_VISIBLE = 'visible';
+    public const STORE_VISIBILITY_HIDDEN = 'hidden';
+    public const STORE_VISIBILITY_SCHEDULED = 'scheduled';
 
     /**
      * Gets allowable values of the enum
@@ -519,6 +559,20 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getStoreVisibilityAllowableValues()
+    {
+        return [
+            self::STORE_VISIBILITY_VISIBLE,
+            self::STORE_VISIBILITY_HIDDEN,
+            self::STORE_VISIBILITY_SCHEDULED,
+        ];
+    }
+
+    /**
      * Associative array for storing property values
      *
      * @var mixed[]
@@ -548,6 +602,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('fulfillment_type', $data ?? [], null);
         $this->setIfExists('track_inventory', $data ?? [], null);
         $this->setIfExists('stock_quantity', $data ?? [], null);
+        $this->setIfExists('tags', $data ?? [], null);
         $this->setIfExists('billing_anchor_rule', $data ?? [], null);
         $this->setIfExists('billing_anchor_day', $data ?? [], null);
         $this->setIfExists('first_charge_behavior', $data ?? [], null);
@@ -558,6 +613,11 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('is_active', $data ?? [], null);
         $this->setIfExists('is_archived', $data ?? [], null);
         $this->setIfExists('image_url', $data ?? [], null);
+        $this->setIfExists('images', $data ?? [], null);
+        $this->setIfExists('seo_title', $data ?? [], null);
+        $this->setIfExists('seo_description', $data ?? [], null);
+        $this->setIfExists('store_visibility', $data ?? [], null);
+        $this->setIfExists('store_visible_from', $data ?? [], null);
         $this->setIfExists('tax_behavior', $data ?? [], null);
         $this->setIfExists('tax_code', $data ?? [], null);
         $this->setIfExists('metadata', $data ?? [], null);
@@ -566,21 +626,37 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-    * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
-    * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
-    * $this->openAPINullablesSetToNull array
-    *
-    * @param string $variableName
-    * @param array  $fields
-    * @param mixed  $defaultValue
-    */
+     * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
+     * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
+     * $this->openAPINullablesSetToNull array
+     *
+     * @param string $variableName
+     * @param array  $fields
+     * @param mixed  $defaultValue
+     */
     private function setIfExists(string $variableName, array $fields, $defaultValue): void
     {
         if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
             $this->openAPINullablesSetToNull[] = $variableName;
         }
 
-        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
+        $value = $fields[$variableName] ?? $defaultValue;
+        if (
+            $value !== null
+            && in_array(
+                ltrim(self::$openAPITypes[$variableName], '\\'),
+                ['MoneyMinor', \RevKeen\Runtime\MoneyMinor::class],
+                true
+            )
+            && !$value instanceof \RevKeen\Runtime\MoneyMinor
+        ) {
+            if (array_key_exists($variableName, $fields)) {
+                throw new \InvalidArgumentException("$variableName requires a MoneyMinor value.");
+            }
+            $value = new \RevKeen\Runtime\MoneyMinor($value);
+        }
+
+        $this->container[$variableName] = $value;
     }
 
     /**
@@ -638,7 +714,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         }
 
         if ($this->container['amount_minor'] === null && !$this->isNullableSetToNull('amount_minor')) {
-            $invalidProperties[] = "'amount_minor' can't be null";
+            $invalidProperties[] = "'amount_minor' is required";
         }
         if ($this->container['currency'] === null) {
             $invalidProperties[] = "'currency' can't be null";
@@ -691,6 +767,15 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['is_archived'] === null) {
             $invalidProperties[] = "'is_archived' can't be null";
         }
+        $allowedValues = $this->getStoreVisibilityAllowableValues();
+        if (!is_null($this->container['store_visibility']) && !in_array($this->container['store_visibility'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'store_visibility', must be one of '%s'",
+                $this->container['store_visibility'],
+                implode("', '", $allowedValues)
+            );
+        }
+
         if ($this->container['created_at'] === null) {
             $invalidProperties[] = "'created_at' can't be null";
         }
@@ -853,8 +938,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'description');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('description', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('description', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -941,7 +1026,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets amount_minor
      *
-     * @return int|null
+     * @return \RevKeen\Runtime\MoneyMinor|null
      */
     public function getAmountMinor()
     {
@@ -951,7 +1036,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets amount_minor
      *
-     * @param int|null $amount_minor Price in minor units (cents/pence)
+     * @param \RevKeen\Runtime\MoneyMinor|null $amount_minor Price in minor units (cents/pence)
      *
      * @return self
      */
@@ -961,11 +1046,14 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'amount_minor');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('amount_minor', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('amount_minor', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
+        }
+        if (!is_null($amount_minor) && !$amount_minor instanceof \RevKeen\Runtime\MoneyMinor) {
+            throw new \InvalidArgumentException('$amount_minor requires a MoneyMinor value.');
         }
         $this->container['amount_minor'] = $amount_minor;
 
@@ -1022,8 +1110,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'interval');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('interval', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('interval', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1056,8 +1144,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'interval_count');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('interval_count', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('interval_count', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1144,7 +1232,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets track_inventory
      *
-     * @param bool|null $track_inventory Whether a finite purchase cap is enforced
+     * @param bool|null $track_inventory Whether stock is tracked for this product (read from its availability record)
      *
      * @return self
      */
@@ -1162,6 +1250,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
      * Gets stock_quantity
      *
      * @return int|null
+     * @deprecated
      */
     public function getStockQuantity()
     {
@@ -1171,9 +1260,10 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets stock_quantity
      *
-     * @param int|null $stock_quantity Remaining purchasable units (null when not tracked)
+     * @param int|null $stock_quantity Deprecated, read-only view: units available to sell, computed from the product's availability record (null when not tracked).
      *
      * @return self
+     * @deprecated
      */
     public function setStockQuantity($stock_quantity)
     {
@@ -1181,13 +1271,40 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'stock_quantity');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('stock_quantity', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('stock_quantity', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
         $this->container['stock_quantity'] = $stock_quantity;
+
+        return $this;
+    }
+
+    /**
+     * Gets tags
+     *
+     * @return string[]|null
+     */
+    public function getTags()
+    {
+        return $this->container['tags'];
+    }
+
+    /**
+     * Sets tags
+     *
+     * @param string[]|null $tags Tags for Storefront filters and search
+     *
+     * @return self
+     */
+    public function setTags($tags)
+    {
+        if (is_null($tags)) {
+            throw new \InvalidArgumentException('non-nullable tags cannot be null');
+        }
+        $this->container['tags'] = $tags;
 
         return $this;
     }
@@ -1215,8 +1332,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'billing_anchor_rule');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('billing_anchor_rule', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('billing_anchor_rule', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1259,8 +1376,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'billing_anchor_day');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('billing_anchor_day', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('billing_anchor_day', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1293,8 +1410,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'first_charge_behavior');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('first_charge_behavior', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('first_charge_behavior', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1337,8 +1454,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'end_behavior');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('end_behavior', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('end_behavior', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1381,8 +1498,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'max_payments');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('max_payments', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('max_payments', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1415,8 +1532,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'usage_meter_id');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('usage_meter_id', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('usage_meter_id', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1439,7 +1556,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets slug
      *
-     * @param string|null $slug URL-friendly slug
+     * @param string|null $slug URL handle, unique among this merchant's products
      *
      * @return self
      */
@@ -1449,8 +1566,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'slug');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('slug', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('slug', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1527,7 +1644,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets image_url
      *
-     * @param string|null $image_url Product image URL
+     * @param string|null $image_url Main product image (storage key or URL)
      *
      * @return self
      */
@@ -1537,13 +1654,179 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'image_url');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('image_url', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('image_url', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
         $this->container['image_url'] = $image_url;
+
+        return $this;
+    }
+
+    /**
+     * Gets images
+     *
+     * @return \RevKeen\Model\ProductImageResponse[]|null
+     */
+    public function getImages()
+    {
+        return $this->container['images'];
+    }
+
+    /**
+     * Sets images
+     *
+     * @param \RevKeen\Model\ProductImageResponse[]|null $images Extra product images, in display order
+     *
+     * @return self
+     */
+    public function setImages($images)
+    {
+        if (is_null($images)) {
+            throw new \InvalidArgumentException('non-nullable images cannot be null');
+        }
+        $this->container['images'] = $images;
+
+        return $this;
+    }
+
+    /**
+     * Gets seo_title
+     *
+     * @return string|null
+     */
+    public function getSeoTitle()
+    {
+        return $this->container['seo_title'];
+    }
+
+    /**
+     * Sets seo_title
+     *
+     * @param string|null $seo_title Search and social title
+     *
+     * @return self
+     */
+    public function setSeoTitle($seo_title)
+    {
+        if (is_null($seo_title)) {
+            array_push($this->openAPINullablesSetToNull, 'seo_title');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('seo_title', $nullablesSetToNull, true);
+            if ($index !== false) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['seo_title'] = $seo_title;
+
+        return $this;
+    }
+
+    /**
+     * Gets seo_description
+     *
+     * @return string|null
+     */
+    public function getSeoDescription()
+    {
+        return $this->container['seo_description'];
+    }
+
+    /**
+     * Sets seo_description
+     *
+     * @param string|null $seo_description Meta description
+     *
+     * @return self
+     */
+    public function setSeoDescription($seo_description)
+    {
+        if (is_null($seo_description)) {
+            array_push($this->openAPINullablesSetToNull, 'seo_description');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('seo_description', $nullablesSetToNull, true);
+            if ($index !== false) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['seo_description'] = $seo_description;
+
+        return $this;
+    }
+
+    /**
+     * Gets store_visibility
+     *
+     * @return string|null
+     */
+    public function getStoreVisibility()
+    {
+        return $this->container['store_visibility'];
+    }
+
+    /**
+     * Sets store_visibility
+     *
+     * @param string|null $store_visibility Whether the product is listed on the Storefront. hidden: only payment links and invoices. scheduled: listed from store_visible_from.
+     *
+     * @return self
+     */
+    public function setStoreVisibility($store_visibility)
+    {
+        if (is_null($store_visibility)) {
+            throw new \InvalidArgumentException('non-nullable store_visibility cannot be null');
+        }
+        $allowedValues = $this->getStoreVisibilityAllowableValues();
+        if (!in_array($store_visibility, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'store_visibility', must be one of '%s'",
+                    $store_visibility,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['store_visibility'] = $store_visibility;
+
+        return $this;
+    }
+
+    /**
+     * Gets store_visible_from
+     *
+     * @return \DateTime|null
+     */
+    public function getStoreVisibleFrom()
+    {
+        return $this->container['store_visible_from'];
+    }
+
+    /**
+     * Sets store_visible_from
+     *
+     * @param \DateTime|null $store_visible_from When a scheduled product appears on the Storefront (ISO 8601)
+     *
+     * @return self
+     */
+    public function setStoreVisibleFrom($store_visible_from)
+    {
+        if (is_null($store_visible_from)) {
+            array_push($this->openAPINullablesSetToNull, 'store_visible_from');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('store_visible_from', $nullablesSetToNull, true);
+            if ($index !== false) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['store_visible_from'] = $store_visible_from;
 
         return $this;
     }
@@ -1571,8 +1854,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'tax_behavior');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('tax_behavior', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('tax_behavior', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1605,8 +1888,8 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
             array_push($this->openAPINullablesSetToNull, 'tax_code');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('tax_code', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('tax_code', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1731,6 +2014,20 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function offsetSet($offset, $value): void
     {
+        if (
+            !is_null($offset)
+            && !is_null($value)
+            && isset(self::$openAPITypes[$offset])
+            && in_array(
+                ltrim(self::$openAPITypes[$offset], '\\'),
+                ['MoneyMinor', \RevKeen\Runtime\MoneyMinor::class],
+                true
+            )
+            && !$value instanceof \RevKeen\Runtime\MoneyMinor
+        ) {
+            throw new \InvalidArgumentException("$offset requires a MoneyMinor value.");
+        }
+
         if (is_null($offset)) {
             $this->container[] = $value;
         } else {
@@ -1760,7 +2057,7 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -1786,5 +2083,3 @@ class Product implements ModelInterface, ArrayAccess, \JsonSerializable
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-

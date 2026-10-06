@@ -1,4 +1,4 @@
-# # StorefrontOriginCreateRequest
+# StorefrontOriginCreateRequest
 
 ## Properties
 

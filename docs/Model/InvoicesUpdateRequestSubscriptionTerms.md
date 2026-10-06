@@ -1,4 +1,4 @@
-# # InvoicesUpdateRequestSubscriptionTerms
+# InvoicesUpdateRequestSubscriptionTerms
 
 ## Properties
 

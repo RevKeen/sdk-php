@@ -1,4 +1,4 @@
-# # ChargeListResponsePagination
+# ChargeListResponsePagination
 
 ## Properties
 

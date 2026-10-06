@@ -1,4 +1,4 @@
-# # ChargeRetrieveResponse
+# ChargeRetrieveResponse
 
 ## Properties
 

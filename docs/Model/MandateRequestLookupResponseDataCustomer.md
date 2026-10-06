@@ -1,4 +1,4 @@
-# # MandateRequestLookupResponseDataCustomer
+# MandateRequestLookupResponseDataCustomer
 
 ## Properties
 

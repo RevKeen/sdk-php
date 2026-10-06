@@ -2,7 +2,7 @@
 
 Subscriptions manage recurring billing cycles for your customers. Create subscriptions to automatically charge customers on a schedule, with support for trials, prorations, plan changes, and dunning for failed payments.  **Required Scopes:** - &#x60;subscriptions:read&#x60; - List and retrieve subscriptions - &#x60;subscriptions:write&#x60; - Create, update, cancel subscriptions  **MCP Tools:** &#x60;subscriptions_get&#x60;
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -16,12 +16,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `subscriptionsCancel()`
 
 ```php
-subscriptionsCancel($id, $cancel_subscription_input): \RevKeen\Model\SubscriptionCancelSubscriptionResponse
+subscriptionsCancel($id, $idempotency_key, $cancel_subscription_input): \RevKeen\Model\SubscriptionCancelSubscriptionResponse
 ```
 
 Cancel subscription
 
-Cancel a subscription either immediately or at the end of the current billing period.  **Modes:** - `immediately`: Status set to \"canceled\", access revoked now - `period_end`: cancelAtPeriodEnd flag set, access continues until period end  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions` — List subscriptions - `GET /subscriptions/{id}` — Get subscription by ID - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Cancel a subscription either immediately or at the end of the current billing period.  **Modes:** - `immediately`: Status set to \"canceled\", access revoked now - `period_end`: cancelAtPeriodEnd flag set, access continues until period end  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions` — List subscriptions - `GET /subscriptions/{id}` — Get subscription by ID - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -49,10 +49,11 @@ $apiInstance = new RevKeen\Api\SubscriptionsApi(
     $config
 );
 $id = 'id_example'; // string | Subscription UUID
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $cancel_subscription_input = new \RevKeen\Model\CancelSubscriptionInput(); // \RevKeen\Model\CancelSubscriptionInput
 
 try {
-    $result = $apiInstance->subscriptionsCancel($id, $cancel_subscription_input);
+    $result = $apiInstance->subscriptionsCancel($id, $idempotency_key, $cancel_subscription_input);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SubscriptionsApi->subscriptionsCancel: ', $e->getMessage(), PHP_EOL;
@@ -64,6 +65,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Subscription UUID | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **cancel_subscription_input** | [**\RevKeen\Model\CancelSubscriptionInput**](../Model/CancelSubscriptionInput.md)|  | [optional] |
 
 ### Return type
@@ -86,12 +88,12 @@ try {
 ## `subscriptionsCreate()`
 
 ```php
-subscriptionsCreate($subscriptions_create_request): \RevKeen\Model\SubscriptionCreateResponse
+subscriptionsCreate($idempotency_key, $subscriptions_create_request): \RevKeen\Model\SubscriptionCreateResponse
 ```
 
 Create a new subscription
 
-Create a new subscription for a customer  ---  **Related endpoints**  - `GET /subscriptions` — List subscriptions - `GET /subscriptions/{id}` — Get subscription by ID - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Create a new subscription for a customer.  **The first period is billed at creation**, at the price's amount for the quantity. On card the saved `paymentMethodId` is charged straight away (it is required unless the subscription starts in a trial). On Direct Debit the first collection is scheduled with advance notice, typically 5–7 working days after creation. With a trial, nothing is billed until the trial ends.  Set `paymentRail: direct_debit` with an active `mandateId` to create a Direct Debit subscription (GBP only). This needs a signed-in team member or an OAuth app; API keys are refused with 403.  ---  **Related endpoints**  - `GET /subscriptions` — List subscriptions - `GET /subscriptions/{id}` — Get subscription by ID - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `422 unprocessable_entity` — business-rule failure (for example, refunding more than the original charge).  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -118,10 +120,11 @@ $apiInstance = new RevKeen\Api\SubscriptionsApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $subscriptions_create_request = new \RevKeen\Model\SubscriptionsCreateRequest(); // \RevKeen\Model\SubscriptionsCreateRequest
 
 try {
-    $result = $apiInstance->subscriptionsCreate($subscriptions_create_request);
+    $result = $apiInstance->subscriptionsCreate($idempotency_key, $subscriptions_create_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SubscriptionsApi->subscriptionsCreate: ', $e->getMessage(), PHP_EOL;
@@ -132,6 +135,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **subscriptions_create_request** | [**\RevKeen\Model\SubscriptionsCreateRequest**](../Model/SubscriptionsCreateRequest.md)|  | [optional] |
 
 ### Return type
@@ -159,7 +163,7 @@ subscriptionsGet($id): \RevKeen\Model\SubscriptionRetrieveResponse
 
 Get subscription by ID
 
-Retrieve detailed information about a specific subscription  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions` — List subscriptions - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve detailed information about a specific subscription  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions` — List subscriptions - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -227,7 +231,7 @@ subscriptionsList($page, $limit, $status, $customer_id): \RevKeen\Model\Subscrip
 
 List subscriptions
 
-Retrieve a paginated list of subscriptions with optional filters  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions/{id}` — Get subscription by ID - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Retrieve a paginated list of subscriptions with optional filters  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions/{id}` — Get subscription by ID - `PATCH /subscriptions/{id}` — Update subscription details - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -296,12 +300,12 @@ try {
 ## `subscriptionsUpdate()`
 
 ```php
-subscriptionsUpdate($id, $subscriptions_update_request): \RevKeen\Model\SubscriptionUpdateResponse
+subscriptionsUpdate($id, $idempotency_key, $subscriptions_update_request): \RevKeen\Model\SubscriptionUpdateResponse
 ```
 
 Update subscription details
 
-Update an existing subscription's properties  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions` — List subscriptions - `GET /subscriptions/{id}` — Get subscription by ID - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Update an existing subscription's properties  ---  **Related endpoints**  - `POST /subscriptions` — Create a new subscription - `GET /subscriptions` — List subscriptions - `GET /subscriptions/{id}` — Get subscription by ID - `DELETE /subscriptions/{id}` — Delete subscription - `POST /subscriptions/{id}/change-plan` — Change subscription plan - `POST /subscriptions/{id}/change-quantity` — Change subscription quantity - `POST /subscriptions/{id}/preview-renewal` — Preview subscription renewal - `POST /subscriptions/{id}/pause` — Pause subscription  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -329,10 +333,11 @@ $apiInstance = new RevKeen\Api\SubscriptionsApi(
     $config
 );
 $id = 'id_example'; // string | Subscription UUID
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $subscriptions_update_request = new \RevKeen\Model\SubscriptionsUpdateRequest(); // \RevKeen\Model\SubscriptionsUpdateRequest
 
 try {
-    $result = $apiInstance->subscriptionsUpdate($id, $subscriptions_update_request);
+    $result = $apiInstance->subscriptionsUpdate($id, $idempotency_key, $subscriptions_update_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SubscriptionsApi->subscriptionsUpdate: ', $e->getMessage(), PHP_EOL;
@@ -344,6 +349,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Subscription UUID | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **subscriptions_update_request** | [**\RevKeen\Model\SubscriptionsUpdateRequest**](../Model/SubscriptionsUpdateRequest.md)|  | [optional] |
 
 ### Return type

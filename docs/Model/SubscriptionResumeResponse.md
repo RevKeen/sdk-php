@@ -1,4 +1,4 @@
-# # SubscriptionResumeResponse
+# SubscriptionResumeResponse
 
 ## Properties
 

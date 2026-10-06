@@ -1,4 +1,4 @@
-# # ScheduleCollectionResponse
+# ScheduleCollectionResponse
 
 ## Properties
 

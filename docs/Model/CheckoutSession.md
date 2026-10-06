@@ -1,4 +1,4 @@
-# # CheckoutSession
+# CheckoutSession
 
 ## Properties
 
@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **object** | **string** |  |
 **status** | **string** |  |
 **mode** | **string** |  |
-**amount_total** | **float** |  |
+**amount_total** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **customer_id** | **string** |  |
 **payment_intent_id** | **string** |  |
@@ -17,8 +17,8 @@ Name | Type | Description | Notes
 **url** | **string** |  |
 **success_url** | **string** |  |
 **cancel_url** | **string** |  |
-**expires_at** | **string** |  |
-**created_at** | **string** |  |
+**expires_at** | **\DateTime** |  |
+**created_at** | **\DateTime** |  |
 **allowed_methods** | **string[]** |  |
 **selected_method** | **string** |  |
 

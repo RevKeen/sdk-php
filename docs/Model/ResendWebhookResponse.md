@@ -1,4 +1,4 @@
-# # ResendWebhookResponse
+# ResendWebhookResponse
 
 ## Properties
 

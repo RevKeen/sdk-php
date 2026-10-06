@@ -1,4 +1,4 @@
-# # CustomerCreateResponseData
+# CustomerCreateResponseData
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # PauseSubscriptionInput
+# PauseSubscriptionInput
 
 ## Properties
 

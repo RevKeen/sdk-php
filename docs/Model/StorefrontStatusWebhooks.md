@@ -1,4 +1,4 @@
-# # StorefrontStatusWebhooks
+# StorefrontStatusWebhooks
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # ChargeCaptureResponse
+# ChargeCaptureResponse
 
 ## Properties
 

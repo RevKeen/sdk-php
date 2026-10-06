@@ -1,4 +1,4 @@
-# # ChargeRefundResponse
+# ChargeRefundResponse
 
 ## Properties
 

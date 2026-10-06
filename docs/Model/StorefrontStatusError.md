@@ -1,4 +1,4 @@
-# # StorefrontStatusError
+# StorefrontStatusError
 
 ## Properties
 

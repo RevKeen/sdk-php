@@ -1,4 +1,4 @@
-# # UpdateSetupIntentRequest
+# UpdateSetupIntentRequest
 
 ## Properties
 

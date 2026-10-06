@@ -1,10 +1,10 @@
-# # ScheduleCollectionRequest
+# ScheduleCollectionRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**amount_minor** | **int** | Collection amount in minor units (pence) |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Collection amount in minor units (pence) |
 **currency** | **string** | ISO 4217 currency. Bacs collections are GBP-only. |
 **source_type** | **string** | What the collection settles. The settlement webhook resolves invoices by this reference. |
 **source_id** | **string** | Invoice or payment-link ID the collection is for |

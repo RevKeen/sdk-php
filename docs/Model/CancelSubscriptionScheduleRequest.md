@@ -1,4 +1,4 @@
-# # CancelSubscriptionScheduleRequest
+# CancelSubscriptionScheduleRequest
 
 ## Properties
 

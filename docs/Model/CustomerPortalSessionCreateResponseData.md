@@ -1,4 +1,4 @@
-# # CustomerPortalSessionCreateResponseData
+# CustomerPortalSessionCreateResponseData
 
 ## Properties
 

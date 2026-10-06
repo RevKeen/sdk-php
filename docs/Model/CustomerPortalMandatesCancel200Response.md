@@ -1,4 +1,4 @@
-# # CustomerPortalMandatesCancel200Response
+# CustomerPortalMandatesCancel200Response
 
 ## Properties
 

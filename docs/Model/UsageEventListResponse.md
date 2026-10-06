@@ -1,4 +1,4 @@
-# # UsageEventListResponse
+# UsageEventListResponse
 
 ## Properties
 

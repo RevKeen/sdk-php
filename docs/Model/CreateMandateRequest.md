@@ -1,4 +1,4 @@
-# # CreateMandateRequest
+# CreateMandateRequest
 
 ## Properties
 

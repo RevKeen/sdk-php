@@ -1,4 +1,4 @@
-# # OrderErrorResponse
+# OrderErrorResponse
 
 ## Properties
 

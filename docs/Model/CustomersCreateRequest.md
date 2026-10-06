@@ -1,4 +1,4 @@
-# # CustomersCreateRequest
+# CustomersCreateRequest
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # ConfirmPaymentIntentRequest
+# ConfirmPaymentIntentRequest
 
 ## Properties
 

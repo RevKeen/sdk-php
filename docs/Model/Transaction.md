@@ -1,4 +1,4 @@
-# # Transaction
+# Transaction
 
 ## Properties
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **customer_id** | **string** | Customer ID | [optional]
 **parent_transaction_id** | **string** | Parent transaction ID (required for refunds, voids, disputes, adjustments) | [optional]
 **currency** | **string** | Three-letter ISO currency code |
-**amount** | **int** | Transaction amount in minor units (cents) |
+**amount** | [**MoneyMinor**](MoneyMinor.md) | Transaction amount in minor units (cents) |
 **amount_refunded** | **int** | Amount refunded in minor units | [optional] [default to 0]
 **gateway** | **string** | Payment gateway (e.g., &#39;nmi&#39;) | [optional]
 **gateway_transaction_id** | **string** | Gateway&#39;s transaction reference | [optional]

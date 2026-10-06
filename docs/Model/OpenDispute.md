@@ -1,4 +1,4 @@
-# # OpenDispute
+# OpenDispute
 
 ## Properties
 
@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **gateway** | **string** | Payment gateway that processed the original transaction |
 **payment_rail** | **string** | Rail/payment method for the disputed transaction |
 **dispute_kind** | **string** | Rail-specific dispute subtype, when available |
-**amount_minor** | **float** | Disputed amount in cents |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Disputed amount in cents |
 **currency** | **string** | Three-letter ISO 4217 currency code |
 **reason** | **string** | Human-readable reason for the dispute |
 **customer_name** | **string** | Name of the customer who filed the dispute |
@@ -20,6 +20,6 @@ Name | Type | Description | Notes
 **evidence_due_by** | **string** | Deadline for submitting evidence to contest the dispute |
 **days_until_due** | **float** | Number of days remaining until the evidence deadline |
 **is_overdue** | **bool** | Whether the evidence submission deadline has passed |
-**disputed_at** | **string** | Timestamp when the dispute was filed |
+**disputed_at** | **\DateTime** | Timestamp when the dispute was filed |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

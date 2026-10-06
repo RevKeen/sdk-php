@@ -1,4 +1,4 @@
-# # MandateActionRequest
+# MandateActionRequest
 
 ## Properties
 

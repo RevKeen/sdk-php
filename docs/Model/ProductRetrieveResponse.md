@@ -1,4 +1,4 @@
-# # ProductRetrieveResponse
+# ProductRetrieveResponse
 
 ## Properties
 

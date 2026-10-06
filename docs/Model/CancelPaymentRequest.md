@@ -1,4 +1,4 @@
-# # CancelPaymentRequest
+# CancelPaymentRequest
 
 ## Properties
 

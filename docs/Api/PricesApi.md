@@ -2,7 +2,7 @@
 
 Prices define how much and how often to charge for a product. A single product can have multiple prices — different currencies, billing intervals, or pricing tiers. Supports fixed-amount, pay-what-you-want, tiered, and free pricing models.  **Required Scopes:** - &#x60;prices:read&#x60; - List and retrieve prices - &#x60;prices:write&#x60; - Create, update, archive prices
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -21,7 +21,7 @@ pricesArchive($id): \RevKeen\Model\Price
 
 Archive a price
 
-Archives a price by setting active to false. The price remains in the system but cannot be used for new purchases.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Archives a price by setting active to false. The price remains in the system but cannot be used for new purchases.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -89,7 +89,7 @@ pricesCreate($create_price_request): \RevKeen\Model\Price
 
 Create a price
 
-Creates a new price for a product. Supports fixed, pay-what-you-want, and free pricing models.  ---  **Related endpoints**  - `GET /prices` — List prices - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Creates a new price for a product. Supports fixed, pay-what-you-want, and free pricing models.  ---  **Related endpoints**  - `GET /prices` — List prices - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -157,7 +157,7 @@ pricesGet($id): \RevKeen\Model\Price
 
 Retrieve a price
 
-Retrieves a price by its ID.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieves a price by its ID.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -225,7 +225,7 @@ pricesList($product_id, $type, $pricing_model, $active, $currency, $lookup_key, 
 
 List prices
 
-List all prices for the authenticated merchant. Supports filtering and cursor-based pagination.  ---  **Related endpoints**  - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List all prices for the authenticated merchant. Supports filtering and cursor-based pagination.  ---  **Related endpoints**  - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -309,7 +309,7 @@ pricesUpdate($id, $update_price_request): \RevKeen\Model\Price
 
 Update a price
 
-Updates a price. Only certain fields can be updated (active, name, nickname, lookup_key, metadata). Core pricing fields are immutable.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Updates a price. Only certain fields can be updated (active, name, nickname, lookup_key, metadata). Core pricing fields are immutable.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 

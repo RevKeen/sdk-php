@@ -1,4 +1,4 @@
-# # PaymentIntent
+# PaymentIntent
 
 ## Properties
 

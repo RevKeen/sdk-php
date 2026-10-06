@@ -1,4 +1,4 @@
-# # CreateCartSessionInput
+# CreateCartSessionInput
 
 ## Properties
 

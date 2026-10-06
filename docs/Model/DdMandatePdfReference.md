@@ -1,4 +1,4 @@
-# # DdMandatePdfReference
+# DdMandatePdfReference
 
 ## Properties
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **pdf_type** | **string** |  |
 **storage_key** | **string** |  |
 **pdf_url** | **string** |  |
-**generated_at** | **string** |  |
+**generated_at** | **\DateTime** |  |
 **template_version** | **string** |  |
 **compliance_version** | **string** |  |
 

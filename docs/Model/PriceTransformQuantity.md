@@ -1,4 +1,4 @@
-# # PriceTransformQuantity
+# PriceTransformQuantity
 
 ## Properties
 

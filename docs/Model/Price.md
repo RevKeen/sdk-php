@@ -1,4 +1,4 @@
-# # Price
+# Price
 
 ## Properties
 
@@ -33,6 +33,9 @@ Name | Type | Description | Notes
 **percentage_rate_bps** | **int** | Rate in basis points (70 &#x3D; 0.7%). Present only when &#x60;billing_scheme&#x60; is &#x60;percentage&#x60;. Null for &#x60;per_unit&#x60; and &#x60;tiered&#x60; prices. | [optional]
 **pay_in_advance** | **bool** | When true for a metered UBB price, usage events are debited from the customer&#39;s prepaid wallet at ingest time. | [optional]
 **spending_minimum_cents** | **int** | Minimum minor-unit amount applied to each pay-in-advance usage drawdown when set. | [optional]
+**option_values** | **array<string,string>** | The variant&#39;s options, e.g. {\&quot;Colour\&quot;:\&quot;Navy\&quot;,\&quot;Size\&quot;:\&quot;M\&quot;}. Null when the price is not a variant. | [optional]
+**sku** | **string** | The variant&#39;s SKU (what to pack). Unique per merchant among active prices. | [optional]
+**image_url** | **string** | The variant&#39;s image (storage key or URL), one of the product&#39;s images. | [optional]
 **metadata** | **array<string,mixed>** | Custom key-value metadata | [optional]
 **created_at** | **\DateTime** | Creation timestamp |
 **updated_at** | **\DateTime** | Last update timestamp |
