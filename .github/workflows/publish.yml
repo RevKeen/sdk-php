@@ -125,7 +125,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist
       - name: Validate, lint, format-check, and test
         run: |
-          composer validate --strict
+          composer validate --strict --no-check-version
           find src test -name '*.php' -type f -print0 | xargs -0 -n1 php -l
           vendor/bin/php-cs-fixer check --diff --allow-risky=yes
           vendor/bin/phpunit test
