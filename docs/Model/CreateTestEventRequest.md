@@ -1,4 +1,4 @@
-# # CreateTestEventRequest
+# CreateTestEventRequest
 
 ## Properties
 

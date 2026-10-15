@@ -1,4 +1,4 @@
-# # MeterPriceError
+# MeterPriceError
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CartConversionResponseData
+# CartConversionResponseData
 
 ## Properties
 

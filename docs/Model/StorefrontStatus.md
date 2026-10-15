@@ -1,4 +1,4 @@
-# # StorefrontStatus
+# StorefrontStatus
 
 ## Properties
 

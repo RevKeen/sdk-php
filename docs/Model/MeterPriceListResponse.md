@@ -1,4 +1,4 @@
-# # MeterPriceListResponse
+# MeterPriceListResponse
 
 ## Properties
 

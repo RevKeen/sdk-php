@@ -1,4 +1,4 @@
-# # CartLineItemRecurring
+# CartLineItemRecurring
 
 ## Properties
 

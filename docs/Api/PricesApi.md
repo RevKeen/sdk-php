@@ -2,7 +2,7 @@
 
 Prices define how much and how often to charge for a product. A single product can have multiple prices — different currencies, billing intervals, or pricing tiers. Supports fixed-amount, pay-what-you-want, tiered, and free pricing models.  **Required Scopes:** - &#x60;prices:read&#x60; - List and retrieve prices - &#x60;prices:write&#x60; - Create, update, archive prices
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -16,12 +16,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `pricesArchive()`
 
 ```php
-pricesArchive($id): \RevKeen\Model\Price
+pricesArchive($id, $idempotency_key): \RevKeen\Model\Price
 ```
 
 Archive a price
 
-Archives a price by setting active to false. The price remains in the system but cannot be used for new purchases.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Archives a price by setting active to false. The price remains in the system but cannot be used for new purchases.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -49,9 +49,10 @@ $apiInstance = new RevKeen\Api\PricesApi(
     $config
 );
 $id = 'id_example'; // string | Price ID
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->pricesArchive($id);
+    $result = $apiInstance->pricesArchive($id, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PricesApi->pricesArchive: ', $e->getMessage(), PHP_EOL;
@@ -63,6 +64,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Price ID | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -84,12 +86,12 @@ try {
 ## `pricesCreate()`
 
 ```php
-pricesCreate($create_price_request): \RevKeen\Model\Price
+pricesCreate($create_price_request, $idempotency_key): \RevKeen\Model\Price
 ```
 
 Create a price
 
-Creates a new price for a product. Supports fixed, pay-what-you-want, and free pricing models.  ---  **Related endpoints**  - `GET /prices` — List prices - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Creates a new price for a product. Supports fixed, pay-what-you-want, and free pricing models.  ---  **Related endpoints**  - `GET /prices` — List prices - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -117,9 +119,10 @@ $apiInstance = new RevKeen\Api\PricesApi(
     $config
 );
 $create_price_request = new \RevKeen\Model\CreatePriceRequest(); // \RevKeen\Model\CreatePriceRequest | Price creation details
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->pricesCreate($create_price_request);
+    $result = $apiInstance->pricesCreate($create_price_request, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PricesApi->pricesCreate: ', $e->getMessage(), PHP_EOL;
@@ -131,6 +134,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **create_price_request** | [**\RevKeen\Model\CreatePriceRequest**](../Model/CreatePriceRequest.md)| Price creation details | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -157,7 +161,7 @@ pricesGet($id): \RevKeen\Model\Price
 
 Retrieve a price
 
-Retrieves a price by its ID.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieves a price by its ID.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -225,7 +229,7 @@ pricesList($product_id, $type, $pricing_model, $active, $currency, $lookup_key, 
 
 List prices
 
-List all prices for the authenticated merchant. Supports filtering and cursor-based pagination.  ---  **Related endpoints**  - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List all prices for the authenticated merchant. Supports filtering and cursor-based pagination.  `starting_after` and `ending_before` are mutually exclusive: supply at most one. Sending both is rejected with 400 `parameter_invalid`. A cursor must also name a price belonging to the authenticated merchant; an unknown id is rejected with 400 `resource_missing`.  ---  **Related endpoints**  - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `PATCH /prices/{id}` — Update a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -259,8 +263,8 @@ $active = 'active_example'; // string | Filter by active status
 $currency = 'currency_example'; // string | Filter by currency
 $lookup_key = 'lookup_key_example'; // string | Filter by lookup key
 $limit = 20; // int | Number of results (1-100)
-$starting_after = 'starting_after_example'; // string | Cursor for pagination (ID to start after)
-$ending_before = 'ending_before_example'; // string | Cursor for pagination (ID to end before)
+$starting_after = 'starting_after_example'; // string | Cursor for pagination: return prices after this price ID. Mutually exclusive with `ending_before` — supplying both is rejected with 400 `parameter_invalid`. The ID must name a price of the authenticated merchant, or the request is rejected with 400 `resource_missing`.
+$ending_before = 'ending_before_example'; // string | Cursor for pagination: return prices before this price ID. Mutually exclusive with `starting_after` — supplying both is rejected with 400 `parameter_invalid`. The ID must name a price of the authenticated merchant, or the request is rejected with 400 `resource_missing`.
 
 try {
     $result = $apiInstance->pricesList($product_id, $type, $pricing_model, $active, $currency, $lookup_key, $limit, $starting_after, $ending_before);
@@ -281,8 +285,8 @@ try {
 | **currency** | **string**| Filter by currency | [optional] |
 | **lookup_key** | **string**| Filter by lookup key | [optional] |
 | **limit** | **int**| Number of results (1-100) | [optional] [default to 20] |
-| **starting_after** | **string**| Cursor for pagination (ID to start after) | [optional] |
-| **ending_before** | **string**| Cursor for pagination (ID to end before) | [optional] |
+| **starting_after** | **string**| Cursor for pagination: return prices after this price ID. Mutually exclusive with &#x60;ending_before&#x60; — supplying both is rejected with 400 &#x60;parameter_invalid&#x60;. The ID must name a price of the authenticated merchant, or the request is rejected with 400 &#x60;resource_missing&#x60;. | [optional] |
+| **ending_before** | **string**| Cursor for pagination: return prices before this price ID. Mutually exclusive with &#x60;starting_after&#x60; — supplying both is rejected with 400 &#x60;parameter_invalid&#x60;. The ID must name a price of the authenticated merchant, or the request is rejected with 400 &#x60;resource_missing&#x60;. | [optional] |
 
 ### Return type
 
@@ -304,12 +308,12 @@ try {
 ## `pricesUpdate()`
 
 ```php
-pricesUpdate($id, $update_price_request): \RevKeen\Model\Price
+pricesUpdate($id, $update_price_request, $idempotency_key): \RevKeen\Model\Price
 ```
 
 Update a price
 
-Updates a price. Only certain fields can be updated (active, name, nickname, lookup_key, metadata). Core pricing fields are immutable.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Updates a price. Only certain fields can be updated (active, name, nickname, lookup_key, metadata). Core pricing fields are immutable.  ---  **Related endpoints**  - `GET /prices` — List prices - `POST /prices` — Create a price - `GET /prices/{id}` — Retrieve a price - `DELETE /prices/{id}` — Archive a price  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -338,9 +342,10 @@ $apiInstance = new RevKeen\Api\PricesApi(
 );
 $id = 'id_example'; // string | Price ID
 $update_price_request = new \RevKeen\Model\UpdatePriceRequest(); // \RevKeen\Model\UpdatePriceRequest | Price update details
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->pricesUpdate($id, $update_price_request);
+    $result = $apiInstance->pricesUpdate($id, $update_price_request, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PricesApi->pricesUpdate: ', $e->getMessage(), PHP_EOL;
@@ -353,6 +358,7 @@ try {
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Price ID | |
 | **update_price_request** | [**\RevKeen\Model\UpdatePriceRequest**](../Model/UpdatePriceRequest.md)| Price update details | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 

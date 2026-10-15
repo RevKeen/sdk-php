@@ -1,4 +1,4 @@
-# # DdMandateRequestCancelResponse
+# DdMandateRequestCancelResponse
 
 ## Properties
 

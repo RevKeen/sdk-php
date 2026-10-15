@@ -1,4 +1,4 @@
-# # Benefit
+# Benefit
 
 ## Properties
 

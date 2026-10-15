@@ -1,4 +1,4 @@
-# # AccountingInvoicePaymentRequestsCreate200Response
+# AccountingInvoicePaymentRequestsCreate200Response
 
 ## Properties
 

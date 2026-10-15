@@ -1,0 +1,8 @@
+# Generated files are never hand-edited. Add narrowly scoped exclusions here.
+
+# Generator test stubs are create-once and make .openapi-generator/FILES drift on rerun.
+test/**
+
+# OpenAPI 3.1 inbound webhooks are not callable outbound client operations.
+/src/Api/WebhooksApi.php
+/docs/Api/WebhooksApi.md

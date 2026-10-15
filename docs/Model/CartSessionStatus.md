@@ -1,4 +1,4 @@
-# # CartSessionStatus
+# CartSessionStatus
 
 ## Properties
 

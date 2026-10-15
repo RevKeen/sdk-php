@@ -1,4 +1,4 @@
-# # CardDetails
+# CardDetails
 
 ## Properties
 

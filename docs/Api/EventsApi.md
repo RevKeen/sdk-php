@@ -2,7 +2,7 @@
 
 Event objects represent something that happened in your account — a payment succeeded, an invoice was created, a subscription was canceled. Events are the source of truth for webhook delivery. Use them to debug webhook issues, replay missed events, or build an audit trail.  **Required Scopes:** - &#x60;events:read&#x60; - List and retrieve events - &#x60;events:write&#x60; - Resend webhook events
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -19,7 +19,7 @@ eventsGet($id): \RevKeen\Model\Event
 
 Retrieve an event
 
-Retrieves the details of an event by its ID.  ---  **Related endpoints**  - `GET /events` — List events - `POST /events/{id}/resend` — Resend webhook for an event - `POST /events/test` — Create a test event  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieves the details of an event by its ID.  ---  **Related endpoints**  - `GET /events` — List events - `POST /events/{id}/resend` — Resend webhook for an event - `POST /events/test` — Create a test event  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -87,7 +87,7 @@ eventsList($type, $types, $customer_id, $invoice_id, $subscription_id, $order_id
 
 List events
 
-Returns a list of events with optional filters. Events are returned in reverse chronological order.  ---  **Related endpoints**  - `GET /events/{id}` — Retrieve an event - `POST /events/{id}/resend` — Resend webhook for an event - `POST /events/test` — Create a test event  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Returns a list of events with optional filters. Events are returned in reverse chronological order.  ---  **Related endpoints**  - `GET /events/{id}` — Retrieve an event - `POST /events/{id}/resend` — Resend webhook for an event - `POST /events/test` — Create a test event  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -175,7 +175,7 @@ eventsResend($id): \RevKeen\Model\ResendWebhookResponse
 
 Resend webhook for an event
 
-Queues the event to be resent to all configured webhook endpoints.  ---  **Related endpoints**  - `GET /events` — List events - `GET /events/{id}` — Retrieve an event - `POST /events/test` — Create a test event  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Deprecated: use `POST /webhook-endpoints/{id}/redeliver`, which sends an event's original payload to one endpoint. This operation keeps working; no removal date has been set. Queues the event to be resent to all configured webhook endpoints. Responses carry a `Deprecation` header and a `Link` to the replacement.  ---  **Related endpoints**  - `GET /events` — List events - `GET /events/{id}` — Retrieve an event - `POST /events/test` — Create a test event  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 

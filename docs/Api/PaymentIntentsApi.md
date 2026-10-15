@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -17,12 +17,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `paymentIntentsCancel()`
 
 ```php
-paymentIntentsCancel($id, $cancel_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsCancel($id, $idempotency_key, $cancel_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Cancel a payment intent
 
-Cancels a payment intent. Cannot cancel if already succeeded or canceled.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Cancels a payment intent. Cannot cancel if already succeeded or canceled. A `processing` intent that has already been charged at the gateway cannot be canceled either (409 `payment_intent_charged`): canceling would not return the money.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -49,11 +49,12 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$id = pi_abc123; // string | Payment intent public ID (`pi_…`) or UUID.
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $cancel_payment_intent_request = new \RevKeen\Model\CancelPaymentIntentRequest(); // \RevKeen\Model\CancelPaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsCancel($id, $cancel_payment_intent_request);
+    $result = $apiInstance->paymentIntentsCancel($id, $idempotency_key, $cancel_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsCancel: ', $e->getMessage(), PHP_EOL;
@@ -64,7 +65,8 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **id** | **string**| Payment intent ID (pi_xxx) | |
+| **id** | **string**| Payment intent public ID (&#x60;pi_…&#x60;) or UUID. | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **cancel_payment_intent_request** | [**\RevKeen\Model\CancelPaymentIntentRequest**](../Model/CancelPaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -87,12 +89,12 @@ try {
 ## `paymentIntentsCapture()`
 
 ```php
-paymentIntentsCapture($id, $capture_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsCapture($id, $idempotency_key, $capture_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Capture a payment intent
 
-Captures a payment intent that was created with capture_method=manual.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Captures a payment intent that was created with capture_method=manual and is `processing`. The card was charged when the intent was confirmed (the gateway takes a sale, not an authorization), so capture does not call the gateway again: it marks the intent `succeeded` and records the sale transaction, returned as `transaction`.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -119,11 +121,12 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$id = pi_abc123; // string | Payment intent public ID (`pi_…`) or UUID.
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $capture_payment_intent_request = new \RevKeen\Model\CapturePaymentIntentRequest(); // \RevKeen\Model\CapturePaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsCapture($id, $capture_payment_intent_request);
+    $result = $apiInstance->paymentIntentsCapture($id, $idempotency_key, $capture_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsCapture: ', $e->getMessage(), PHP_EOL;
@@ -134,7 +137,8 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **id** | **string**| Payment intent ID (pi_xxx) | |
+| **id** | **string**| Payment intent public ID (&#x60;pi_…&#x60;) or UUID. | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **capture_payment_intent_request** | [**\RevKeen\Model\CapturePaymentIntentRequest**](../Model/CapturePaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -157,12 +161,12 @@ try {
 ## `paymentIntentsConfirm()`
 
 ```php
-paymentIntentsConfirm($id, $confirm_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsConfirm($id, $idempotency_key, $confirm_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Confirm a payment intent
 
-Confirms the payment intent. May return requires_action if 3DS authentication is needed.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Not available through the API yet. There is no way to supply a card token or a saved card here, so a confirm cannot charge: it returns 422 `payment_method_unusable` and leaves the payment intent unchanged. Take card payments with hosted checkout or a payment link. A server-side confirm for saved cards is planned.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `422 unprocessable_entity` — business-rule failure (for example, refunding more than the original charge).  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -189,11 +193,12 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$id = pi_abc123; // string | Payment intent public ID (`pi_…`) or UUID.
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $confirm_payment_intent_request = new \RevKeen\Model\ConfirmPaymentIntentRequest(); // \RevKeen\Model\ConfirmPaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsConfirm($id, $confirm_payment_intent_request);
+    $result = $apiInstance->paymentIntentsConfirm($id, $idempotency_key, $confirm_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsConfirm: ', $e->getMessage(), PHP_EOL;
@@ -204,7 +209,8 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **id** | **string**| Payment intent ID (pi_xxx) | |
+| **id** | **string**| Payment intent public ID (&#x60;pi_…&#x60;) or UUID. | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **confirm_payment_intent_request** | [**\RevKeen\Model\ConfirmPaymentIntentRequest**](../Model/ConfirmPaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -227,12 +233,12 @@ try {
 ## `paymentIntentsCreate()`
 
 ```php
-paymentIntentsCreate($create_payment_intent_request): \RevKeen\Model\PaymentIntent
+paymentIntentsCreate($idempotency_key, $create_payment_intent_request): \RevKeen\Model\PaymentIntent
 ```
 
 Create a payment intent
 
-Creates a payment intent to orchestrate payment collection with support for 3DS/SCA authentication.  ---  **Related endpoints**  - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Creates a payment intent to orchestrate payment collection with support for 3DS/SCA authentication.  ---  **Related endpoints**  - `GET /payment-intents` — List payment intents - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -259,10 +265,11 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $create_payment_intent_request = new \RevKeen\Model\CreatePaymentIntentRequest(); // \RevKeen\Model\CreatePaymentIntentRequest
 
 try {
-    $result = $apiInstance->paymentIntentsCreate($create_payment_intent_request);
+    $result = $apiInstance->paymentIntentsCreate($idempotency_key, $create_payment_intent_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PaymentIntentsApi->paymentIntentsCreate: ', $e->getMessage(), PHP_EOL;
@@ -273,6 +280,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **create_payment_intent_request** | [**\RevKeen\Model\CreatePaymentIntentRequest**](../Model/CreatePaymentIntentRequest.md)|  | [optional] |
 
 ### Return type
@@ -300,7 +308,7 @@ paymentIntentsGet($id): \RevKeen\Model\PaymentIntent
 
 Retrieve a payment intent
 
-Retrieves a payment intent by its ID (pi_xxx).  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieves a payment intent by its ID (pi_xxx).  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents` — List payment intents - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -327,7 +335,7 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$id = 'id_example'; // string | Payment intent ID (pi_xxx)
+$id = pi_abc123; // string | Payment intent public ID (`pi_…`) or UUID.
 
 try {
     $result = $apiInstance->paymentIntentsGet($id);
@@ -341,7 +349,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **id** | **string**| Payment intent ID (pi_xxx) | |
+| **id** | **string**| Payment intent public ID (&#x60;pi_…&#x60;) or UUID. | |
 
 ### Return type
 
@@ -368,7 +376,7 @@ paymentIntentsList($customer, $status, $created_gte, $created_lte, $limit, $star
 
 List payment intents
 
-Returns a list of payment intents with optional filtering.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Returns a list of payment intents with optional filtering.  ---  **Related endpoints**  - `POST /payment-intents` — Create a payment intent - `GET /payment-intents/{id}` — Retrieve a payment intent - `POST /payment-intents/{id}` — Update a payment intent - `POST /payment-intents/{id}/confirm` — Confirm a payment intent - `POST /payment-intents/{id}/capture` — Capture a payment intent - `POST /payment-intents/{id}/cancel` — Cancel a payment intent  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -397,8 +405,8 @@ $apiInstance = new RevKeen\Api\PaymentIntentsApi(
 );
 $customer = 'customer_example'; // string | Filter by customer ID
 $status = 'status_example'; // string | Filter by status
-$created_gte = 3.4; // float | Filter by created_at >= (Unix timestamp)
-$created_lte = 3.4; // float | Filter by created_at <= (Unix timestamp)
+$created_gte = 3.4; // float | Filter by created_at >= (Unix timestamp, seconds)
+$created_lte = 3.4; // float | Filter by created_at <= (Unix timestamp, seconds)
 $limit = 20; // int | Maximum number of results (1-100)
 $starting_after = 'starting_after_example'; // string | Cursor for pagination - return results after this ID (pi_xxx)
 $ending_before = 'ending_before_example'; // string | Cursor for pagination - return results before this ID (pi_xxx)
@@ -417,8 +425,8 @@ try {
 | ------------- | ------------- | ------------- | ------------- |
 | **customer** | **string**| Filter by customer ID | [optional] |
 | **status** | **string**| Filter by status | [optional] |
-| **created_gte** | **float**| Filter by created_at &gt;&#x3D; (Unix timestamp) | [optional] |
-| **created_lte** | **float**| Filter by created_at &lt;&#x3D; (Unix timestamp) | [optional] |
+| **created_gte** | **float**| Filter by created_at &gt;&#x3D; (Unix timestamp, seconds) | [optional] |
+| **created_lte** | **float**| Filter by created_at &lt;&#x3D; (Unix timestamp, seconds) | [optional] |
 | **limit** | **int**| Maximum number of results (1-100) | [optional] [default to 20] |
 | **starting_after** | **string**| Cursor for pagination - return results after this ID (pi_xxx) | [optional] |
 | **ending_before** | **string**| Cursor for pagination - return results before this ID (pi_xxx) | [optional] |

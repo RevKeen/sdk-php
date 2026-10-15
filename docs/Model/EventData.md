@@ -1,4 +1,4 @@
-# # EventData
+# EventData
 
 ## Properties
 

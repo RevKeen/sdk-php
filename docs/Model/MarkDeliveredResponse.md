@@ -1,4 +1,4 @@
-# # MarkDeliveredResponse
+# MarkDeliveredResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # UsageEventRecord
+# UsageEventRecord
 
 ## Properties
 
@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **customer_id** | **string** | Customer ID |
 **subscription_id** | **string** | Subscription ID |
 **meter_id** | **string** | Meter ID |
+**name** | **string** | Event name (Polar-compatible alias of event_name) | [optional]
+**event_name** | **string** | Event name that matched the meter | [optional]
 **quantity** | **float** | Event quantity |
 **event_time** | **\DateTime** | Event timestamp (ISO 8601) |
 **idempotency_key** | **string** | Deduplication key |

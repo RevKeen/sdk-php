@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -19,7 +19,7 @@ cartApiKeysEnsure(): \RevKeen\Model\CartApiKeysStatus200Response
 
 Ensure managed Cart API keys exist
 
-Creates any missing managed RevKeen Cart publishable and secret keys for the authenticated merchant. Newly created key values are returned once; existing secret values are never re-exposed.  ---  **Related endpoints**  - `GET /cart-api-keys/status` — Get managed Cart API key status - `POST /cart-api-keys/{kind}/rotate` — Rotate a managed Cart API key  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Creates any missing managed RevKeen Cart publishable and secret keys for the authenticated merchant. Newly created key values are returned once; existing secret values are never re-exposed.  ---  **Related endpoints**  - `GET /cart-api-keys/status` — Get managed Cart API key status - `POST /cart-api-keys/{kind}/rotate` — Rotate a managed Cart API key  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -84,7 +84,7 @@ cartApiKeysRotate($kind, $cart_api_keys_rotate_request): \RevKeen\Model\CartApiK
 
 Rotate a managed Cart API key
 
-Rotates the managed RevKeen Cart publishable or secret key. The new key value is returned once; previous keys remain valid for the requested grace window.  ---  **Related endpoints**  - `GET /cart-api-keys/status` — Get managed Cart API key status - `POST /cart-api-keys/ensure` — Ensure managed Cart API keys exist  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Rotates the managed RevKeen Cart publishable or secret key. The new key value is returned once; previous keys remain valid for the requested grace window.  ---  **Related endpoints**  - `GET /cart-api-keys/status` — Get managed Cart API key status - `POST /cart-api-keys/ensure` — Ensure managed Cart API keys exist  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -154,7 +154,7 @@ cartApiKeysStatus(): \RevKeen\Model\CartApiKeysStatus200Response
 
 Get managed Cart API key status
 
-Returns whether the authenticated merchant has managed RevKeen Cart publishable and secret keys. Existing key values are never returned.  ---  **Related endpoints**  - `POST /cart-api-keys/ensure` — Ensure managed Cart API keys exist - `POST /cart-api-keys/{kind}/rotate` — Rotate a managed Cart API key  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `403 permission_denied` — key lacks the required scope, or the resource belongs to a different merchant.
+Returns whether the authenticated merchant has managed RevKeen Cart publishable and secret keys. Existing key values are never returned.  ---  **Related endpoints**  - `POST /cart-api-keys/ensure` — Ensure managed Cart API keys exist - `POST /cart-api-keys/{kind}/rotate` — Rotate a managed Cart API key  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`.
 
 ### Example
 

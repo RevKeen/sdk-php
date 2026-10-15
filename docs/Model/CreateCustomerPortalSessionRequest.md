@@ -1,4 +1,4 @@
-# # CreateCustomerPortalSessionRequest
+# CreateCustomerPortalSessionRequest
 
 ## Properties
 

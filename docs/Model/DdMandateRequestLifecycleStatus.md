@@ -1,4 +1,4 @@
-# # DdMandateRequestLifecycleStatus
+# DdMandateRequestLifecycleStatus
 
 ## Properties
 

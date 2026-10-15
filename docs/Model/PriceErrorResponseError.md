@@ -1,4 +1,4 @@
-# # PriceErrorResponseError
+# PriceErrorResponseError
 
 ## Properties
 

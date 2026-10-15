@@ -1,4 +1,4 @@
-# # CreateDiscountInput
+# CreateDiscountInput
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # InvoiceCommentListDetailResponse
+# InvoiceCommentListDetailResponse
 
 ## Properties
 

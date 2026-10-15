@@ -1,4 +1,4 @@
-# # DdMandateRequestConsumeResponse
+# DdMandateRequestConsumeResponse
 
 ## Properties
 

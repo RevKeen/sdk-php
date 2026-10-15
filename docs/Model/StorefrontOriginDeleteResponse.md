@@ -1,4 +1,4 @@
-# # StorefrontOriginDeleteResponse
+# StorefrontOriginDeleteResponse
 
 ## Properties
 

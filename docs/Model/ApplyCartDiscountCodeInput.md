@@ -1,4 +1,4 @@
-# # ApplyCartDiscountCodeInput
+# ApplyCartDiscountCodeInput
 
 ## Properties
 

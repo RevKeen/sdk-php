@@ -1,4 +1,4 @@
-# # PaymentIntentErrorResponse
+# PaymentIntentErrorResponse
 
 ## Properties
 

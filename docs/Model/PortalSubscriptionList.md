@@ -1,4 +1,4 @@
-# # PortalSubscriptionList
+# PortalSubscriptionList
 
 ## Properties
 

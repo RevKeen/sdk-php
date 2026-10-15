@@ -1,4 +1,4 @@
-# # CreateSubscriptionScheduleRequestStartDate
+# CreateSubscriptionScheduleRequestStartDate
 
 ## Properties
 

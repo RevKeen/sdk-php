@@ -1,4 +1,4 @@
-# # WebhookEndpointsDelete200Response
+# WebhookEndpointsDelete200Response
 
 ## Properties
 

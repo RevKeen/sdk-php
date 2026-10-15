@@ -1,4 +1,4 @@
-# # EntitlementCheck
+# EntitlementCheck
 
 ## Properties
 

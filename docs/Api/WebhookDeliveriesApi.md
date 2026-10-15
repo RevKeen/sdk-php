@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -87,7 +87,7 @@ webhookDeliveriesList($endpoint_id, $event_id, $status, $limit, $starting_after,
 
 List webhook deliveries
 
-List individual webhook delivery attempts across all endpoints for the authenticated merchant. Use filters to scope to a specific endpoint, a specific event, or a specific delivery status. Results are returned in reverse chronological order.  ---  **Related endpoints**  - `GET /webhook-deliveries/{id}` — Retrieve a webhook delivery - `POST /webhook-deliveries/{id}/retry` — Retry a webhook delivery  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List individual webhook delivery attempts across all endpoints for the authenticated merchant. Use filters to scope to a specific endpoint, a specific event, or a specific delivery status. Results are returned in reverse chronological order.  ---  **Related endpoints**  - `GET /webhook-deliveries/{id}` — Retrieve a webhook delivery - `POST /webhook-deliveries/{id}/retry` — Retry a webhook delivery  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -165,7 +165,7 @@ webhookDeliveriesRetry($id): \RevKeen\Model\WebhookDeliveryRetryResponse
 
 Retry a webhook delivery
 
-Queue an immediate retry of this delivery. The delivery is marked `pending` and `next_retry_at` is set to now; the dispatcher picks it up on its next tick. Calling retry on an already-pending delivery just advances its retry time. Dead-lettered deliveries can be retried once; succeeded deliveries cannot.  ---  **Related endpoints**  - `GET /webhook-deliveries` — List webhook deliveries - `GET /webhook-deliveries/{id}` — Retrieve a webhook delivery  **Common errors**  - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Queue an immediate retry of this delivery. The delivery is marked `pending`, its attempt count is reset to 0 and `next_retry_at` is set to now, and it is queued for delivery at once. Calling retry on an already-pending delivery queues it again. Failed and dead-lettered deliveries can be retried; a delivery that already succeeded cannot (409 `already_succeeded`).  ---  **Related endpoints**  - `GET /webhook-deliveries` — List webhook deliveries - `GET /webhook-deliveries/{id}` — Retrieve a webhook delivery  **Common errors**  - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 

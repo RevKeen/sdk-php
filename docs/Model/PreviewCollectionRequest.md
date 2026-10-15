@@ -1,4 +1,4 @@
-# # PreviewCollectionRequest
+# PreviewCollectionRequest
 
 ## Properties
 

@@ -1,12 +1,14 @@
-# # CreateCreditNoteInput
+# CreateCreditNoteInput
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **invoice_id** | **string** | The ID of the invoice to issue a credit note for |
-**amount_minor** | **int** | Amount to credit in minor units (cents). Capped at 2,000,000,000 to stay below the 32-bit integer ceiling of the underlying DB column. |
-**tax_amount_minor** | **int** | Tax portion of the credit in minor units (cents). For UK/EU VAT compliance. Capped at 2,000,000,000. | [optional]
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Amount to credit in minor units (cents). Capped at 2,000,000,000 to stay below the 32-bit integer ceiling of the underlying DB column. |
+**tax_amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Tax portion of the credit in minor units (cents). For UK/EU VAT compliance. Capped at 2,000,000,000. | [optional]
+**line_allocation_version** | **string** | Version of the explicit credit-note line allocation contract | [optional]
+**line_allocations** | [**\RevKeen\Model\CreditNoteLineAllocationInputV1[]**](CreditNoteLineAllocationInputV1.md) | Exact source invoice lines and amounts being credited | [optional]
 **credit_method** | **string** | How the credit should be applied | [optional] [default to 'refund_to_payment_method']
 **reason** | **string** | Reason for the credit note | [optional]
 **reason_code** | **string** | Standardized reason code | [optional]

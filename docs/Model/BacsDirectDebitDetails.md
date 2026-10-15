@@ -1,4 +1,4 @@
-# # BacsDirectDebitDetails
+# BacsDirectDebitDetails
 
 ## Properties
 

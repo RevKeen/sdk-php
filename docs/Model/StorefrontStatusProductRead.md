@@ -1,4 +1,4 @@
-# # StorefrontStatusProductRead
+# StorefrontStatusProductRead
 
 ## Properties
 

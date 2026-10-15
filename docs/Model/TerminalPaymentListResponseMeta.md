@@ -1,4 +1,4 @@
-# # TerminalPaymentListResponseMeta
+# TerminalPaymentListResponseMeta
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CustomerPortalErrorResponse
+# CustomerPortalErrorResponse
 
 ## Properties
 

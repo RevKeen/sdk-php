@@ -1,4 +1,4 @@
-# # PaymentIntentNextActionRedirectToUrl
+# PaymentIntentNextActionRedirectToUrl
 
 ## Properties
 

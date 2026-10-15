@@ -1,4 +1,4 @@
-# # BillingIntervalsResponse
+# BillingIntervalsResponse
 
 ## Properties
 

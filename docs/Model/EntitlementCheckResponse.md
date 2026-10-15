@@ -1,4 +1,4 @@
-# # EntitlementCheckResponse
+# EntitlementCheckResponse
 
 ## Properties
 

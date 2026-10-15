@@ -1,4 +1,4 @@
-# # EventRequest
+# EventRequest
 
 ## Properties
 

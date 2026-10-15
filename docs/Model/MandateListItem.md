@@ -1,4 +1,4 @@
-# # MandateListItem
+# MandateListItem
 
 ## Properties
 
@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **account_number_last4** | **string** |  |
 **bank_name** | **string** |  |
 **notice_days** | **int** |  |
-**activated_at** | **string** |  |
-**created_at** | **string** |  |
+**activated_at** | **\DateTime** |  |
+**created_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

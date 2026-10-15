@@ -1,4 +1,4 @@
-# # DiscountRetrieveResponse
+# DiscountRetrieveResponse
 
 ## Properties
 

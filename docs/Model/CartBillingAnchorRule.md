@@ -1,4 +1,4 @@
-# # CartBillingAnchorRule
+# CartBillingAnchorRule
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CustomersPaymentRailsGet200ResponseData
+# CustomersPaymentRailsGet200ResponseData
 
 ## Properties
 

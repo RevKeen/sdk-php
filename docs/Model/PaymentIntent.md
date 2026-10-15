@@ -1,4 +1,4 @@
-# # PaymentIntent
+# PaymentIntent
 
 ## Properties
 
@@ -25,6 +25,7 @@ Name | Type | Description | Notes
 **canceled_at** | **\DateTime** | When the intent was canceled | [optional]
 **cancellation_reason** | **string** | Why the intent was canceled | [optional]
 **created** | **int** | Unix timestamp of creation |
+**transaction** | **string** | The sale transaction this payment intent recorded once it succeeded, or null. Pass it as &#x60;payment_id&#x60; to &#x60;POST /v2/refunds&#x60; to refund the payment. | [optional]
 **livemode** | **bool** | Whether in live mode |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

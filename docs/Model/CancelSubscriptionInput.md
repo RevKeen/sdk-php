@@ -1,4 +1,4 @@
-# # CancelSubscriptionInput
+# CancelSubscriptionInput
 
 ## Properties
 

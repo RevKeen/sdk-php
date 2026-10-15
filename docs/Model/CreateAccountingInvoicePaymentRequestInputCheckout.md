@@ -1,4 +1,4 @@
-# # CreateAccountingInvoicePaymentRequestInputCheckout
+# CreateAccountingInvoicePaymentRequestInputCheckout
 
 ## Properties
 

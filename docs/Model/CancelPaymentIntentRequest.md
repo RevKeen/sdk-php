@@ -1,4 +1,4 @@
-# # CancelPaymentIntentRequest
+# CancelPaymentIntentRequest
 
 ## Properties
 

@@ -1,12 +1,10 @@
-# # SubscriptionChangePlanResponse
+# SubscriptionChangePlanResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**subscription** | [**\RevKeen\Model\Subscription**](Subscription.md) |  |
-**proration** | **object** | Proration details | [optional]
-**previous_plan_id** | **string** |  | [optional]
-**invoice_created** | **bool** |  |
+**data** | [**\RevKeen\Model\Subscription**](Subscription.md) |  |
+**plan_change** | [**\RevKeen\Model\SubscriptionPlanChange**](SubscriptionPlanChange.md) |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

@@ -1,4 +1,4 @@
-# # PaymentLinksCreateRequestLineItemsInnerPriceDataProductData
+# PaymentLinksCreateRequestLineItemsInnerPriceDataProductData
 
 ## Properties
 

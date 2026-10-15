@@ -1,4 +1,4 @@
-# # BillingPreviewResponse
+# BillingPreviewResponse
 
 ## Properties
 

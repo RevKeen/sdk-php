@@ -1,4 +1,4 @@
-# # ChargeDuplicateErrorResponse
+# ChargeDuplicateErrorResponse
 
 ## Properties
 

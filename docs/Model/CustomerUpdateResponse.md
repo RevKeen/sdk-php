@@ -1,4 +1,4 @@
-# # CustomerUpdateResponse
+# CustomerUpdateResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # SubscriptionItemDeleteResponse
+# SubscriptionItemDeleteResponse
 
 ## Properties
 

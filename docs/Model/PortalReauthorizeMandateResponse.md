@@ -1,4 +1,4 @@
-# # PortalReauthorizeMandateResponse
+# PortalReauthorizeMandateResponse
 
 ## Properties
 

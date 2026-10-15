@@ -1,4 +1,4 @@
-# # CollectionSchedule
+# CollectionSchedule
 
 ## Properties
 
@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **id** | **string** | Collection schedule ID |
 **mandate_id** | **string** | Mandate the collection is scheduled against |
 **lz_schedule_id** | **string** | Bureau schedule reference |
-**amount_minor** | **int** | Collection amount in minor units (pence) |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Collection amount in minor units (pence) |
 **currency** | **string** | ISO 4217 currency |
 **source_type** | **string** | invoice | payment_link |
 **source_id** | **string** | Invoice or payment-link ID the collection settles |

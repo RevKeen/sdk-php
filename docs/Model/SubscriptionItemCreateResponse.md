@@ -1,4 +1,4 @@
-# # SubscriptionItemCreateResponse
+# SubscriptionItemCreateResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # InvoiceListResponse
+# InvoiceListResponse
 
 ## Properties
 

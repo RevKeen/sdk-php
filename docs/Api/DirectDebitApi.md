@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -19,7 +19,7 @@ ddMandateRequestsGet($token): \RevKeen\Model\MandateRequestLookupResponse
 
 Look up a pending signed mandate request
 
-Public lookup of a pending signed mandate request by its emailed token. Rate-limited; returns 404 for unknown, consumed, cancelled, or expired tokens.  ---  **Related endpoints**  - `POST /dd/validate` — Validate a UK bank account for Direct Debit - `POST /dd/preview` — Preview the Direct Debit collection date chain  **Common errors**  - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `429 rate_limit_exceeded` — back off using the `Retry-After` header.
+Public lookup of a pending signed mandate request by its emailed token. Rate-limited; returns 404 for unknown, consumed, cancelled, or expired tokens.  ---  **Related endpoints**  - `POST /dd/validate` — Validate a UK bank account for Direct Debit - `POST /dd/preview` — Preview the Direct Debit collection date chain  **Common errors**  - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `429 rate_limit_error` — code `rate_limit_exceeded`. Back off using the `Retry-After` header (whole seconds); `X-RateLimit-Reset` is a UNIX timestamp in seconds.
 
 ### Example
 
@@ -70,12 +70,12 @@ No authorization required
 ## `ddPreview()`
 
 ```php
-ddPreview($preview_collection_request): \RevKeen\Model\PreviewCollectionResponse
+ddPreview($idempotency_key, $preview_collection_request): \RevKeen\Model\PreviewCollectionResponse
 ```
 
 Preview the Direct Debit collection date chain
 
-Returns the backend-owned working-day date chain (advance notice → submission → collection → settlement) for a Direct Debit collection. Clients never compute these dates.  ---  **Related endpoints**  - `GET /dd/mandate-requests/{token}` — Look up a pending signed mandate request - `POST /dd/validate` — Validate a UK bank account for Direct Debit  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Returns the backend-owned working-day date chain (advance notice → submission → collection → settlement) for a Direct Debit collection. Clients never compute these dates.  ---  **Related endpoints**  - `GET /dd/mandate-requests/{token}` — Look up a pending signed mandate request - `POST /dd/validate` — Validate a UK bank account for Direct Debit  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -96,10 +96,11 @@ $apiInstance = new RevKeen\Api\DirectDebitApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $preview_collection_request = new \RevKeen\Model\PreviewCollectionRequest(); // \RevKeen\Model\PreviewCollectionRequest
 
 try {
-    $result = $apiInstance->ddPreview($preview_collection_request);
+    $result = $apiInstance->ddPreview($idempotency_key, $preview_collection_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling DirectDebitApi->ddPreview: ', $e->getMessage(), PHP_EOL;
@@ -110,6 +111,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **preview_collection_request** | [**\RevKeen\Model\PreviewCollectionRequest**](../Model/PreviewCollectionRequest.md)|  | [optional] |
 
 ### Return type
@@ -132,12 +134,12 @@ try {
 ## `ddValidate()`
 
 ```php
-ddValidate($validate_bank_account_request): \RevKeen\Model\ValidateBankAccountResponse
+ddValidate($idempotency_key, $validate_bank_account_request): \RevKeen\Model\ValidateBankAccountResponse
 ```
 
 Validate a UK bank account for Direct Debit
 
-Validates UK bank account details (sort code + account number) for Direct Debit eligibility with the bureau.  ---  **Related endpoints**  - `GET /dd/mandate-requests/{token}` — Look up a pending signed mandate request - `POST /dd/preview` — Preview the Direct Debit collection date chain  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Validates UK bank account details (sort code + account number) for Direct Debit eligibility with the bureau.  ---  **Related endpoints**  - `GET /dd/mandate-requests/{token}` — Look up a pending signed mandate request - `POST /dd/preview` — Preview the Direct Debit collection date chain  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -158,10 +160,11 @@ $apiInstance = new RevKeen\Api\DirectDebitApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $validate_bank_account_request = new \RevKeen\Model\ValidateBankAccountRequest(); // \RevKeen\Model\ValidateBankAccountRequest
 
 try {
-    $result = $apiInstance->ddValidate($validate_bank_account_request);
+    $result = $apiInstance->ddValidate($idempotency_key, $validate_bank_account_request);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling DirectDebitApi->ddValidate: ', $e->getMessage(), PHP_EOL;
@@ -172,6 +175,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **validate_bank_account_request** | [**\RevKeen\Model\ValidateBankAccountRequest**](../Model/ValidateBankAccountRequest.md)|  | [optional] |
 
 ### Return type

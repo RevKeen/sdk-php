@@ -1,4 +1,4 @@
-# # DiscountCreateResponse
+# DiscountCreateResponse
 
 ## Properties
 
