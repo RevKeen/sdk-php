@@ -1,4 +1,4 @@
-# # CheckoutSessionExpireResponse
+# CheckoutSessionExpireResponse
 
 ## Properties
 

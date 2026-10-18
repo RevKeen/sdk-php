@@ -1,4 +1,4 @@
-# # PortalSubscription
+# PortalSubscription
 
 ## Properties
 
@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **object** | **string** |  |
 **status** | **string** |  |
 **currency** | **string** |  |
-**amount_minor** | **int** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **interval** | **string** |  |
 **interval_count** | **int** |  |
 **billing_end_strategy** | **string** |  |

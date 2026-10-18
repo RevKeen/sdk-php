@@ -1,4 +1,4 @@
-# # CreditNoteEligibilityResponsePaymentsInner
+# CreditNoteEligibilityResponsePaymentsInner
 
 ## Properties
 
@@ -7,9 +7,9 @@ Name | Type | Description | Notes
 **transaction_id** | **string** |  |
 **gateway** | **string** |  |
 **payment_method** | **string** |  |
-**amount_minor** | **float** |  |
-**amount_refunded_minor** | **float** |  |
-**amount_available_minor** | **float** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
+**amount_refunded_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
+**amount_available_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **card_brand** | **string** |  |
 **card_last4** | **string** |  |
 **terminal_serial** | **string** |  |

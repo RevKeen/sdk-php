@@ -1,4 +1,4 @@
-# # StorefrontStatusResponse
+# StorefrontStatusResponse
 
 ## Properties
 

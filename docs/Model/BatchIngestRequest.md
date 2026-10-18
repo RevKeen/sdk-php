@@ -1,4 +1,4 @@
-# # BatchIngestRequest
+# BatchIngestRequest
 
 ## Properties
 

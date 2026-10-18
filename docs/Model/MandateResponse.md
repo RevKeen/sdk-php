@@ -1,4 +1,4 @@
-# # MandateResponse
+# MandateResponse
 
 ## Properties
 

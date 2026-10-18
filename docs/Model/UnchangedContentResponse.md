@@ -1,4 +1,4 @@
-# # UnchangedContentResponse
+# UnchangedContentResponse
 
 ## Properties
 

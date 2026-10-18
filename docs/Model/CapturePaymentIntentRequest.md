@@ -1,4 +1,4 @@
-# # CapturePaymentIntentRequest
+# CapturePaymentIntentRequest
 
 ## Properties
 

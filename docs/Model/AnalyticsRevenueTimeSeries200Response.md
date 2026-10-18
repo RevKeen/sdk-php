@@ -1,11 +1,11 @@
-# # AnalyticsRevenueTimeSeries200Response
+# AnalyticsRevenueTimeSeries200Response
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **data_points** | [**\RevKeen\Model\AnalyticsRevenueTimeSeries200ResponseDataPointsInner[]**](AnalyticsRevenueTimeSeries200ResponseDataPointsInner.md) |  |
-**total_revenue** | **float** | Total revenue across the period in minor units |
+**total_revenue** | [**MoneyMinor**](MoneyMinor.md) | Total revenue across the period in minor units |
 **total_invoices** | **float** | Total number of invoices across the period |
 **period_start** | **string** | Start of the period |
 **period_end** | **string** | End of the period |

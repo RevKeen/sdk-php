@@ -1,4 +1,4 @@
-# # UsageAggregateResponse
+# UsageAggregateResponse
 
 ## Properties
 
@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **object** | **string** |  |
 **meter_id** | **string** |  |
-**start_time** | **string** |  |
-**end_time** | **string** |  |
+**start_time** | **\DateTime** |  |
+**end_time** | **\DateTime** |  |
 **value** | **float** | Aggregated usage value |
 **event_count** | **float** | Number of events in range |
 

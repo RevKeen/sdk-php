@@ -1,4 +1,4 @@
-# # DryRunResult
+# DryRunResult
 
 ## Properties
 

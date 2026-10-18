@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SubscriptionsApi
  * PHP version 8.1
@@ -12,12 +13,10 @@
 /**
  * RevKeen API
  *
- * RevKeen is a fintech-grade API for payments, subscriptions, invoices, and billing. The canonical production MCP server is available at `https://mcp.revkeen.com/mcp`.  **API Version:** `2026-05-01` — Pin with the `RevKeen-Version` header.  **Quick Links:** [Full Documentation](https://docs.revkeen.com) | [Authentication](https://docs.revkeen.com/authentication) | [OAuth](https://docs.revkeen.com/oauth) | [SDKs](https://docs.revkeen.com/sdks) | [Webhooks](#webhooks) | [MCP Guide](https://docs.revkeen.com/mcp)  ## Authentication  Two authentication methods are supported:  ### API Keys (recommended for server-to-server REST API integrations)  Send your API key in the `x-api-key` header. Get keys from the [Dashboard](https://app.revkeen.com/settings/api-keys). Use `rk_sandbox_*` for test mode and `rk_live_*` for production.  ### OAuth 2.1 (recommended for MCP and third-party integrations)  Use OAuth 2.1 with PKCE for authorization code flow or client credentials for server-to-server. Tokens are sent via `Authorization: Bearer rk_oauth_*`. See the [OAuth guide](https://docs.revkeen.com/oauth) for setup.  - **Authorization Code + PKCE** — user-facing integrations, MCP hosts - **Client Credentials** — server-to-server, automated workflows - **Dynamic Client Registration** — MCP hosts that auto-register  ## MCP Integration  RevKeen's canonical production MCP server is `https://mcp.revkeen.com/mcp` using Streamable HTTP and OAuth 2.1 bearer tokens.  - **Customer launch surface** — read-first customer v1 tools with least-privilege scopes - **Host setup guide** — see the [MCP guide](https://docs.revkeen.com/mcp) for ChatGPT, Claude, and compatible MCP hosts  ## API Key Scopes  Scopes follow `{resource}:{action}` format (e.g., `invoices:read`, `customers:*`). See [full scope reference](https://docs.revkeen.com/authentication#scopes).  | Category | Scope | Description | |----------|-------|-------------| | **Payments & Checkout** | `checkout:read` | View checkout session details | |  | `checkout:write` | Create and manage checkout sessions | |  | `cart:read` | View cart session details (REV-3511) | |  | `cart:write` | Create and mutate cart sessions, line items, add-ons (REV-3511) | |  | `payment_links:read` | View payment links | |  | `payment_links:write` | Create and manage payment links | |  | `charges:read` | View one-time charges | |  | `charges:write` | Create one-time charges for customers | |  | `payments:read` | View payment details | |  | `payments:write` | Capture or void payments | |  | `payment_intents:read` | View payment intent details | |  | `payment_intents:write` | Create, confirm, capture, and cancel payment intents | |  | `setup_intents:read` | View setup intent details | |  | `setup_intents:write` | Create, confirm, and cancel setup intents | |  | `payment_methods:read` | View saved payment methods | |  | `payment_methods:write` | Attach and detach payment methods | | **Billing** | `invoices:read` | View invoices | |  | `invoices:write` | Create, update, and manage invoices | |  | `subscriptions:read` | View subscriptions | |  | `subscriptions:write` | Create, update, pause, and cancel subscriptions | |  | `subscription_schedules:read` | View subscription schedule details | |  | `subscription_schedules:write` | Create, update, cancel, and release subscription schedules | |  | `orders:read` | View orders | |  | `orders:write` | Create and manage orders | |  | `credit_notes:read` | View credit notes | |  | `credit_notes:write` | Create and void credit notes | | **Products & Pricing** | `products:read` | View product catalog | |  | `products:write` | Create and update products | |  | `prices:read` | View pricing information | |  | `prices:write` | Create and update prices | |  | `discounts:read` | View discount codes | |  | `discounts:write` | Create and manage discount codes | |  | `tax_rates:read` | View tax rate configurations | |  | `tax_rates:write` | Configure tax rates | | **Usage & Metering** | `meters:read` | View meter configurations | |  | `meters:write` | Create and update meters | |  | `usage:read` | View usage events and balances | |  | `usage:write` | Ingest usage events | | **Customers** | `customers:read` | View customer information | |  | `customers:write` | Create and update customers | |  | `entitlements:read` | View customer entitlements / feature access | |  | `entitlements:write` | Grant and revoke customer entitlements | |  | `businesses:read` | View business entities | |  | `businesses:write` | Manage business entities | | **Money Movement** | `refunds:read` | View refund details | |  | `refunds:write` | Issue refunds | |  | `voids:read` | View voided transactions | |  | `voids:write` | Void unsettled transactions | |  | `disputes:read` | View chargebacks and disputes | |  | `disputes:write` | Respond to disputes | |  | `payouts:read` | View payout and settlement data | | **Direct Debit** | `mandates:read` | View Direct Debit mandates and collection status | |  | `mandates:write` | Create, suspend, reinstate, and cancel Direct Debit mandates | | **Terminal** | `terminal:read` | View terminal devices and card-present payments | |  | `terminal:write` | Initiate, cancel, refund, and void terminal payments | | **Data Exchange** | `exports:read` | View and download data exports | |  | `exports:write` | Create data exports | |  | `imports:read` | View import status and history | |  | `imports:write` | Upload and run data imports | | **Analytics & Reporting** | `analytics:read` | View analytics and reports | |  | `finance:read` | View financial reports | | **Communication** | `comms:read` | View SMS and email delivery logs | |  | `comms:write` | Send SMS, email, and WhatsApp messages | |  | `automations:read` | View automations, runs, approvals, and traces | |  | `automations:write` | Create automations and trigger runs | | **Integrations** | `apps:read` | View connected applications | |  | `apps:write` | Manage app connections | |  | `webhooks:read` | View webhook endpoints | |  | `webhooks:write` | Manage webhook endpoints | |  | `integrations:read` | View integration status and sync logs | |  | `integrations:write` | Activate, configure, and sync integrations | |  | `events:read` | View webhook event logs | |  | `events:write` | Resend and test webhook events | |  | `sync:read` | View sync watermarks and state | |  | `sync:write` | Update sync watermarks |  ## Environments  | Environment | Base URL | API Key Prefix | |-------------|----------|----------------| | **Staging** | `https://staging-api.revkeen.com/v2` | `rk_sandbox_*` | | **Production** | `https://api.revkeen.com/v2` | `rk_live_*` |  ## Idempotency  Include `Idempotency-Key` header (UUID) on mutation requests. Keys are valid for 24 hours.  ## Rate Limits  | Plan | Requests/min | Burst | |------|-------------|-------| | **Staging** | 100 | 200 | | **Production** | 1000 | 2000 | | **Enterprise** | Custom | Custom |
- *
  * The version of the OpenAPI document: 2026-05-01
- * Contact: info@revkeen.com
+ * Contact: support@revkeen.com
  * Generated by: https://openapi-generator.tech
- * Generator version: 7.18.0
+ * Generator version: 7.24.0
  */
 
 /**
@@ -42,6 +41,8 @@ use RevKeen\Configuration;
 use RevKeen\FormDataProcessor;
 use RevKeen\HeaderSelector;
 use RevKeen\ObjectSerializer;
+use RevKeen\Runtime\ClientFactory;
+use RevKeen\Runtime\RequestOptions as RevKeenRequestOptions;
 
 /**
  * SubscriptionsApi Class Doc Comment
@@ -78,6 +79,9 @@ class SubscriptionsApi
         'subscriptionsCancel' => [
             'application/json',
         ],
+        'subscriptionsChangePlan' => [
+            'application/json',
+        ],
         'subscriptionsCreate' => [
             'application/json',
         ],
@@ -85,6 +89,15 @@ class SubscriptionsApi
             'application/json',
         ],
         'subscriptionsList' => [
+            'application/json',
+        ],
+        'subscriptionsPause' => [
+            'application/json',
+        ],
+        'subscriptionsPreviewChangePlan' => [
+            'application/json',
+        ],
+        'subscriptionsResume' => [
             'application/json',
         ],
         'subscriptionsUpdate' => [
@@ -104,8 +117,8 @@ class SubscriptionsApi
         ?HeaderSelector $selector = null,
         int $hostIndex = 0
     ) {
-        $this->client = $client ?: new Client();
         $this->config = $config ?: Configuration::getDefaultConfiguration();
+        $this->client = ClientFactory::wrap($client ?: new Client(), $this->config);
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
     }
@@ -144,6 +157,7 @@ class SubscriptionsApi
      * Cancel subscription
      *
      * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\CancelSubscriptionInput|null $cancel_subscription_input cancel_subscription_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCancel'] to see the possible values for this operation
      *
@@ -151,9 +165,9 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \RevKeen\Model\SubscriptionCancelSubscriptionResponse
      */
-    public function subscriptionsCancel($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0])
+    public function subscriptionsCancel($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->subscriptionsCancelWithHttpInfo($id, $cancel_subscription_input, $contentType);
+        list($response) = $this->subscriptionsCancelWithHttpInfo($id, $cancel_subscription_input, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -163,6 +177,7 @@ class SubscriptionsApi
      * Cancel subscription
      *
      * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\CancelSubscriptionInput|null $cancel_subscription_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCancel'] to see the possible values for this operation
      *
@@ -170,34 +185,27 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return array of \RevKeen\Model\SubscriptionCancelSubscriptionResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function subscriptionsCancelWithHttpInfo($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0])
+    public function subscriptionsCancelWithHttpInfo($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->subscriptionsCancelRequest($id, $cancel_subscription_input, $contentType);
+        $request = $this->subscriptionsCancelRequest($id, $cancel_subscription_input, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\SubscriptionCancelSubscriptionResponse',
@@ -206,7 +214,7 @@ class SubscriptionsApi
                     );
             }
 
-            
+
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -237,7 +245,7 @@ class SubscriptionsApi
                     $e->setResponseObject($data);
                     throw $e;
             }
-        
+
 
             throw $e;
         }
@@ -249,15 +257,16 @@ class SubscriptionsApi
      * Cancel subscription
      *
      * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\CancelSubscriptionInput|null $cancel_subscription_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCancel'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsCancelAsync($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0])
+    public function subscriptionsCancelAsync($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->subscriptionsCancelAsyncWithHttpInfo($id, $cancel_subscription_input, $contentType)
+        return $this->subscriptionsCancelAsyncWithHttpInfo($id, $cancel_subscription_input, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -271,19 +280,23 @@ class SubscriptionsApi
      * Cancel subscription
      *
      * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\CancelSubscriptionInput|null $cancel_subscription_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCancel'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsCancelAsyncWithHttpInfo($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0])
+    public function subscriptionsCancelAsyncWithHttpInfo($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\SubscriptionCancelSubscriptionResponse';
-        $request = $this->subscriptionsCancelRequest($id, $cancel_subscription_input, $contentType);
+        $request = $this->subscriptionsCancelRequest($id, $cancel_subscription_input, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -302,18 +315,10 @@ class SubscriptionsApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -322,13 +327,14 @@ class SubscriptionsApi
      * Create request for operation 'subscriptionsCancel'
      *
      * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\CancelSubscriptionInput|null $cancel_subscription_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCancel'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function subscriptionsCancelRequest($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0])
+    public function subscriptionsCancelRequest($id, $cancel_subscription_input = null, string $contentType = self::contentTypes['subscriptionsCancel'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'id' is set
@@ -338,9 +344,14 @@ class SubscriptionsApi
             );
         }
 
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsCancel, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
 
 
         $resourcePath = '/subscriptions/{id}/cancel';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -348,11 +359,15 @@ class SubscriptionsApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -433,10 +448,405 @@ class SubscriptionsApi
     }
 
     /**
+     * Operation subscriptionsChangePlan
+     *
+     * Change subscription plan
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionsChangePlanRequest|null $subscriptions_change_plan_request subscriptions_change_plan_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsChangePlan'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \RevKeen\Model\SubscriptionChangePlanResponse|\RevKeen\Model\SubscriptionPlanChangeError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\SubscriptionPlanChangeConflictError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError
+     */
+    public function subscriptionsChangePlan($id, $subscriptions_change_plan_request = null, string $contentType = self::contentTypes['subscriptionsChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        list($response) = $this->subscriptionsChangePlanWithHttpInfo($id, $subscriptions_change_plan_request, $contentType, $idempotency_key, $request_options);
+        return $response;
+    }
+
+    /**
+     * Operation subscriptionsChangePlanWithHttpInfo
+     *
+     * Change subscription plan
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionsChangePlanRequest|null $subscriptions_change_plan_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsChangePlan'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \RevKeen\Model\SubscriptionChangePlanResponse|\RevKeen\Model\SubscriptionPlanChangeError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\SubscriptionPlanChangeConflictError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function subscriptionsChangePlanWithHttpInfo($id, $subscriptions_change_plan_request = null, string $contentType = self::contentTypes['subscriptionsChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $request = $this->subscriptionsChangePlanRequest($id, $subscriptions_change_plan_request, $contentType, $idempotency_key);
+
+        try {
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw ApiException::fromTransportException($e);
+            } catch (ConnectException $e) {
+                throw ApiException::fromTransportException($e);
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionChangePlanResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionPlanChangeError',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\NotFoundError',
+                        $request,
+                        $response,
+                    );
+                case 409:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionPlanChangeConflictError',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\RateLimitError',
+                        $request,
+                        $response,
+                    );
+                case 503:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\RevKeen\Model\SubscriptionChangePlanResponse',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionChangePlanResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionPlanChangeError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\NotFoundError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionPlanChangeConflictError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\RateLimitError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 503:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation subscriptionsChangePlanAsync
+     *
+     * Change subscription plan
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionsChangePlanRequest|null $subscriptions_change_plan_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsChangePlan'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsChangePlanAsync($id, $subscriptions_change_plan_request = null, string $contentType = self::contentTypes['subscriptionsChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        return $this->subscriptionsChangePlanAsyncWithHttpInfo($id, $subscriptions_change_plan_request, $contentType, $idempotency_key, $request_options)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation subscriptionsChangePlanAsyncWithHttpInfo
+     *
+     * Change subscription plan
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionsChangePlanRequest|null $subscriptions_change_plan_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsChangePlan'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsChangePlanAsyncWithHttpInfo($id, $subscriptions_change_plan_request = null, string $contentType = self::contentTypes['subscriptionsChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $returnType = '\RevKeen\Model\SubscriptionChangePlanResponse';
+        $request = $this->subscriptionsChangePlanRequest($id, $subscriptions_change_plan_request, $contentType, $idempotency_key);
+
+        return $this->client
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'subscriptionsChangePlan'
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionsChangePlanRequest|null $subscriptions_change_plan_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsChangePlan'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function subscriptionsChangePlanRequest($id, $subscriptions_change_plan_request = null, string $contentType = self::contentTypes['subscriptionsChangePlan'][0], ?string $idempotency_key = null)
+    {
+
+        // verify the required parameter 'id' is set
+        if ($id === null || (is_array($id) && count($id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling subscriptionsChangePlan'
+            );
+        }
+
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsChangePlan, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
+
+
+        $resourcePath = '/subscriptions/{id}/change-plan';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($subscriptions_change_plan_request)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($subscriptions_change_plan_request));
+            } else {
+                $httpBody = $subscriptions_change_plan_request;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('x-api-key');
+        if ($apiKey !== null) {
+            $headers['x-api-key'] = $apiKey;
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation subscriptionsCreate
      *
      * Create a new subscription
      *
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\SubscriptionsCreateRequest|null $subscriptions_create_request subscriptions_create_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCreate'] to see the possible values for this operation
      *
@@ -444,9 +854,9 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \RevKeen\Model\SubscriptionCreateResponse
      */
-    public function subscriptionsCreate($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0])
+    public function subscriptionsCreate($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->subscriptionsCreateWithHttpInfo($subscriptions_create_request, $contentType);
+        list($response) = $this->subscriptionsCreateWithHttpInfo($subscriptions_create_request, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -455,6 +865,7 @@ class SubscriptionsApi
      *
      * Create a new subscription
      *
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\SubscriptionsCreateRequest|null $subscriptions_create_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCreate'] to see the possible values for this operation
      *
@@ -462,34 +873,27 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return array of \RevKeen\Model\SubscriptionCreateResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function subscriptionsCreateWithHttpInfo($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0])
+    public function subscriptionsCreateWithHttpInfo($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->subscriptionsCreateRequest($subscriptions_create_request, $contentType);
+        $request = $this->subscriptionsCreateRequest($subscriptions_create_request, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 201:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\SubscriptionCreateResponse',
@@ -498,7 +902,7 @@ class SubscriptionsApi
                     );
             }
 
-            
+
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -529,7 +933,7 @@ class SubscriptionsApi
                     $e->setResponseObject($data);
                     throw $e;
             }
-        
+
 
             throw $e;
         }
@@ -540,15 +944,16 @@ class SubscriptionsApi
      *
      * Create a new subscription
      *
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\SubscriptionsCreateRequest|null $subscriptions_create_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCreate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsCreateAsync($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0])
+    public function subscriptionsCreateAsync($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->subscriptionsCreateAsyncWithHttpInfo($subscriptions_create_request, $contentType)
+        return $this->subscriptionsCreateAsyncWithHttpInfo($subscriptions_create_request, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -561,19 +966,23 @@ class SubscriptionsApi
      *
      * Create a new subscription
      *
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\SubscriptionsCreateRequest|null $subscriptions_create_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCreate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsCreateAsyncWithHttpInfo($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0])
+    public function subscriptionsCreateAsyncWithHttpInfo($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\SubscriptionCreateResponse';
-        $request = $this->subscriptionsCreateRequest($subscriptions_create_request, $contentType);
+        $request = $this->subscriptionsCreateRequest($subscriptions_create_request, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -592,18 +1001,10 @@ class SubscriptionsApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -611,18 +1012,24 @@ class SubscriptionsApi
     /**
      * Create request for operation 'subscriptionsCreate'
      *
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
      * @param  \RevKeen\Model\SubscriptionsCreateRequest|null $subscriptions_create_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsCreate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function subscriptionsCreateRequest($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0])
+    public function subscriptionsCreateRequest($subscriptions_create_request = null, string $contentType = self::contentTypes['subscriptionsCreate'][0], ?string $idempotency_key = null)
     {
+
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsCreate, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
 
 
 
         $resourcePath = '/subscriptions';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -630,6 +1037,10 @@ class SubscriptionsApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
 
 
@@ -718,9 +1129,9 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \RevKeen\Model\SubscriptionRetrieveResponse
      */
-    public function subscriptionsGet($id, string $contentType = self::contentTypes['subscriptionsGet'][0])
+    public function subscriptionsGet($id, string $contentType = self::contentTypes['subscriptionsGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->subscriptionsGetWithHttpInfo($id, $contentType);
+        list($response) = $this->subscriptionsGetWithHttpInfo($id, $contentType, $request_options);
         return $response;
     }
 
@@ -736,34 +1147,27 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return array of \RevKeen\Model\SubscriptionRetrieveResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function subscriptionsGetWithHttpInfo($id, string $contentType = self::contentTypes['subscriptionsGet'][0])
+    public function subscriptionsGetWithHttpInfo($id, string $contentType = self::contentTypes['subscriptionsGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $request = $this->subscriptionsGetRequest($id, $contentType);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\SubscriptionRetrieveResponse',
@@ -772,7 +1176,7 @@ class SubscriptionsApi
                     );
             }
 
-            
+
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -803,7 +1207,7 @@ class SubscriptionsApi
                     $e->setResponseObject($data);
                     throw $e;
             }
-        
+
 
             throw $e;
         }
@@ -820,9 +1224,9 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsGetAsync($id, string $contentType = self::contentTypes['subscriptionsGet'][0])
+    public function subscriptionsGetAsync($id, string $contentType = self::contentTypes['subscriptionsGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->subscriptionsGetAsyncWithHttpInfo($id, $contentType)
+        return $this->subscriptionsGetAsyncWithHttpInfo($id, $contentType, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -841,13 +1245,16 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsGetAsyncWithHttpInfo($id, string $contentType = self::contentTypes['subscriptionsGet'][0])
+    public function subscriptionsGetAsyncWithHttpInfo($id, string $contentType = self::contentTypes['subscriptionsGet'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\SubscriptionRetrieveResponse';
         $request = $this->subscriptionsGetRequest($id, $contentType);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -866,18 +1273,10 @@ class SubscriptionsApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -903,6 +1302,7 @@ class SubscriptionsApi
 
 
         $resourcePath = '/subscriptions/{id}';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -914,7 +1314,7 @@ class SubscriptionsApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -1000,11 +1400,11 @@ class SubscriptionsApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \RevKeen\Model\SubscriptionListResponse
+     * @return \RevKeen\Model\SubscriptionListResponse|\RevKeen\Model\SubscriptionCustomerNotFound
      */
-    public function subscriptionsList($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0])
+    public function subscriptionsList($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->subscriptionsListWithHttpInfo($page, $limit, $status, $customer_id, $contentType);
+        list($response) = $this->subscriptionsListWithHttpInfo($page, $limit, $status, $customer_id, $contentType, $request_options);
         return $response;
     }
 
@@ -1021,45 +1421,44 @@ class SubscriptionsApi
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \RevKeen\Model\SubscriptionListResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RevKeen\Model\SubscriptionListResponse|\RevKeen\Model\SubscriptionCustomerNotFound, HTTP status code, HTTP response headers (array of strings)
      */
-    public function subscriptionsListWithHttpInfo($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0])
+    public function subscriptionsListWithHttpInfo($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $request = $this->subscriptionsListRequest($page, $limit, $status, $customer_id, $contentType);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\SubscriptionListResponse',
                         $request,
                         $response,
                     );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionCustomerNotFound',
+                        $request,
+                        $response,
+                    );
             }
 
-            
+
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -1089,8 +1488,16 @@ class SubscriptionsApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionCustomerNotFound',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
-        
+
 
             throw $e;
         }
@@ -1110,9 +1517,9 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsListAsync($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0])
+    public function subscriptionsListAsync($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0], ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->subscriptionsListAsyncWithHttpInfo($page, $limit, $status, $customer_id, $contentType)
+        return $this->subscriptionsListAsyncWithHttpInfo($page, $limit, $status, $customer_id, $contentType, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1134,13 +1541,16 @@ class SubscriptionsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsListAsyncWithHttpInfo($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0])
+    public function subscriptionsListAsyncWithHttpInfo($page = 1, $limit = 20, $status = null, $customer_id = null, string $contentType = self::contentTypes['subscriptionsList'][0], ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\SubscriptionListResponse';
         $request = $this->subscriptionsListRequest($page, $limit, $status, $customer_id, $contentType);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, false)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -1159,18 +1569,10 @@ class SubscriptionsApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -1193,18 +1595,19 @@ class SubscriptionsApi
         if ($page !== null && $page < 1) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling SubscriptionsApi.subscriptionsList, must be bigger than or equal to 1.');
         }
-        
+
         if ($limit !== null && $limit > 100) {
             throw new \InvalidArgumentException('invalid value for "$limit" when calling SubscriptionsApi.subscriptionsList, must be smaller than or equal to 100.');
         }
         if ($limit !== null && $limit < 1) {
             throw new \InvalidArgumentException('invalid value for "$limit" when calling SubscriptionsApi.subscriptionsList, must be bigger than or equal to 1.');
         }
-        
+
 
 
 
         $resourcePath = '/subscriptions';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1318,21 +1721,1177 @@ class SubscriptionsApi
     }
 
     /**
+     * Operation subscriptionsPause
+     *
+     * Pause subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  object|null $body body (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPause'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \RevKeen\Model\SubscriptionPauseResponse|\RevKeen\Model\SubscriptionStateError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError
+     */
+    public function subscriptionsPause($id, $body = null, string $contentType = self::contentTypes['subscriptionsPause'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        list($response) = $this->subscriptionsPauseWithHttpInfo($id, $body, $contentType, $idempotency_key, $request_options);
+        return $response;
+    }
+
+    /**
+     * Operation subscriptionsPauseWithHttpInfo
+     *
+     * Pause subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  object|null $body (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPause'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \RevKeen\Model\SubscriptionPauseResponse|\RevKeen\Model\SubscriptionStateError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function subscriptionsPauseWithHttpInfo($id, $body = null, string $contentType = self::contentTypes['subscriptionsPause'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $request = $this->subscriptionsPauseRequest($id, $body, $contentType, $idempotency_key);
+
+        try {
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw ApiException::fromTransportException($e);
+            } catch (ConnectException $e) {
+                throw ApiException::fromTransportException($e);
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionPauseResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionStateError',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\NotFoundError',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\RateLimitError',
+                        $request,
+                        $response,
+                    );
+                case 503:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\RevKeen\Model\SubscriptionPauseResponse',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionPauseResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionStateError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\NotFoundError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\RateLimitError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 503:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation subscriptionsPauseAsync
+     *
+     * Pause subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  object|null $body (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPause'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsPauseAsync($id, $body = null, string $contentType = self::contentTypes['subscriptionsPause'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        return $this->subscriptionsPauseAsyncWithHttpInfo($id, $body, $contentType, $idempotency_key, $request_options)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation subscriptionsPauseAsyncWithHttpInfo
+     *
+     * Pause subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  object|null $body (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPause'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsPauseAsyncWithHttpInfo($id, $body = null, string $contentType = self::contentTypes['subscriptionsPause'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $returnType = '\RevKeen\Model\SubscriptionPauseResponse';
+        $request = $this->subscriptionsPauseRequest($id, $body, $contentType, $idempotency_key);
+
+        return $this->client
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'subscriptionsPause'
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  object|null $body (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPause'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function subscriptionsPauseRequest($id, $body = null, string $contentType = self::contentTypes['subscriptionsPause'][0], ?string $idempotency_key = null)
+    {
+
+        // verify the required parameter 'id' is set
+        if ($id === null || (is_array($id) && count($id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling subscriptionsPause'
+            );
+        }
+
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsPause, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
+
+
+        $resourcePath = '/subscriptions/{id}/pause';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($body)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('x-api-key');
+        if ($apiKey !== null) {
+            $headers['x-api-key'] = $apiKey;
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation subscriptionsPreviewChangePlan
+     *
+     * Preview a plan change
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\PreviewSubscriptionPlanChangeInput|null $preview_subscription_plan_change_input preview_subscription_plan_change_input (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPreviewChangePlan'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \RevKeen\Model\SubscriptionChangePlanPreviewResponse|\RevKeen\Model\SubscriptionPlanChangeError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\SubscriptionPlanChangeConflictError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError
+     */
+    public function subscriptionsPreviewChangePlan($id, $preview_subscription_plan_change_input = null, string $contentType = self::contentTypes['subscriptionsPreviewChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        list($response) = $this->subscriptionsPreviewChangePlanWithHttpInfo($id, $preview_subscription_plan_change_input, $contentType, $idempotency_key, $request_options);
+        return $response;
+    }
+
+    /**
+     * Operation subscriptionsPreviewChangePlanWithHttpInfo
+     *
+     * Preview a plan change
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\PreviewSubscriptionPlanChangeInput|null $preview_subscription_plan_change_input (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPreviewChangePlan'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \RevKeen\Model\SubscriptionChangePlanPreviewResponse|\RevKeen\Model\SubscriptionPlanChangeError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\SubscriptionPlanChangeConflictError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function subscriptionsPreviewChangePlanWithHttpInfo($id, $preview_subscription_plan_change_input = null, string $contentType = self::contentTypes['subscriptionsPreviewChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $request = $this->subscriptionsPreviewChangePlanRequest($id, $preview_subscription_plan_change_input, $contentType, $idempotency_key);
+
+        try {
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw ApiException::fromTransportException($e);
+            } catch (ConnectException $e) {
+                throw ApiException::fromTransportException($e);
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionChangePlanPreviewResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionPlanChangeError',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\NotFoundError',
+                        $request,
+                        $response,
+                    );
+                case 409:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionPlanChangeConflictError',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\RateLimitError',
+                        $request,
+                        $response,
+                    );
+                case 503:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\RevKeen\Model\SubscriptionChangePlanPreviewResponse',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionChangePlanPreviewResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionPlanChangeError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\NotFoundError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionPlanChangeConflictError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\RateLimitError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 503:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation subscriptionsPreviewChangePlanAsync
+     *
+     * Preview a plan change
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\PreviewSubscriptionPlanChangeInput|null $preview_subscription_plan_change_input (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPreviewChangePlan'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsPreviewChangePlanAsync($id, $preview_subscription_plan_change_input = null, string $contentType = self::contentTypes['subscriptionsPreviewChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        return $this->subscriptionsPreviewChangePlanAsyncWithHttpInfo($id, $preview_subscription_plan_change_input, $contentType, $idempotency_key, $request_options)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation subscriptionsPreviewChangePlanAsyncWithHttpInfo
+     *
+     * Preview a plan change
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\PreviewSubscriptionPlanChangeInput|null $preview_subscription_plan_change_input (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPreviewChangePlan'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsPreviewChangePlanAsyncWithHttpInfo($id, $preview_subscription_plan_change_input = null, string $contentType = self::contentTypes['subscriptionsPreviewChangePlan'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $returnType = '\RevKeen\Model\SubscriptionChangePlanPreviewResponse';
+        $request = $this->subscriptionsPreviewChangePlanRequest($id, $preview_subscription_plan_change_input, $contentType, $idempotency_key);
+
+        return $this->client
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'subscriptionsPreviewChangePlan'
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\PreviewSubscriptionPlanChangeInput|null $preview_subscription_plan_change_input (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsPreviewChangePlan'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function subscriptionsPreviewChangePlanRequest($id, $preview_subscription_plan_change_input = null, string $contentType = self::contentTypes['subscriptionsPreviewChangePlan'][0], ?string $idempotency_key = null)
+    {
+
+        // verify the required parameter 'id' is set
+        if ($id === null || (is_array($id) && count($id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling subscriptionsPreviewChangePlan'
+            );
+        }
+
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsPreviewChangePlan, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
+
+
+        $resourcePath = '/subscriptions/{id}/preview-change-plan';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($preview_subscription_plan_change_input)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($preview_subscription_plan_change_input));
+            } else {
+                $httpBody = $preview_subscription_plan_change_input;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('x-api-key');
+        if ($apiKey !== null) {
+            $headers['x-api-key'] = $apiKey;
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation subscriptionsResume
+     *
+     * Resume subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsResume'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \RevKeen\Model\SubscriptionResumeResponse|\RevKeen\Model\SubscriptionStateError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\SubscriptionResumeConflictError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError
+     */
+    public function subscriptionsResume($id, string $contentType = self::contentTypes['subscriptionsResume'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        list($response) = $this->subscriptionsResumeWithHttpInfo($id, $contentType, $idempotency_key, $request_options);
+        return $response;
+    }
+
+    /**
+     * Operation subscriptionsResumeWithHttpInfo
+     *
+     * Resume subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsResume'] to see the possible values for this operation
+     *
+     * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \RevKeen\Model\SubscriptionResumeResponse|\RevKeen\Model\SubscriptionStateError|\RevKeen\Model\AuthenticationError|\RevKeen\Model\MerchantActionForbiddenError|\RevKeen\Model\NotFoundError|\RevKeen\Model\SubscriptionResumeConflictError|\RevKeen\Model\RateLimitError|\RevKeen\Model\AuthorizationAuditUnavailableError, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function subscriptionsResumeWithHttpInfo($id, string $contentType = self::contentTypes['subscriptionsResume'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $request = $this->subscriptionsResumeRequest($id, $contentType, $idempotency_key);
+
+        try {
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw ApiException::fromTransportException($e);
+            } catch (ConnectException $e) {
+                throw ApiException::fromTransportException($e);
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionResumeResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionStateError',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthenticationError',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\NotFoundError',
+                        $request,
+                        $response,
+                    );
+                case 409:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\SubscriptionResumeConflictError',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\RateLimitError',
+                        $request,
+                        $response,
+                    );
+                case 503:
+                    return $this->handleResponseWithDataType(
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\RevKeen\Model\SubscriptionResumeResponse',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionResumeResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionStateError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthenticationError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\MerchantActionForbiddenError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\NotFoundError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\SubscriptionResumeConflictError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\RateLimitError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 503:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\RevKeen\Model\AuthorizationAuditUnavailableError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation subscriptionsResumeAsync
+     *
+     * Resume subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsResume'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsResumeAsync($id, string $contentType = self::contentTypes['subscriptionsResume'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        return $this->subscriptionsResumeAsyncWithHttpInfo($id, $contentType, $idempotency_key, $request_options)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation subscriptionsResumeAsyncWithHttpInfo
+     *
+     * Resume subscription
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsResume'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function subscriptionsResumeAsyncWithHttpInfo($id, string $contentType = self::contentTypes['subscriptionsResume'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
+    {
+        $returnType = '\RevKeen\Model\SubscriptionResumeResponse';
+        $request = $this->subscriptionsResumeRequest($id, $contentType, $idempotency_key);
+
+        return $this->client
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'subscriptionsResume'
+     *
+     * @param  string $id Subscription UUID (required)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsResume'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function subscriptionsResumeRequest($id, string $contentType = self::contentTypes['subscriptionsResume'][0], ?string $idempotency_key = null)
+    {
+
+        // verify the required parameter 'id' is set
+        if ($id === null || (is_array($id) && count($id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling subscriptionsResume'
+            );
+        }
+
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsResume, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
+
+        $resourcePath = '/subscriptions/{id}/resume';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('x-api-key');
+        if ($apiKey !== null) {
+            $headers['x-api-key'] = $apiKey;
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation subscriptionsUpdate
      *
      * Update subscription details
      *
      * @param  string $id Subscription UUID (required)
-     * @param  \RevKeen\Model\SubscriptionsUpdateRequest|null $subscriptions_update_request subscriptions_update_request (optional)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionUpdateInput|null $subscription_update_input subscription_update_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsUpdate'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \RevKeen\Model\SubscriptionUpdateResponse
      */
-    public function subscriptionsUpdate($id, $subscriptions_update_request = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0])
+    public function subscriptionsUpdate($id, $subscription_update_input = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        list($response) = $this->subscriptionsUpdateWithHttpInfo($id, $subscriptions_update_request, $contentType);
+        list($response) = $this->subscriptionsUpdateWithHttpInfo($id, $subscription_update_input, $contentType, $idempotency_key, $request_options);
         return $response;
     }
 
@@ -1342,41 +2901,35 @@ class SubscriptionsApi
      * Update subscription details
      *
      * @param  string $id Subscription UUID (required)
-     * @param  \RevKeen\Model\SubscriptionsUpdateRequest|null $subscriptions_update_request (optional)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionUpdateInput|null $subscription_update_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsUpdate'] to see the possible values for this operation
      *
      * @throws \RevKeen\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \RevKeen\Model\SubscriptionUpdateResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function subscriptionsUpdateWithHttpInfo($id, $subscriptions_update_request = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0])
+    public function subscriptionsUpdateWithHttpInfo($id, $subscription_update_input = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        $request = $this->subscriptionsUpdateRequest($id, $subscriptions_update_request, $contentType);
+        $request = $this->subscriptionsUpdateRequest($id, $subscription_update_input, $contentType, $idempotency_key);
 
         try {
-            $options = $this->createHttpClientOption();
+            $options = array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            );
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
+                throw ApiException::fromTransportException($e);
             } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
+                throw ApiException::fromTransportException($e);
             }
 
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\RevKeen\Model\SubscriptionUpdateResponse',
@@ -1385,7 +2938,7 @@ class SubscriptionsApi
                     );
             }
 
-            
+
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -1416,7 +2969,7 @@ class SubscriptionsApi
                     $e->setResponseObject($data);
                     throw $e;
             }
-        
+
 
             throw $e;
         }
@@ -1428,15 +2981,16 @@ class SubscriptionsApi
      * Update subscription details
      *
      * @param  string $id Subscription UUID (required)
-     * @param  \RevKeen\Model\SubscriptionsUpdateRequest|null $subscriptions_update_request (optional)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionUpdateInput|null $subscription_update_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsUpdate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsUpdateAsync($id, $subscriptions_update_request = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0])
+    public function subscriptionsUpdateAsync($id, $subscription_update_input = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
-        return $this->subscriptionsUpdateAsyncWithHttpInfo($id, $subscriptions_update_request, $contentType)
+        return $this->subscriptionsUpdateAsyncWithHttpInfo($id, $subscription_update_input, $contentType, $idempotency_key, $request_options)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1450,19 +3004,23 @@ class SubscriptionsApi
      * Update subscription details
      *
      * @param  string $id Subscription UUID (required)
-     * @param  \RevKeen\Model\SubscriptionsUpdateRequest|null $subscriptions_update_request (optional)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionUpdateInput|null $subscription_update_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsUpdate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function subscriptionsUpdateAsyncWithHttpInfo($id, $subscriptions_update_request = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0])
+    public function subscriptionsUpdateAsyncWithHttpInfo($id, $subscription_update_input = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0], ?string $idempotency_key = null, ?RevKeenRequestOptions $request_options = null)
     {
         $returnType = '\RevKeen\Model\SubscriptionUpdateResponse';
-        $request = $this->subscriptionsUpdateRequest($id, $subscriptions_update_request, $contentType);
+        $request = $this->subscriptionsUpdateRequest($id, $subscription_update_input, $contentType, $idempotency_key);
 
         return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
+            ->sendAsync($request, array_replace(
+                $this->createHttpClientOption(),
+                ClientFactory::requestOptions($request_options, true)
+            ))
             ->then(
                 function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
@@ -1481,18 +3039,10 @@ class SubscriptionsApi
                     ];
                 },
                 function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
+                    if ($exception instanceof ApiException) {
+                        throw $exception;
+                    }
+                    throw ApiException::fromTransportException($exception);
                 }
             );
     }
@@ -1501,13 +3051,14 @@ class SubscriptionsApi
      * Create request for operation 'subscriptionsUpdate'
      *
      * @param  string $id Subscription UUID (required)
-     * @param  \RevKeen\Model\SubscriptionsUpdateRequest|null $subscriptions_update_request (optional)
+     * @param  string|null $idempotency_key Stable caller-owned key for this logical mutation. Reuse only with an identical request. (optional)
+     * @param  \RevKeen\Model\SubscriptionUpdateInput|null $subscription_update_input (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['subscriptionsUpdate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function subscriptionsUpdateRequest($id, $subscriptions_update_request = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0])
+    public function subscriptionsUpdateRequest($id, $subscription_update_input = null, string $contentType = self::contentTypes['subscriptionsUpdate'][0], ?string $idempotency_key = null)
     {
 
         // verify the required parameter 'id' is set
@@ -1517,9 +3068,14 @@ class SubscriptionsApi
             );
         }
 
+        if ($idempotency_key !== null && !preg_match("/^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/", $idempotency_key)) {
+            throw new \InvalidArgumentException("invalid value for \"idempotency_key\" when calling SubscriptionsApi.subscriptionsUpdate, must conform to the pattern /^(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|[A-Za-z0-9_-]{8,64})$/.");
+        }
+
 
 
         $resourcePath = '/subscriptions/{id}';
+        ClientFactory::assertApiKeyCapability($this->config, $resourcePath);
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1527,11 +3083,15 @@ class SubscriptionsApi
         $multipart = false;
 
 
+        // header params
+        if ($idempotency_key !== null) {
+            $headerParams['Idempotency-Key'] = ObjectSerializer::toHeaderValue($idempotency_key);
+        }
 
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                '{' . 'id' . '}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -1545,12 +3105,12 @@ class SubscriptionsApi
         );
 
         // for model (json/xml)
-        if (isset($subscriptions_update_request)) {
+        if (isset($subscription_update_input)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($subscriptions_update_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($subscription_update_input));
             } else {
-                $httpBody = $subscriptions_update_request;
+                $httpBody = $subscription_update_input;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

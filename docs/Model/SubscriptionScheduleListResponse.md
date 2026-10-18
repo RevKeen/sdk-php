@@ -1,4 +1,4 @@
-# # SubscriptionScheduleListResponse
+# SubscriptionScheduleListResponse
 
 ## Properties
 

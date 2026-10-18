@@ -1,10 +1,10 @@
-# # TransactionReversalEligibilityResponseConstraints
+# TransactionReversalEligibilityResponseConstraints
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**max_amount** | **float** |  |
+**max_amount** | [**MoneyMinor**](MoneyMinor.md) |  |
 **partial_supported** | **bool** |  |
 **requires_card_present** | **bool** |  |
 **requires_terminal_online** | **bool** |  |

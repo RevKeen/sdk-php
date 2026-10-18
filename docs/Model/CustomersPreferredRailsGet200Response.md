@@ -1,4 +1,4 @@
-# # CustomersPreferredRailsGet200Response
+# CustomersPreferredRailsGet200Response
 
 ## Properties
 

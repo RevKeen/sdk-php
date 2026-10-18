@@ -1,4 +1,4 @@
-# # InvoicesSendRequest
+# InvoicesSendRequest
 
 ## Properties
 

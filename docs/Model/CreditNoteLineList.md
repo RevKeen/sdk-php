@@ -1,4 +1,4 @@
-# # CreditNoteLineList
+# CreditNoteLineList
 
 ## Properties
 

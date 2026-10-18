@@ -1,4 +1,4 @@
-# # DryRunResultDataInnerValidationDetails
+# DryRunResultDataInnerValidationDetails
 
 ## Properties
 

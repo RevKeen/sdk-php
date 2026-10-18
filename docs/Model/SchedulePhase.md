@@ -1,4 +1,4 @@
-# # SchedulePhase
+# SchedulePhase
 
 ## Properties
 

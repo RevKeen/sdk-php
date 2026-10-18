@@ -1,4 +1,4 @@
-# # CustomerOrder
+# CustomerOrder
 
 ## Properties
 
@@ -8,11 +8,11 @@ Name | Type | Description | Notes
 **public_id** | **string** |  |
 **customer_id** | **string** |  |
 **status** | **string** |  |
-**total_minor** | **int** |  |
+**total_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
-**fulfilled_at** | **string** |  |
-**canceled_at** | **string** |  |
-**created_at** | **string** |  |
-**updated_at** | **string** |  |
+**fulfilled_at** | **\DateTime** |  |
+**canceled_at** | **\DateTime** |  |
+**created_at** | **\DateTime** |  |
+**updated_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

@@ -1,4 +1,4 @@
-# # CartSessionResponse
+# CartSessionResponse
 
 ## Properties
 

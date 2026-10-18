@@ -1,4 +1,4 @@
-# # MeterListResponsePagination
+# MeterListResponsePagination
 
 ## Properties
 

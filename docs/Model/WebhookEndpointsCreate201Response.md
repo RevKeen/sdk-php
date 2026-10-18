@@ -1,4 +1,4 @@
-# # WebhookEndpointsCreate201Response
+# WebhookEndpointsCreate201Response
 
 ## Properties
 

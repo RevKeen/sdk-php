@@ -1,4 +1,4 @@
-# # CreateVoidInput
+# CreateVoidInput
 
 ## Properties
 

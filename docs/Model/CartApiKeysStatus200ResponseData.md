@@ -1,4 +1,4 @@
-# # CartApiKeysStatus200ResponseData
+# CartApiKeysStatus200ResponseData
 
 ## Properties
 

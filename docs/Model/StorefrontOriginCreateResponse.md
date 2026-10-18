@@ -1,4 +1,4 @@
-# # StorefrontOriginCreateResponse
+# StorefrontOriginCreateResponse
 
 ## Properties
 

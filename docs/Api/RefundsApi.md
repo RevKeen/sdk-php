@@ -2,7 +2,7 @@
 
 Refund objects represent money returned to a customer after a completed payment. You can issue full or partial refunds, and they automatically create a child transaction linked to the original payment for audit trail purposes.  **Required Scopes:** - &#x60;refunds:read&#x60; - List and retrieve refunds - &#x60;refunds:write&#x60; - Create refunds  **MCP Tools:** &#x60;refunds_create&#x60;
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -14,12 +14,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `refundsCreate()`
 
 ```php
-refundsCreate($create_refund_input): \RevKeen\Model\RefundCreateResponse
+refundsCreate($idempotency_key, $create_refund_input): \RevKeen\Model\RefundCreateResponse
 ```
 
 Create a refund
 
-Initiate a refund for a payment. The refund will be processed through the original payment gateway.  ---  **Related endpoints**  - `GET /refunds` — List refunds - `GET /refunds/{id}` — Get refund by ID  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Initiate a refund for a payment. The refund will be processed through the original payment gateway.  ---  **Related endpoints**  - `GET /refunds` — List refunds - `GET /refunds/{id}` — Get refund by ID  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `403 authorization_error` — the caller is identified but the action is denied. Codes include `insufficient_permissions`, `ip_not_allowed`, `merchant_mismatch`, and `origin_not_allowed`. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -46,10 +46,11 @@ $apiInstance = new RevKeen\Api\RefundsApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $create_refund_input = new \RevKeen\Model\CreateRefundInput(); // \RevKeen\Model\CreateRefundInput
 
 try {
-    $result = $apiInstance->refundsCreate($create_refund_input);
+    $result = $apiInstance->refundsCreate($idempotency_key, $create_refund_input);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling RefundsApi->refundsCreate: ', $e->getMessage(), PHP_EOL;
@@ -60,6 +61,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **create_refund_input** | [**\RevKeen\Model\CreateRefundInput**](../Model/CreateRefundInput.md)|  | [optional] |
 
 ### Return type
@@ -87,7 +89,7 @@ refundsGet($id): \RevKeen\Model\RefundRetrieveResponse
 
 Get refund by ID
 
-Retrieve a single refund by its public ID (ref_xxx) or internal UUID.  ---  **Related endpoints**  - `GET /refunds` — List refunds - `POST /refunds` — Create a refund  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a single refund by its public ID (ref_xxx) or internal UUID.  ---  **Related endpoints**  - `GET /refunds` — List refunds - `POST /refunds` — Create a refund  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -114,7 +116,7 @@ $apiInstance = new RevKeen\Api\RefundsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$id = 'id_example'; // string | Refund public ID (ref_xxx) or UUID
+$id = ref_abc123; // string | Refund public ID (`ref_…`) or UUID.
 
 try {
     $result = $apiInstance->refundsGet($id);
@@ -128,7 +130,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **id** | **string**| Refund public ID (ref_xxx) or UUID | |
+| **id** | **string**| Refund public ID (&#x60;ref_…&#x60;) or UUID. | |
 
 ### Return type
 
@@ -155,7 +157,7 @@ refundsList($status, $payment_id, $gateway, $reason, $created_after, $created_be
 
 List refunds
 
-Retrieve a paginated list of refunds with optional filters. Results are ordered by creation date (newest first).  ---  **Related endpoints**  - `POST /refunds` — Create a refund - `GET /refunds/{id}` — Get refund by ID  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+Retrieve a paginated list of refunds with optional filters. Results are ordered by creation date (newest first).  ---  **Related endpoints**  - `POST /refunds` — Create a refund - `GET /refunds/{id}` — Get refund by ID  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 

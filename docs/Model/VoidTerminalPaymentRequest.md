@@ -1,4 +1,4 @@
-# # VoidTerminalPaymentRequest
+# VoidTerminalPaymentRequest
 
 ## Properties
 

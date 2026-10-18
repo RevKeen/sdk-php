@@ -1,4 +1,4 @@
-# # MandateRequestLookupResponseDataMerchant
+# MandateRequestLookupResponseDataMerchant
 
 ## Properties
 

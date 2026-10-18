@@ -1,4 +1,4 @@
-# # PaymentLinksList200ResponseDataInnerLineItemsInner
+# PaymentLinksList200ResponseDataInnerLineItemsInner
 
 ## Properties
 

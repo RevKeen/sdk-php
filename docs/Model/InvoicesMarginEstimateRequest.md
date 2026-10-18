@@ -1,10 +1,10 @@
-# # InvoicesMarginEstimateRequest
+# InvoicesMarginEstimateRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**amount_minor** | **int** | Optional amount in minor units. Defaults to the invoice total. | [optional]
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Optional amount in minor units. Defaults to the invoice total. | [optional]
 **rails** | **string[]** | Rails to estimate. Defaults to invoice allowed_methods or all rails. | [optional]
 **card_scheme** | **string** | Single card scheme to estimate for card rail, e.g. visa or mastercard. | [optional]
 **card_schemes** | **string[]** | Card schemes to estimate for card rail. | [optional]

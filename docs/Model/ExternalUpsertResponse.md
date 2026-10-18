@@ -1,4 +1,4 @@
-# # ExternalUpsertResponse
+# ExternalUpsertResponse
 
 ## Properties
 

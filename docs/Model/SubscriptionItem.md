@@ -1,4 +1,4 @@
-# # SubscriptionItem
+# SubscriptionItem
 
 ## Properties
 
@@ -11,10 +11,10 @@ Name | Type | Description | Notes
 **description** | **string** |  |
 **quantity** | **int** | Item quantity |
 **currency** | **string** |  |
-**unit_amount_minor** | **int** | Unit price in cents |
+**unit_amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Unit price in cents |
 **fulfillment_type** | **string** | none: service (no order), physical: creates shipping order, digital: creates download order |
 **metadata** | **array<string,mixed>** | Custom key-value metadata | [optional]
-**created_at** | **string** |  |
-**updated_at** | **string** |  |
+**created_at** | **\DateTime** |  |
+**updated_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

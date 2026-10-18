@@ -1,4 +1,4 @@
-# # TerminalDevice
+# TerminalDevice
 
 ## Properties
 
@@ -13,6 +13,6 @@ Name | Type | Description | Notes
 **terminal_paired** | **bool** | Whether a PAX terminal has been paired to this connector device. Must be true to accept payments. |
 **terminal_reachable** | **bool** | Whether the connector can currently reach the PAX terminal on the local network |
 **app_version** | **string** | Version of the Terminal Connector application |
-**last_heartbeat_at** | **string** | ISO 8601 timestamp of the last heartbeat received from this device. Devices with no heartbeat in 5 minutes are considered offline. |
+**last_heartbeat_at** | **\DateTime** | ISO 8601 timestamp of the last heartbeat received from this device. Devices with no heartbeat in 5 minutes are considered offline. |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

@@ -1,4 +1,4 @@
-# # BatchIngestResult
+# BatchIngestResult
 
 ## Properties
 

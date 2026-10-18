@@ -1,4 +1,4 @@
-# # StorefrontStatusCart
+# StorefrontStatusCart
 
 ## Properties
 

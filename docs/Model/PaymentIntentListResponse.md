@@ -1,4 +1,4 @@
-# # PaymentIntentListResponse
+# PaymentIntentListResponse
 
 ## Properties
 

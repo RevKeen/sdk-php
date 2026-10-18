@@ -1,4 +1,4 @@
-# # EntitlementListResponse
+# EntitlementListResponse
 
 ## Properties
 

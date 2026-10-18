@@ -1,4 +1,4 @@
-# # MeterGetResponse
+# MeterGetResponse
 
 ## Properties
 

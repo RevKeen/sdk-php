@@ -1,4 +1,4 @@
-# # PaymentAttemptSingleResponse
+# PaymentAttemptSingleResponse
 
 ## Properties
 

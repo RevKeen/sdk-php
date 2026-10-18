@@ -1,4 +1,4 @@
-# # MeterError
+# MeterError
 
 ## Properties
 

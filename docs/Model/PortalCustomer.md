@@ -1,4 +1,4 @@
-# # PortalCustomer
+# PortalCustomer
 
 ## Properties
 

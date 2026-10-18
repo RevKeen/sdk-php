@@ -1,4 +1,4 @@
-# # TerminalPaymentErrorResponse
+# TerminalPaymentErrorResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # RetryEligibilityResponseDataLastAttempt
+# RetryEligibilityResponseDataLastAttempt
 
 ## Properties
 

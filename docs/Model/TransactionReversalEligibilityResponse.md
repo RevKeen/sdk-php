@@ -1,4 +1,4 @@
-# # TransactionReversalEligibilityResponse
+# TransactionReversalEligibilityResponse
 
 ## Properties
 

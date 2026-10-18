@@ -1,4 +1,4 @@
-# # SuccessResponse
+# SuccessResponse
 
 ## Properties
 

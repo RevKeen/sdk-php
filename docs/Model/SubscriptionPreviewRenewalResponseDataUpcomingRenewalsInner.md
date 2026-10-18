@@ -1,4 +1,4 @@
-# # SubscriptionPreviewRenewalResponseDataUpcomingRenewalsInner
+# SubscriptionPreviewRenewalResponseDataUpcomingRenewalsInner
 
 ## Properties
 
@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **date** | **\DateTime** |  |
 **formatted_date** | **string** |  |
 **day_name** | **string** |  |
-**amount_minor** | **int** |  |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **formatted_amount** | **string** |  |
 **is_trial_end** | **bool** |  | [optional]
 **is_first_charge** | **bool** |  | [optional]

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DdMandateRequestLifecycleItem
  *
@@ -13,12 +14,10 @@
 /**
  * RevKeen API
  *
- * RevKeen is a fintech-grade API for payments, subscriptions, invoices, and billing. The canonical production MCP server is available at `https://mcp.revkeen.com/mcp`.  **API Version:** `2026-05-01` — Pin with the `RevKeen-Version` header.  **Quick Links:** [Full Documentation](https://docs.revkeen.com) | [Authentication](https://docs.revkeen.com/authentication) | [OAuth](https://docs.revkeen.com/oauth) | [SDKs](https://docs.revkeen.com/sdks) | [Webhooks](#webhooks) | [MCP Guide](https://docs.revkeen.com/mcp)  ## Authentication  Two authentication methods are supported:  ### API Keys (recommended for server-to-server REST API integrations)  Send your API key in the `x-api-key` header. Get keys from the [Dashboard](https://app.revkeen.com/settings/api-keys). Use `rk_sandbox_*` for test mode and `rk_live_*` for production.  ### OAuth 2.1 (recommended for MCP and third-party integrations)  Use OAuth 2.1 with PKCE for authorization code flow or client credentials for server-to-server. Tokens are sent via `Authorization: Bearer rk_oauth_*`. See the [OAuth guide](https://docs.revkeen.com/oauth) for setup.  - **Authorization Code + PKCE** — user-facing integrations, MCP hosts - **Client Credentials** — server-to-server, automated workflows - **Dynamic Client Registration** — MCP hosts that auto-register  ## MCP Integration  RevKeen's canonical production MCP server is `https://mcp.revkeen.com/mcp` using Streamable HTTP and OAuth 2.1 bearer tokens.  - **Customer launch surface** — read-first customer v1 tools with least-privilege scopes - **Host setup guide** — see the [MCP guide](https://docs.revkeen.com/mcp) for ChatGPT, Claude, and compatible MCP hosts  ## API Key Scopes  Scopes follow `{resource}:{action}` format (e.g., `invoices:read`, `customers:*`). See [full scope reference](https://docs.revkeen.com/authentication#scopes).  | Category | Scope | Description | |----------|-------|-------------| | **Payments & Checkout** | `checkout:read` | View checkout session details | |  | `checkout:write` | Create and manage checkout sessions | |  | `cart:read` | View cart session details (REV-3511) | |  | `cart:write` | Create and mutate cart sessions, line items, add-ons (REV-3511) | |  | `payment_links:read` | View payment links | |  | `payment_links:write` | Create and manage payment links | |  | `charges:read` | View one-time charges | |  | `charges:write` | Create one-time charges for customers | |  | `payments:read` | View payment details | |  | `payments:write` | Capture or void payments | |  | `payment_intents:read` | View payment intent details | |  | `payment_intents:write` | Create, confirm, capture, and cancel payment intents | |  | `setup_intents:read` | View setup intent details | |  | `setup_intents:write` | Create, confirm, and cancel setup intents | |  | `payment_methods:read` | View saved payment methods | |  | `payment_methods:write` | Attach and detach payment methods | | **Billing** | `invoices:read` | View invoices | |  | `invoices:write` | Create, update, and manage invoices | |  | `subscriptions:read` | View subscriptions | |  | `subscriptions:write` | Create, update, pause, and cancel subscriptions | |  | `subscription_schedules:read` | View subscription schedule details | |  | `subscription_schedules:write` | Create, update, cancel, and release subscription schedules | |  | `orders:read` | View orders | |  | `orders:write` | Create and manage orders | |  | `credit_notes:read` | View credit notes | |  | `credit_notes:write` | Create and void credit notes | | **Products & Pricing** | `products:read` | View product catalog | |  | `products:write` | Create and update products | |  | `prices:read` | View pricing information | |  | `prices:write` | Create and update prices | |  | `discounts:read` | View discount codes | |  | `discounts:write` | Create and manage discount codes | |  | `tax_rates:read` | View tax rate configurations | |  | `tax_rates:write` | Configure tax rates | | **Usage & Metering** | `meters:read` | View meter configurations | |  | `meters:write` | Create and update meters | |  | `usage:read` | View usage events and balances | |  | `usage:write` | Ingest usage events | | **Customers** | `customers:read` | View customer information | |  | `customers:write` | Create and update customers | |  | `entitlements:read` | View customer entitlements / feature access | |  | `entitlements:write` | Grant and revoke customer entitlements | |  | `businesses:read` | View business entities | |  | `businesses:write` | Manage business entities | | **Money Movement** | `refunds:read` | View refund details | |  | `refunds:write` | Issue refunds | |  | `voids:read` | View voided transactions | |  | `voids:write` | Void unsettled transactions | |  | `disputes:read` | View chargebacks and disputes | |  | `disputes:write` | Respond to disputes | |  | `payouts:read` | View payout and settlement data | | **Direct Debit** | `mandates:read` | View Direct Debit mandates and collection status | |  | `mandates:write` | Create, suspend, reinstate, and cancel Direct Debit mandates | | **Terminal** | `terminal:read` | View terminal devices and card-present payments | |  | `terminal:write` | Initiate, cancel, refund, and void terminal payments | | **Data Exchange** | `exports:read` | View and download data exports | |  | `exports:write` | Create data exports | |  | `imports:read` | View import status and history | |  | `imports:write` | Upload and run data imports | | **Analytics & Reporting** | `analytics:read` | View analytics and reports | |  | `finance:read` | View financial reports | | **Communication** | `comms:read` | View SMS and email delivery logs | |  | `comms:write` | Send SMS, email, and WhatsApp messages | |  | `automations:read` | View automations, runs, approvals, and traces | |  | `automations:write` | Create automations and trigger runs | | **Integrations** | `apps:read` | View connected applications | |  | `apps:write` | Manage app connections | |  | `webhooks:read` | View webhook endpoints | |  | `webhooks:write` | Manage webhook endpoints | |  | `integrations:read` | View integration status and sync logs | |  | `integrations:write` | Activate, configure, and sync integrations | |  | `events:read` | View webhook event logs | |  | `events:write` | Resend and test webhook events | |  | `sync:read` | View sync watermarks and state | |  | `sync:write` | Update sync watermarks |  ## Environments  | Environment | Base URL | API Key Prefix | |-------------|----------|----------------| | **Staging** | `https://staging-api.revkeen.com/v2` | `rk_sandbox_*` | | **Production** | `https://api.revkeen.com/v2` | `rk_live_*` |  ## Idempotency  Include `Idempotency-Key` header (UUID) on mutation requests. Keys are valid for 24 hours.  ## Rate Limits  | Plan | Requests/min | Burst | |------|-------------|-------| | **Staging** | 100 | 200 | | **Production** | 1000 | 2000 | | **Enterprise** | Custom | Custom |
- *
  * The version of the OpenAPI document: 2026-05-01
- * Contact: info@revkeen.com
+ * Contact: support@revkeen.com
  * Generated by: https://openapi-generator.tech
- * Generator version: 7.18.0
+ * Generator version: 7.24.0
  */
 
 /**
@@ -46,17 +45,17 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     public const DISCRIMINATOR = null;
 
     /**
-      * The original name of the model.
-      *
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $openAPIModelName = 'DdMandateRequestLifecycleItem';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @var string[]
+     */
     protected static $openAPITypes = [
         'id' => 'string',
         'merchant_id' => 'string',
@@ -66,26 +65,26 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
         'mandate_id' => 'string',
         'token' => 'string',
         'signable_url' => 'string',
-        'created_at' => 'string',
-        'expires_at' => 'string',
-        'consumed_at' => 'string',
-        'cancelled_at' => 'string',
-        'expired_at' => 'string',
+        'created_at' => '\DateTime',
+        'expires_at' => '\DateTime',
+        'consumed_at' => '\DateTime',
+        'cancelled_at' => '\DateTime',
+        'expired_at' => '\DateTime',
         'status' => '\RevKeen\Model\DdMandateRequestLifecycleStatus',
         'notification_delivery_event_type' => 'string',
         'notification_delivery_status' => 'string',
         'notification_delivery_error' => 'string',
-        'notification_delivery_updated_at' => 'string',
+        'notification_delivery_updated_at' => '\DateTime',
         'pdf_documents' => '\RevKeen\Model\DdMandatePdfReference[]'
     ];
 
     /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      * @phpstan-var array<string, string|null>
-      * @psalm-var array<string, string|null>
-      */
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @var string[]
+     * @phpstan-var array<string, string|null>
+     * @psalm-var array<string, string|null>
+     */
     protected static $openAPIFormats = [
         'id' => null,
         'merchant_id' => null,
@@ -95,24 +94,24 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
         'mandate_id' => null,
         'token' => null,
         'signable_url' => null,
-        'created_at' => null,
-        'expires_at' => null,
-        'consumed_at' => null,
-        'cancelled_at' => null,
-        'expired_at' => null,
+        'created_at' => 'date-time',
+        'expires_at' => 'date-time',
+        'consumed_at' => 'date-time',
+        'cancelled_at' => 'date-time',
+        'expired_at' => 'date-time',
         'status' => null,
         'notification_delivery_event_type' => null,
         'notification_delivery_status' => null,
         'notification_delivery_error' => null,
-        'notification_delivery_updated_at' => null,
+        'notification_delivery_updated_at' => 'date-time',
         'pdf_documents' => null
     ];
 
     /**
-      * Array of nullable properties. Used for (de)serialization
-      *
-      * @var boolean[]
-      */
+     * Array of nullable properties. Used for (de)serialization
+     *
+     * @var boolean[]
+     */
     protected static array $openAPINullables = [
         'id' => false,
         'merchant_id' => false,
@@ -136,10 +135,10 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     ];
 
     /**
-      * If a nullable field gets set to null, insert it here
-      *
-      * @var boolean[]
-      */
+     * If a nullable field gets set to null, insert it here
+     *
+     * @var boolean[]
+     */
     protected array $openAPINullablesSetToNull = [];
 
     /**
@@ -375,21 +374,37 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-    * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
-    * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
-    * $this->openAPINullablesSetToNull array
-    *
-    * @param string $variableName
-    * @param array  $fields
-    * @param mixed  $defaultValue
-    */
+     * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
+     * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
+     * $this->openAPINullablesSetToNull array
+     *
+     * @param string $variableName
+     * @param array  $fields
+     * @param mixed  $defaultValue
+     */
     private function setIfExists(string $variableName, array $fields, $defaultValue): void
     {
         if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
             $this->openAPINullablesSetToNull[] = $variableName;
         }
 
-        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
+        $value = $fields[$variableName] ?? $defaultValue;
+        if (
+            $value !== null
+            && in_array(
+                ltrim(self::$openAPITypes[$variableName], '\\'),
+                ['MoneyMinor', \RevKeen\Runtime\MoneyMinor::class],
+                true
+            )
+            && !$value instanceof \RevKeen\Runtime\MoneyMinor
+        ) {
+            if (array_key_exists($variableName, $fields)) {
+                throw new \InvalidArgumentException("$variableName requires a MoneyMinor value.");
+            }
+            $value = new \RevKeen\Runtime\MoneyMinor($value);
+        }
+
+        $this->container[$variableName] = $value;
     }
 
     /**
@@ -411,13 +426,13 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             $invalidProperties[] = "'customer_id' can't be null";
         }
         if ($this->container['invoice_id'] === null && !$this->isNullableSetToNull('invoice_id')) {
-            $invalidProperties[] = "'invoice_id' can't be null";
+            $invalidProperties[] = "'invoice_id' is required";
         }
         if ($this->container['subscription_id'] === null && !$this->isNullableSetToNull('subscription_id')) {
-            $invalidProperties[] = "'subscription_id' can't be null";
+            $invalidProperties[] = "'subscription_id' is required";
         }
         if ($this->container['mandate_id'] === null && !$this->isNullableSetToNull('mandate_id')) {
-            $invalidProperties[] = "'mandate_id' can't be null";
+            $invalidProperties[] = "'mandate_id' is required";
         }
         if ($this->container['token'] === null) {
             $invalidProperties[] = "'token' can't be null";
@@ -426,34 +441,34 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             $invalidProperties[] = "'signable_url' can't be null";
         }
         if ($this->container['created_at'] === null && !$this->isNullableSetToNull('created_at')) {
-            $invalidProperties[] = "'created_at' can't be null";
+            $invalidProperties[] = "'created_at' is required";
         }
         if ($this->container['expires_at'] === null && !$this->isNullableSetToNull('expires_at')) {
-            $invalidProperties[] = "'expires_at' can't be null";
+            $invalidProperties[] = "'expires_at' is required";
         }
         if ($this->container['consumed_at'] === null && !$this->isNullableSetToNull('consumed_at')) {
-            $invalidProperties[] = "'consumed_at' can't be null";
+            $invalidProperties[] = "'consumed_at' is required";
         }
         if ($this->container['cancelled_at'] === null && !$this->isNullableSetToNull('cancelled_at')) {
-            $invalidProperties[] = "'cancelled_at' can't be null";
+            $invalidProperties[] = "'cancelled_at' is required";
         }
         if ($this->container['expired_at'] === null && !$this->isNullableSetToNull('expired_at')) {
-            $invalidProperties[] = "'expired_at' can't be null";
+            $invalidProperties[] = "'expired_at' is required";
         }
         if ($this->container['status'] === null) {
             $invalidProperties[] = "'status' can't be null";
         }
         if ($this->container['notification_delivery_event_type'] === null && !$this->isNullableSetToNull('notification_delivery_event_type')) {
-            $invalidProperties[] = "'notification_delivery_event_type' can't be null";
+            $invalidProperties[] = "'notification_delivery_event_type' is required";
         }
         if ($this->container['notification_delivery_status'] === null && !$this->isNullableSetToNull('notification_delivery_status')) {
-            $invalidProperties[] = "'notification_delivery_status' can't be null";
+            $invalidProperties[] = "'notification_delivery_status' is required";
         }
         if ($this->container['notification_delivery_error'] === null && !$this->isNullableSetToNull('notification_delivery_error')) {
-            $invalidProperties[] = "'notification_delivery_error' can't be null";
+            $invalidProperties[] = "'notification_delivery_error' is required";
         }
         if ($this->container['notification_delivery_updated_at'] === null && !$this->isNullableSetToNull('notification_delivery_updated_at')) {
-            $invalidProperties[] = "'notification_delivery_updated_at' can't be null";
+            $invalidProperties[] = "'notification_delivery_updated_at' is required";
         }
         if ($this->container['pdf_documents'] === null) {
             $invalidProperties[] = "'pdf_documents' can't be null";
@@ -577,8 +592,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'invoice_id');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('invoice_id', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('invoice_id', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -611,8 +626,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'subscription_id');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('subscription_id', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('subscription_id', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -645,8 +660,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'mandate_id');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('mandate_id', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('mandate_id', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -713,7 +728,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets created_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
     public function getCreatedAt()
     {
@@ -723,7 +738,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets created_at
      *
-     * @param string|null $created_at created_at
+     * @param \DateTime|null $created_at created_at
      *
      * @return self
      */
@@ -733,8 +748,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'created_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('created_at', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('created_at', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -747,7 +762,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets expires_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
     public function getExpiresAt()
     {
@@ -757,7 +772,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets expires_at
      *
-     * @param string|null $expires_at expires_at
+     * @param \DateTime|null $expires_at expires_at
      *
      * @return self
      */
@@ -767,8 +782,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'expires_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('expires_at', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('expires_at', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -781,7 +796,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets consumed_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
     public function getConsumedAt()
     {
@@ -791,7 +806,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets consumed_at
      *
-     * @param string|null $consumed_at consumed_at
+     * @param \DateTime|null $consumed_at consumed_at
      *
      * @return self
      */
@@ -801,8 +816,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'consumed_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('consumed_at', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('consumed_at', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -815,7 +830,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets cancelled_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
     public function getCancelledAt()
     {
@@ -825,7 +840,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets cancelled_at
      *
-     * @param string|null $cancelled_at cancelled_at
+     * @param \DateTime|null $cancelled_at cancelled_at
      *
      * @return self
      */
@@ -835,8 +850,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'cancelled_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('cancelled_at', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('cancelled_at', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -849,7 +864,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets expired_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
     public function getExpiredAt()
     {
@@ -859,7 +874,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets expired_at
      *
-     * @param string|null $expired_at expired_at
+     * @param \DateTime|null $expired_at expired_at
      *
      * @return self
      */
@@ -869,8 +884,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'expired_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('expired_at', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('expired_at', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -930,8 +945,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'notification_delivery_event_type');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('notification_delivery_event_type', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('notification_delivery_event_type', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -964,8 +979,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'notification_delivery_status');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('notification_delivery_status', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('notification_delivery_status', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -998,8 +1013,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'notification_delivery_error');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('notification_delivery_error', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('notification_delivery_error', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1012,7 +1027,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets notification_delivery_updated_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
     public function getNotificationDeliveryUpdatedAt()
     {
@@ -1022,7 +1037,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets notification_delivery_updated_at
      *
-     * @param string|null $notification_delivery_updated_at notification_delivery_updated_at
+     * @param \DateTime|null $notification_delivery_updated_at notification_delivery_updated_at
      *
      * @return self
      */
@@ -1032,8 +1047,8 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
             array_push($this->openAPINullablesSetToNull, 'notification_delivery_updated_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('notification_delivery_updated_at', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            $index = array_search('notification_delivery_updated_at', $nullablesSetToNull, true);
+            if ($index !== false) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -1104,6 +1119,20 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
      */
     public function offsetSet($offset, $value): void
     {
+        if (
+            !is_null($offset)
+            && !is_null($value)
+            && isset(self::$openAPITypes[$offset])
+            && in_array(
+                ltrim(self::$openAPITypes[$offset], '\\'),
+                ['MoneyMinor', \RevKeen\Runtime\MoneyMinor::class],
+                true
+            )
+            && !$value instanceof \RevKeen\Runtime\MoneyMinor
+        ) {
+            throw new \InvalidArgumentException("$offset requires a MoneyMinor value.");
+        }
+
         if (is_null($offset)) {
             $this->container[] = $value;
         } else {
@@ -1133,7 +1162,7 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -1159,5 +1188,3 @@ class DdMandateRequestLifecycleItem implements ModelInterface, ArrayAccess, \Jso
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-

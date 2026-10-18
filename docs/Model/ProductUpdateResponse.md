@@ -1,4 +1,4 @@
-# # ProductUpdateResponse
+# ProductUpdateResponse
 
 ## Properties
 

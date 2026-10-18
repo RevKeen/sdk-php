@@ -1,4 +1,4 @@
-# # TerminalPaymentListResponse
+# TerminalPaymentListResponse
 
 ## Properties
 

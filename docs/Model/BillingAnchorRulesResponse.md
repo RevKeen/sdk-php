@@ -1,4 +1,4 @@
-# # BillingAnchorRulesResponse
+# BillingAnchorRulesResponse
 
 ## Properties
 

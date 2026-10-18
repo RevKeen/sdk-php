@@ -1,4 +1,4 @@
-# # CustomerMeter
+# CustomerMeter
 
 ## Properties
 

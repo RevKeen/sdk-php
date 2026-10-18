@@ -1,4 +1,4 @@
-# # SubscriptionScheduleCurrentPhase
+# SubscriptionScheduleCurrentPhase
 
 ## Properties
 

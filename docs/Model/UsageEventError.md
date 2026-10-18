@@ -1,4 +1,4 @@
-# # UsageEventError
+# UsageEventError
 
 ## Properties
 

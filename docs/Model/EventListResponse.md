@@ -1,4 +1,4 @@
-# # EventListResponse
+# EventListResponse
 
 ## Properties
 

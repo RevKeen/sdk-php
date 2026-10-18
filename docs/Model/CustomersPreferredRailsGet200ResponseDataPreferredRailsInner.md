@@ -1,4 +1,4 @@
-# # CustomersPreferredRailsGet200ResponseDataPreferredRailsInner
+# CustomersPreferredRailsGet200ResponseDataPreferredRailsInner
 
 ## Properties
 
@@ -14,8 +14,8 @@ Name | Type | Description | Notes
 **score** | **float** |  |
 **reason** | **string** |  |
 **reasons** | **string[]** |  |
-**estimated_fee_minor** | **int** |  | [optional]
-**net_after_fees_minor** | **int** |  | [optional]
+**estimated_fee_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
+**net_after_fees_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
 **mandate** | [**\RevKeen\Model\CustomersPreferredRailsGet200ResponseDataPreferredRailsInnerMandate**](CustomersPreferredRailsGet200ResponseDataPreferredRailsInnerMandate.md) |  | [optional]
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)
