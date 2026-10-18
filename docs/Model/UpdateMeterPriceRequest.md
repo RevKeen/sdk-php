@@ -1,14 +1,14 @@
-# # UpdateMeterPriceRequest
+# UpdateMeterPriceRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**unit_amount_minor** | **int** |  | [optional]
+**unit_amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
 **unit_amount_decimal** | **string** |  | [optional]
-**flat_fee_minor** | **int** |  | [optional]
+**flat_fee_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
 **package_size** | **int** |  | [optional]
-**cost_per_unit_minor** | **int** |  | [optional]
+**cost_per_unit_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
 **name** | **string** |  | [optional]
 **nickname** | **string** |  | [optional]
 **description** | **string** |  | [optional]

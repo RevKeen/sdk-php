@@ -1,4 +1,4 @@
-# # PaymentIntentLastPaymentErrorPaymentMethod
+# PaymentIntentLastPaymentErrorPaymentMethod
 
 ## Properties
 

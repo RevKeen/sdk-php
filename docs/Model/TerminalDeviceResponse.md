@@ -1,4 +1,4 @@
-# # TerminalDeviceResponse
+# TerminalDeviceResponse
 
 ## Properties
 

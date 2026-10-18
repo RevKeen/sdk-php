@@ -1,4 +1,4 @@
-# # PortalReauthorizeSendOtpResponse
+# PortalReauthorizeSendOtpResponse
 
 ## Properties
 

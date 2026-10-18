@@ -56,8 +56,8 @@ class Webhooks
      * @param string $signature The signature header value (revkeen-signature)
      * @param string $secret    Your webhook secret (starts with rk_wh_)
      * @param int|null $tolerance Tolerance in seconds (default: 300)
-     * @return array The verified webhook event
      * @throws WebhookSignatureVerificationException If verification fails
+     * @return array The verified webhook event
      *
      * @example
      * ```php
@@ -112,14 +112,16 @@ class Webhooks
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new WebhookSignatureVerificationException(
-                'Invalid JSON payload: ' . json_last_error_msg()
+                'Invalid JSON payload: ' . json_last_error_msg(),
+                WebhookSignatureVerificationException::INVALID_PAYLOAD
             );
         }
 
         // Basic validation
         if (!isset($event['id'], $event['type'], $event['data'])) {
             throw new WebhookSignatureVerificationException(
-                'Invalid event structure: missing required fields'
+                'Invalid event structure: missing required fields',
+                WebhookSignatureVerificationException::INVALID_PAYLOAD
             );
         }
 
@@ -133,7 +135,6 @@ class Webhooks
      * @param string $signature The signature header value
      * @param string $secret    Your webhook secret
      * @param int|null $tolerance Tolerance in seconds (default: 300)
-     * @return bool True if the signature is valid
      * @throws WebhookSignatureVerificationException If verification fails
      */
     public static function verifySignature(
@@ -141,13 +142,21 @@ class Webhooks
         string $signature,
         string $secret,
         ?int $tolerance = null
-    ): bool {
+    ): void {
         $tolerance = $tolerance ?? self::TOLERANCE_IN_SECONDS;
 
-        // Check if signature header exists
-        if (empty($signature)) {
+        if ($tolerance < 0) {
             throw new WebhookSignatureVerificationException(
-                'Missing webhook signature header'
+                'Webhook timestamp tolerance must be non-negative.',
+                WebhookSignatureVerificationException::INVALID_TIMESTAMP
+            );
+        }
+
+        // Check if signature header exists
+        if ($signature === '') {
+            throw new WebhookSignatureVerificationException(
+                'Missing webhook signature header',
+                WebhookSignatureVerificationException::MISSING_SIGNATURE
             );
         }
 
@@ -156,8 +165,8 @@ class Webhooks
 
         // Check timestamp tolerance (prevent replay attacks)
         $currentTime = time();
-        $timeDiff = abs($currentTime - $parsed['timestamp']);
-
+        $timestamp = $parsed['timestamp'];
+        $timeDiff = abs($currentTime - $timestamp);
         if ($timeDiff > $tolerance) {
             throw new WebhookSignatureVerificationException(
                 sprintf(
@@ -165,18 +174,20 @@ class Webhooks
                     'The webhook might be a replay attack, or your server\'s clock might be out of sync.',
                     $timeDiff,
                     $tolerance
-                )
+                ),
+                WebhookSignatureVerificationException::TIMESTAMP_OUTSIDE_TOLERANCE
             );
         }
 
         // Generate expected signature
-        $signedPayload = sprintf('%d.%s', $parsed['timestamp'], $payload);
-        $expectedSignature = hash_hmac('sha256', $signedPayload, $secret);
+        $signedPayload = sprintf('%d.%s', $timestamp, $payload);
+        $expectedSignature = hash_hmac('sha256', $signedPayload, $secret, true);
 
         // Compare signatures using constant-time comparison
         $signatureValid = false;
         foreach ($parsed['signatures'] as $sig) {
-            if (hash_equals($expectedSignature, $sig)) {
+            $candidate = hex2bin($sig);
+            if ($candidate !== false && hash_equals($expectedSignature, $candidate)) {
                 $signatureValid = true;
                 break;
             }
@@ -185,11 +196,10 @@ class Webhooks
         if (!$signatureValid) {
             throw new WebhookSignatureVerificationException(
                 'Signature verification failed. ' .
-                'Ensure you\'re using the correct webhook secret and the raw request body.'
+                'Ensure you\'re using the correct webhook secret and the raw request body.',
+                WebhookSignatureVerificationException::SIGNATURE_MISMATCH
             );
         }
-
-        return true;
     }
 
     /**
@@ -197,8 +207,8 @@ class Webhooks
      * Format: "t={timestamp},v1={signature}"
      *
      * @param string $header The signature header
-     * @return array{timestamp: int, signatures: string[]}
      * @throws WebhookSignatureVerificationException If header format is invalid
+     * @return array{timestamp: int, signatures: string[]}
      */
     private static function parseSignatureHeader(string $header): array
     {
@@ -209,21 +219,56 @@ class Webhooks
         foreach ($parts as $part) {
             $keyValue = explode('=', $part, 2);
             if (count($keyValue) !== 2) {
-                continue;
+                throw new WebhookSignatureVerificationException(
+                    'Invalid signature header format',
+                    WebhookSignatureVerificationException::INVALID_SIGNATURE_HEADER
+                );
             }
 
             [$key, $value] = $keyValue;
 
             if ($key === 't') {
-                $timestamp = (int) $value;
+                if ($timestamp !== null) {
+                    throw new WebhookSignatureVerificationException(
+                        'Invalid signature header: multiple timestamps',
+                        WebhookSignatureVerificationException::INVALID_SIGNATURE_HEADER
+                    );
+                }
+
+                if (preg_match('/^[0-9]+$/D', $value) !== 1) {
+                    throw new WebhookSignatureVerificationException(
+                        'Invalid webhook signature timestamp',
+                        WebhookSignatureVerificationException::INVALID_TIMESTAMP
+                    );
+                }
+
+                $validatedTimestamp = filter_var(
+                    $value,
+                    FILTER_VALIDATE_INT,
+                    ['options' => ['min_range' => 1]]
+                );
+                if ($validatedTimestamp === false) {
+                    throw new WebhookSignatureVerificationException(
+                        'Invalid webhook signature timestamp',
+                        WebhookSignatureVerificationException::INVALID_TIMESTAMP
+                    );
+                }
+                $timestamp = $validatedTimestamp;
             } elseif ($key === 'v1') {
+                if (preg_match('/^[0-9a-fA-F]{64}$/D', $value) !== 1) {
+                    throw new WebhookSignatureVerificationException(
+                        'Invalid webhook signature encoding',
+                        WebhookSignatureVerificationException::INVALID_SIGNATURE_ENCODING
+                    );
+                }
                 $signatures[] = $value;
             }
         }
 
         if ($timestamp === null || empty($signatures)) {
             throw new WebhookSignatureVerificationException(
-                'Invalid signature header: missing timestamp or signature'
+                'Invalid signature header: missing timestamp or signature',
+                WebhookSignatureVerificationException::INVALID_SIGNATURE_HEADER
             );
         }
 
@@ -239,8 +284,19 @@ class Webhooks
  */
 class WebhookSignatureVerificationException extends \Exception
 {
-    public function __construct(string $message)
+    public const MISSING_SIGNATURE = 'missing_signature';
+    public const INVALID_SIGNATURE_HEADER = 'invalid_signature_header';
+    public const INVALID_TIMESTAMP = 'invalid_timestamp';
+    public const TIMESTAMP_OUTSIDE_TOLERANCE = 'timestamp_outside_tolerance';
+    public const INVALID_SIGNATURE_ENCODING = 'invalid_signature_encoding';
+    public const SIGNATURE_MISMATCH = 'signature_mismatch';
+    public const INVALID_PAYLOAD = 'invalid_payload';
+
+    public readonly string $reasonCode;
+
+    public function __construct(string $message, string $reasonCode)
     {
         parent::__construct($message);
+        $this->reasonCode = $reasonCode;
     }
 }

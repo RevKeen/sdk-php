@@ -1,4 +1,4 @@
-# # WebhookDeliveryErrorResponse
+# WebhookDeliveryErrorResponse
 
 ## Properties
 

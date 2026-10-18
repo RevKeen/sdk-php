@@ -1,4 +1,4 @@
-# # SubscriptionPreviewRenewalResponse
+# SubscriptionPreviewRenewalResponse
 
 ## Properties
 

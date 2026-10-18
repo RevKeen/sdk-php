@@ -1,4 +1,4 @@
-# # ValidateBankAccountResponse
+# ValidateBankAccountResponse
 
 ## Properties
 

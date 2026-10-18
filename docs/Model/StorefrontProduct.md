@@ -1,4 +1,4 @@
-# # StorefrontProduct
+# StorefrontProduct
 
 ## Properties
 
@@ -21,5 +21,9 @@ Name | Type | Description | Notes
 **tax_behavior** | **string** |  |
 **tax_code** | **string** |  |
 **availability** | [**\RevKeen\Model\StorefrontAvailability**](StorefrontAvailability.md) |  |
+**tags** | **string[]** | Merchant tags for store filters and search. |
+**images** | [**\RevKeen\Model\StorefrontProductImage[]**](StorefrontProductImage.md) | Extra images in display order. image_url stays the main image. |
+**seo_title** | **string** | Page title for search and social. Null means use the name. |
+**seo_description** | **string** | Meta description. Null means use the description. |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

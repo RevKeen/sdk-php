@@ -1,4 +1,4 @@
-# # EventErrorResponse
+# EventErrorResponse
 
 ## Properties
 

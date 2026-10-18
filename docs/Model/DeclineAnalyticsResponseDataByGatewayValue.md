@@ -1,4 +1,4 @@
-# # DeclineAnalyticsResponseDataByGatewayValue
+# DeclineAnalyticsResponseDataByGatewayValue
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CreateAccountingInvoicePaymentRequestInputExternalInvoice
+# CreateAccountingInvoicePaymentRequestInputExternalInvoice
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CheckoutSessionErrorResponse
+# CheckoutSessionErrorResponse
 
 ## Properties
 

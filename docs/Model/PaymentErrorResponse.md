@@ -1,4 +1,4 @@
-# # PaymentErrorResponse
+# PaymentErrorResponse
 
 ## Properties
 

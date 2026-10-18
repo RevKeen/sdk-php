@@ -1,4 +1,4 @@
-# # PortalSubscriptionResponse
+# PortalSubscriptionResponse
 
 ## Properties
 

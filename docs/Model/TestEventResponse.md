@@ -1,4 +1,4 @@
-# # TestEventResponse
+# TestEventResponse
 
 ## Properties
 

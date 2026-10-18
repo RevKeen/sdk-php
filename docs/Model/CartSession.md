@@ -1,4 +1,4 @@
-# # CartSession
+# CartSession
 
 ## Properties
 
@@ -18,8 +18,8 @@ Name | Type | Description | Notes
 **email** | **string** | Captured customer email for recovery, if provided. |
 **promotional_consent** | **bool** |  |
 **sms_consent** | **bool** |  |
-**subtotal_minor** | **int** |  |
-**total_minor** | **int** |  |
+**subtotal_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
+**total_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **metadata** | **array<string,mixed>** |  |
 **converted_to_checkout_session_id** | **string** |  |
 **public_token** | **string** | Anon-access token. Use to build /c/[cart_session_id]?token&#x3D;... URLs for customer-facing cart checkout. Open carts can be reviewed and edited; unexpired abandoned carts can be reviewed and converted as-is. Expired and converted carts are inaccessible. |

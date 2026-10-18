@@ -1,4 +1,4 @@
-# # Refund
+# Refund
 
 ## Properties
 
@@ -11,14 +11,14 @@ Name | Type | Description | Notes
 **order_id** | **string** |  |
 **gateway** | **string** | Name of the payment processor that handled this refund |
 **gateway_refund_id** | **string** |  |
-**amount_minor** | **float** | Refund amount in cents |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Refund amount in cents |
 **currency** | **string** |  |
 **reason** | **string** |  |
 **reason_details** | **string** |  |
 **status** | **string** |  |
 **failure_reason** | **string** |  |
 **failure_code** | **string** |  |
-**processed_at** | **string** |  |
-**created_at** | **string** |  |
+**processed_at** | **\DateTime** |  |
+**created_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

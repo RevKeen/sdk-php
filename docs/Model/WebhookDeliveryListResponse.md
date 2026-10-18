@@ -1,4 +1,4 @@
-# # WebhookDeliveryListResponse
+# WebhookDeliveryListResponse
 
 ## Properties
 

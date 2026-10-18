@@ -1,4 +1,4 @@
-# # ConfirmSetupIntentRequest
+# ConfirmSetupIntentRequest
 
 ## Properties
 

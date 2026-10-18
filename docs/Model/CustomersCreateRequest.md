@@ -1,10 +1,11 @@
-# # CustomersCreateRequest
+# CustomersCreateRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **email** | **string** | Customer&#39;s email address (must be unique per merchant) |
+**external_id** | **string** | Your system&#39;s identifier for this customer. Unique per merchant and source: no two customers whose external id you set through the API can share one, but a customer synced from an integration can carry the same value. Use it as external_customer_id when ingesting usage events. | [optional]
 **name** | **string** | Customer&#39;s full name | [optional]
 **phone** | **string** | Customer&#39;s phone number | [optional]
 **company_name** | **string** | Customer&#39;s company name | [optional]

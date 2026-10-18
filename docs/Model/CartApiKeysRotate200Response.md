@@ -1,4 +1,4 @@
-# # CartApiKeysRotate200Response
+# CartApiKeysRotate200Response
 
 ## Properties
 

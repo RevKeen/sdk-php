@@ -1,4 +1,4 @@
-# # UpdateSubscriptionScheduleRequest
+# UpdateSubscriptionScheduleRequest
 
 ## Properties
 

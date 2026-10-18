@@ -1,4 +1,4 @@
-# # SetupIntentErrorPaymentMethod
+# SetupIntentErrorPaymentMethod
 
 ## Properties
 

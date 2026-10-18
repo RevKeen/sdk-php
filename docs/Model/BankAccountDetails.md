@@ -1,4 +1,4 @@
-# # BankAccountDetails
+# BankAccountDetails
 
 ## Properties
 

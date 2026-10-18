@@ -1,4 +1,4 @@
-# # CreditNotePreview
+# CreditNotePreview
 
 ## Properties
 
@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **object** | **string** |  |
 **invoice_id** | **string** |  |
-**proposed_amount_minor** | **int** |  |
-**proposed_tax_amount_minor** | **int** |  |
+**proposed_amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
+**proposed_tax_amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **invoice** | [**\RevKeen\Model\CreditNotePreviewInvoice**](CreditNotePreviewInvoice.md) |  |
 **after_credit** | [**\RevKeen\Model\CreditNotePreviewAfterCredit**](CreditNotePreviewAfterCredit.md) |  |

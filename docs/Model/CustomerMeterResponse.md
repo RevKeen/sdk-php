@@ -1,4 +1,4 @@
-# # CustomerMeterResponse
+# CustomerMeterResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # RetryEligibilityResponseData
+# RetryEligibilityResponseData
 
 ## Properties
 

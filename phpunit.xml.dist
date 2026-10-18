@@ -4,12 +4,12 @@
     <include>
       <directory suffix=".php">./src/Api</directory>
       <directory suffix=".php">./src/Model</directory>
+      <directory suffix=".php">./src/Runtime</directory>
     </include>
   </coverage>
   <testsuites>
-    <testsuite name="tests">
-      <directory>./test/Api</directory>
-      <directory>./test/Model</directory>
+    <testsuite name="runtime">
+      <directory>./test/Runtime</directory>
     </testsuite>
   </testsuites>
   <php>

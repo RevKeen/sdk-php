@@ -1,4 +1,4 @@
-# # ValidateBankAccountRequest
+# ValidateBankAccountRequest
 
 ## Properties
 

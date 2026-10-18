@@ -1,4 +1,4 @@
-# # DdMandateRequestHistoryResponse
+# DdMandateRequestHistoryResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # DiscountUpdateResponse
+# DiscountUpdateResponse
 
 ## Properties
 

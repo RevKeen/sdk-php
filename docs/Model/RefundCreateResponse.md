@@ -1,4 +1,4 @@
-# # RefundCreateResponse
+# RefundCreateResponse
 
 ## Properties
 

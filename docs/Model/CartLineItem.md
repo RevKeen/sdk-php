@@ -1,4 +1,4 @@
-# # CartLineItem
+# CartLineItem
 
 ## Properties
 
@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **product_id** | **string** |  |
 **name** | **string** |  |
 **quantity** | **int** |  |
-**unit_price_minor** | **int** |  |
+**unit_price_minor** | [**MoneyMinor**](MoneyMinor.md) |  |
 **currency** | **string** |  |
 **recurring** | [**\RevKeen\Model\CartLineItemRecurring**](CartLineItemRecurring.md) |  |
 **billing_max_cycles** | **int** |  | [optional]
@@ -16,8 +16,8 @@ Name | Type | Description | Notes
 **start_rule** | [**\RevKeen\Model\CartStartRule**](CartStartRule.md) |  | [optional]
 **billing_anchor_rule** | [**\RevKeen\Model\CartBillingAnchorRule**](CartBillingAnchorRule.md) |  | [optional]
 **billing_anchor_day** | **int** |  | [optional]
-**due_today_minor** | **int** |  | [optional]
-**first_charge_minor** | **int** |  | [optional]
+**due_today_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
+**first_charge_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
 **first_renewal_at** | **\DateTime** |  | [optional]
 **effective_start_rule** | [**\RevKeen\Model\CartStartRule**](CartStartRule.md) |  | [optional]
 **metadata** | **array<string,mixed>** |  | [optional]

@@ -2,7 +2,7 @@
 
 Revenue analytics including MRR summaries, time-series data, accounts receivable aging, days sales outstanding (DSO), and customer lifetime value (LTV). Use these endpoints to build dashboards and financial reports.  **Required Scopes:** - &#x60;analytics:read&#x60; - Access analytics endpoints
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -18,7 +18,7 @@ analyticsRevenueMrrSummary($as_of_date): \RevKeen\Model\AnalyticsRevenueMrrSumma
 
 MRR Summary
 
-Get Monthly Recurring Revenue metrics and growth  ---  **Related endpoints**  - `GET /analytics/revenue/time-series` — Revenue Time Series - `GET /analytics/invoices/ar-aging` — A/R Aging Report - `GET /analytics/collections/dso` — Days Sales Outstanding - `GET /analytics/customers/ltv` — Customer LTV - `GET /analytics/customers/{customerId}` — Customer Analytics - `GET /analytics/payment-links/conversion` — Payment Link Conversion - `GET /analytics/checkout/funnel` — Checkout Funnel Analytics - `GET /analytics/checkout/abandonment/summary` — Abandonment Alert Summary
+Get Monthly Recurring Revenue metrics and growth  ---  **Related endpoints**  - `GET /analytics/revenue/time-series` — Revenue Time Series - `GET /analytics/invoices/ar-aging` — A/R Aging Report - `GET /analytics/collections/dso` — Days Sales Outstanding - `GET /analytics/customers/ltv` — Customer LTV - `GET /analytics/customers/{customerId}` — Customer Analytics - `GET /analytics/payment-links/conversion` — Payment Link Conversion - `GET /analytics/checkout/funnel` — Checkout Funnel Analytics - `GET /analytics/checkout/abandonment/summary` — Abandonment Alert Summary  **Common errors**  - `400 invalid_request` — malformed payload or failed validation.
 
 ### Example
 
@@ -45,7 +45,7 @@ $apiInstance = new RevKeen\Api\AnalyticsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$as_of_date = 2024-01-31T23:59:59Z; // \DateTime | Calculate MRR as of this date (ISO 8601)
+$as_of_date = 2024-01-31T23:59:59Z; // \DateTime | Calculate MRR as of this date (RFC 3339 date-time, with `Z` or a UTC offset such as `+01:00`)
 
 try {
     $result = $apiInstance->analyticsRevenueMrrSummary($as_of_date);
@@ -59,7 +59,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **as_of_date** | **\DateTime**| Calculate MRR as of this date (ISO 8601) | [optional] |
+| **as_of_date** | **\DateTime**| Calculate MRR as of this date (RFC 3339 date-time, with &#x60;Z&#x60; or a UTC offset such as &#x60;+01:00&#x60;) | [optional] |
 
 ### Return type
 
@@ -86,7 +86,7 @@ analyticsRevenueTimeSeries($start_date, $end_date, $granularity): \RevKeen\Model
 
 Revenue Time Series
 
-Get revenue data over time with configurable granularity  ---  **Related endpoints**  - `GET /analytics/revenue/mrr-summary` — MRR Summary - `GET /analytics/invoices/ar-aging` — A/R Aging Report - `GET /analytics/collections/dso` — Days Sales Outstanding - `GET /analytics/customers/ltv` — Customer LTV - `GET /analytics/customers/{customerId}` — Customer Analytics - `GET /analytics/payment-links/conversion` — Payment Link Conversion - `GET /analytics/checkout/funnel` — Checkout Funnel Analytics - `GET /analytics/checkout/abandonment/summary` — Abandonment Alert Summary
+Get revenue data over time with configurable granularity  ---  **Related endpoints**  - `GET /analytics/revenue/mrr-summary` — MRR Summary - `GET /analytics/invoices/ar-aging` — A/R Aging Report - `GET /analytics/collections/dso` — Days Sales Outstanding - `GET /analytics/customers/ltv` — Customer LTV - `GET /analytics/customers/{customerId}` — Customer Analytics - `GET /analytics/payment-links/conversion` — Payment Link Conversion - `GET /analytics/checkout/funnel` — Checkout Funnel Analytics - `GET /analytics/checkout/abandonment/summary` — Abandonment Alert Summary  **Common errors**  - `400 invalid_request` — malformed payload or failed validation.
 
 ### Example
 
@@ -113,8 +113,8 @@ $apiInstance = new RevKeen\Api\AnalyticsApi(
     new GuzzleHttp\Client(),
     $config
 );
-$start_date = 2024-01-01T00:00:00Z; // \DateTime | Start date (ISO 8601)
-$end_date = 2024-12-31T23:59:59Z; // \DateTime | End date (ISO 8601)
+$start_date = 2024-01-01T00:00:00Z; // \DateTime | Start date (RFC 3339 date-time, with `Z` or a UTC offset such as `+01:00`)
+$end_date = 2024-12-31T23:59:59Z; // \DateTime | End date (RFC 3339 date-time, with `Z` or a UTC offset such as `+01:00`)
 $granularity = 'month'; // string | Time granularity for data points
 
 try {
@@ -129,8 +129,8 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **start_date** | **\DateTime**| Start date (ISO 8601) | |
-| **end_date** | **\DateTime**| End date (ISO 8601) | |
+| **start_date** | **\DateTime**| Start date (RFC 3339 date-time, with &#x60;Z&#x60; or a UTC offset such as &#x60;+01:00&#x60;) | |
+| **end_date** | **\DateTime**| End date (RFC 3339 date-time, with &#x60;Z&#x60; or a UTC offset such as &#x60;+01:00&#x60;) | |
 | **granularity** | **string**| Time granularity for data points | [optional] [default to &#39;month&#39;] |
 
 ### Return type

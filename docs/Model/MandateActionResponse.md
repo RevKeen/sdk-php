@@ -1,4 +1,4 @@
-# # MandateActionResponse
+# MandateActionResponse
 
 ## Properties
 

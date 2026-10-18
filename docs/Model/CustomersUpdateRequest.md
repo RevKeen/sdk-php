@@ -1,10 +1,11 @@
-# # CustomersUpdateRequest
+# CustomersUpdateRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **email** | **string** | Updated email address | [optional]
+**external_id** | **string** | Your system&#39;s identifier for this customer. Unique per merchant and source: no two customers whose external id you set through the API can share one, but a customer synced from an integration can carry the same value. Cannot be changed on a customer that is linked to an integration. | [optional]
 **name** | **string** | Updated full name | [optional]
 **phone** | **string** | Updated phone number | [optional]
 **company_name** | **string** | Updated company name | [optional]

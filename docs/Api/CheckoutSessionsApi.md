@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -14,12 +14,12 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `checkoutSessionsCreate()`
 
 ```php
-checkoutSessionsCreate($create_checkout_session_input): \RevKeen\Model\CheckoutSessionCreateResponse
+checkoutSessionsCreate($idempotency_key, $create_checkout_session_input): \RevKeen\Model\CheckoutSessionCreateResponse
 ```
 
 Create a checkout session
 
-Create a checkout session for an invoice or product.  ---  **Related endpoints**  - `GET /checkout-sessions/{id}` — Retrieve a checkout session - `POST /checkout-sessions/{id}/expire` — Expire a checkout session  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Create a checkout session for an invoice.  ---  **Related endpoints**  - `GET /checkout-sessions/{id}` — Retrieve a checkout session - `POST /checkout-sessions/{id}/expire` — Expire a checkout session  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -46,10 +46,11 @@ $apiInstance = new RevKeen\Api\CheckoutSessionsApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 $create_checkout_session_input = new \RevKeen\Model\CreateCheckoutSessionInput(); // \RevKeen\Model\CreateCheckoutSessionInput
 
 try {
-    $result = $apiInstance->checkoutSessionsCreate($create_checkout_session_input);
+    $result = $apiInstance->checkoutSessionsCreate($idempotency_key, $create_checkout_session_input);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CheckoutSessionsApi->checkoutSessionsCreate: ', $e->getMessage(), PHP_EOL;
@@ -60,6 +61,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 | **create_checkout_session_input** | [**\RevKeen\Model\CreateCheckoutSessionInput**](../Model/CreateCheckoutSessionInput.md)|  | [optional] |
 
 ### Return type
@@ -82,12 +84,12 @@ try {
 ## `checkoutSessionsExpire()`
 
 ```php
-checkoutSessionsExpire($id): \RevKeen\Model\CheckoutSessionExpireResponse
+checkoutSessionsExpire($id, $idempotency_key): \RevKeen\Model\CheckoutSessionExpireResponse
 ```
 
 Expire a checkout session
 
-Manually expire an open checkout session. Only sessions with status 'open' or 'pending' and no active payment attempt can be expired.  ---  **Related endpoints**  - `POST /checkout-sessions` — Create a checkout session - `GET /checkout-sessions/{id}` — Retrieve a checkout session  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
+Manually expire an open checkout session. Only sessions with status 'open' or 'pending' and no active payment attempt can be expired.  ---  **Related endpoints**  - `POST /checkout-sessions` — Create a checkout session - `GET /checkout-sessions/{id}` — Retrieve a checkout session  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key. - `409 conflict` — Idempotency-Key collision with a different body, or a concurrent state-transition conflict.  **Idempotency**  Pass an `Idempotency-Key` header (UUID v4 recommended) to make retries safe. Keys are valid for 24 hours; see [the idempotency guide](/docs/fundamentals/idempotency).
 
 ### Example
 
@@ -115,9 +117,10 @@ $apiInstance = new RevKeen\Api\CheckoutSessionsApi(
     $config
 );
 $id = 550e8400-e29b-41d4-a716-446655440000; // string | Checkout session ID to expire.
+$idempotency_key = 'idempotency_key_example'; // string | Stable caller-owned key for this logical mutation. Reuse only with an identical request.
 
 try {
-    $result = $apiInstance->checkoutSessionsExpire($id);
+    $result = $apiInstance->checkoutSessionsExpire($id, $idempotency_key);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CheckoutSessionsApi->checkoutSessionsExpire: ', $e->getMessage(), PHP_EOL;
@@ -129,6 +132,7 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **id** | **string**| Checkout session ID to expire. | |
+| **idempotency_key** | **string**| Stable caller-owned key for this logical mutation. Reuse only with an identical request. | [optional] |
 
 ### Return type
 
@@ -155,7 +159,7 @@ checkoutSessionsGet($id): \RevKeen\Model\CheckoutSessionRetrieveResponse
 
 Retrieve a checkout session
 
-Retrieve a checkout session by its ID.  ---  **Related endpoints**  - `POST /checkout-sessions` — Create a checkout session - `POST /checkout-sessions/{id}/expire` — Expire a checkout session  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a checkout session by its ID.  ---  **Related endpoints**  - `POST /checkout-sessions` — Create a checkout session - `POST /checkout-sessions/{id}/expire` — Expire a checkout session  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 

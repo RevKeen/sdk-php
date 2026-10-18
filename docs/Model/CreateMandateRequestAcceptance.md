@@ -1,4 +1,4 @@
-# # CreateMandateRequestAcceptance
+# CreateMandateRequestAcceptance
 
 ## Properties
 

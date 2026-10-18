@@ -1,4 +1,4 @@
-# # ReleaseSubscriptionScheduleRequest
+# ReleaseSubscriptionScheduleRequest
 
 ## Properties
 

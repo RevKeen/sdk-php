@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -13,7 +13,7 @@ All URIs are relative to https://staging-api.revkeen.com/v2, except if the opera
 ## `accountingInvoicePaymentRequestsCreate()`
 
 ```php
-accountingInvoicePaymentRequestsCreate($create_accounting_invoice_payment_request_input): \RevKeen\Model\AccountingInvoicePaymentRequestsCreate200Response
+accountingInvoicePaymentRequestsCreate($idempotency_key, $create_accounting_invoice_payment_request_input): \RevKeen\Model\AccountingInvoicePaymentRequestsCreate200Response
 ```
 
 Create an accounting-led invoice payment request
@@ -45,10 +45,11 @@ $apiInstance = new RevKeen\Api\AccountingIntegrationsApi(
     new GuzzleHttp\Client(),
     $config
 );
+$idempotency_key = 'idempotency_key_example'; // string | Required stable key for this logical payment request. Reuse the same key only with an identical request.
 $create_accounting_invoice_payment_request_input = new \RevKeen\Model\CreateAccountingInvoicePaymentRequestInput(); // \RevKeen\Model\CreateAccountingInvoicePaymentRequestInput
 
 try {
-    $result = $apiInstance->accountingInvoicePaymentRequestsCreate($create_accounting_invoice_payment_request_input);
+    $result = $apiInstance->accountingInvoicePaymentRequestsCreate($idempotency_key, $create_accounting_invoice_payment_request_input);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AccountingIntegrationsApi->accountingInvoicePaymentRequestsCreate: ', $e->getMessage(), PHP_EOL;
@@ -59,6 +60,7 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
+| **idempotency_key** | **string**| Required stable key for this logical payment request. Reuse the same key only with an identical request. | |
 | **create_accounting_invoice_payment_request_input** | [**\RevKeen\Model\CreateAccountingInvoicePaymentRequestInput**](../Model/CreateAccountingInvoicePaymentRequestInput.md)|  | [optional] |
 
 ### Return type

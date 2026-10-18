@@ -1,4 +1,4 @@
-# # PaymentLinksList400Response
+# PaymentLinksList400Response
 
 ## Properties
 

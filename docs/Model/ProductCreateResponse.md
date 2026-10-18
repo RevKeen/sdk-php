@@ -1,4 +1,4 @@
-# # ProductCreateResponse
+# ProductCreateResponse
 
 ## Properties
 

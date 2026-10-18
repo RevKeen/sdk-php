@@ -1,4 +1,4 @@
-# # TransactionRetrieveResponse
+# TransactionRetrieveResponse
 
 ## Properties
 

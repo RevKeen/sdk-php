@@ -1,4 +1,4 @@
-# # AttachPaymentMethodRequest
+# AttachPaymentMethodRequest
 
 ## Properties
 

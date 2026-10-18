@@ -1,4 +1,4 @@
-# # CartApiKeysRotateRequest
+# CartApiKeysRotateRequest
 
 ## Properties
 

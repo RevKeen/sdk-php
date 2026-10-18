@@ -1,0 +1,23 @@
+{
+  "secret": "rk_wh_test_secret_123",
+  "rawPayload": "{\"id\":\"evt_123\", \"type\":\"invoice.paid\",\"data\":{\"object\":{\"amount_minor\":1250}}}",
+  "reserializedPayload": "{\"id\":\"evt_123\",\"type\":\"invoice.paid\",\"data\":{\"object\":{\"amount_minor\":1250}}}",
+  "tamperedPayload": "{\"id\":\"evt_123\", \"type\":\"invoice.paid\",\"data\":{\"object\":{\"amount_minor\":1251}}}",
+  "verificationTime": 1700000120,
+  "toleranceSeconds": 300,
+  "valid": {
+    "timestamp": 1700000000,
+    "signature": "777274c09528c5d20fb9fb1dd5902b3653a31ea6a43da39d774dde7505dd4f99",
+    "header": "t=1700000000,v1=777274c09528c5d20fb9fb1dd5902b3653a31ea6a43da39d774dde7505dd4f99"
+  },
+  "expired": {
+    "timestamp": 1699999819,
+    "signature": "27327e75def726d69e01975cccbdeb3fd306316099b3e22ddf97b5067cbc4c2f",
+    "header": "t=1699999819,v1=27327e75def726d69e01975cccbdeb3fd306316099b3e22ddf97b5067cbc4c2f"
+  },
+  "future": {
+    "timestamp": 1700000421,
+    "signature": "9384f04adacf46ba56f5dffbab34d76d2983e21b5dae348a998b9fc7f6ad60aa",
+    "header": "t=1700000421,v1=9384f04adacf46ba56f5dffbab34d76d2983e21b5dae348a998b9fc7f6ad60aa"
+  }
+}

@@ -1,4 +1,4 @@
-# # PaymentLinksList200ResponseDataInner
+# PaymentLinksList200ResponseDataInner
 
 ## Properties
 
@@ -6,18 +6,18 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  |
 **merchant_id** | **string** |  |
-**public_id** | **string** |  |
 **name** | **string** |  | [optional]
 **slug** | **string** |  | [optional]
-**mode** | **string** |  |
-**status** | **string** |  |
-**amount_minor** | **int** |  | [optional]
-**currency** | **string** |  | [optional] [default to 'USD']
+**mode** | **string** | The link&#39;s mode. A link created in the dashboard carries a checkout-template value in its stored mode; it is returned here as custom. |
+**status** | **string** | active links accept payments. inactive links are switched off and can be activated again. archived links are permanently disabled. expired links are past their expiry. |
+**url** | **string** | The hosted checkout page for this link. Share this URL with the customer. |
+**amount_minor** | [**MoneyMinor**](MoneyMinor.md) |  | [optional]
+**currency** | **string** | Three-letter ISO currency code, taken from the link&#39;s products. | [optional]
 **invoice_id** | **string** |  | [optional]
 **subscription_id** | **string** |  | [optional]
 **product_ids** | **string[]** |  | [optional]
 **line_items** | [**\RevKeen\Model\PaymentLinksList200ResponseDataInnerLineItemsInner[]**](PaymentLinksList200ResponseDataInnerLineItemsInner.md) |  | [optional]
-**success_url** | **string** | Custom URL to redirect after successful payment. Supports placeholders: {CHECKOUT_ID}, {TRANSACTION_ID}, {PAYMENT_ID}, {CUSTOMER_ID}, {AMOUNT}, {CURRENCY}, {PORTAL_URL}. If not set, redirects to RevKeen&#39;s default success page. | [optional]
+**success_url** | **string** | Custom URL to redirect after successful payment. Supports placeholders: {CHECKOUT_ID}, {TRANSACTION_ID}, {PAYMENT_ID}, {CUSTOMER_ID}, {AMOUNT}, {CURRENCY}, {PORTAL_URL}, {CHECKOUT_STATUS_TOKEN}. If not set, redirects to RevKeen&#39;s default success page. | [optional]
 **cancel_url** | **string** | Custom URL to redirect if customer cancels the checkout. If not set, no cancel redirect is configured. | [optional]
 **redirect_url** | **string** |  | [optional]
 **collect_shipping** | **bool** |  | [optional] [default to false]

@@ -1,4 +1,4 @@
-# # CreateMeterResponse
+# CreateMeterResponse
 
 ## Properties
 

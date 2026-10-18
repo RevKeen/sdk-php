@@ -1,4 +1,4 @@
-# # WebhookDeliveryRetryResponse
+# WebhookDeliveryRetryResponse
 
 ## Properties
 

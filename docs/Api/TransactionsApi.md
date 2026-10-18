@@ -2,7 +2,7 @@
 
 Transactions represent all financial movements in the unified transaction model. This includes sales, refunds, voids, captures, disputes, and adjustments. Every transaction is linked to an invoice and child transactions reference their parent.  **Required Scopes:** - &#x60;payments:read&#x60; - List and retrieve transactions
 
-All URIs are relative to https://staging-api.revkeen.com/v2, except if the operation defines another base path.
+All URIs are relative to https://api.revkeen.com/v2, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
@@ -18,7 +18,7 @@ transactionsGet($id): \RevKeen\Model\TransactionRetrieveResponse
 
 Get transaction by ID
 
-Retrieve a single transaction by its ID.  ---  **Related endpoints**  - `GET /transactions` — List transactions  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
+Retrieve a single transaction by its ID.  ---  **Related endpoints**  - `GET /transactions` — List transactions  **Common errors**  - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge. - `404 resource_missing` — the referenced resource does not exist or is not visible to your key.
 
 ### Example
 
@@ -86,7 +86,7 @@ transactionsList($type, $status, $customer_id, $invoice_id, $created_gte, $creat
 
 List transactions
 
-List all transactions for the authenticated merchant. Transactions represent the unified financial truth — every sale, refund, void, capture, dispute, and adjustment.  ---  **Related endpoints**  - `GET /transactions/{id}` — Get transaction by ID  **Common errors**  - `401 unauthenticated` — missing, malformed, or revoked API key.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
+List all transactions for the authenticated merchant. Transactions represent the unified financial truth — every sale, refund, void, capture, dispute, and adjustment.  `starting_after` and `ending_before` are mutually exclusive: supply at most one. Sending both is rejected with 400 `parameter_invalid`. A cursor must also name a transaction belonging to the authenticated merchant; an unknown id is rejected with 400 `resource_missing`.  ---  **Related endpoints**  - `GET /transactions/{id}` — Get transaction by ID  **Common errors**  - `400 invalid_request` — malformed payload or failed validation. - `401 authentication_error` — missing, invalid, expired, or revoked credential. Codes: `authentication_failed`, `invalid_api_key`, `expired_api_key`, `api_key_revoked`, `session_invalid`, `merchant_required`. Carries a `WWW-Authenticate: Bearer` challenge.  **Pagination**  Offset-based with `limit` (default 25, max 100) and `offset`. The response `pagination` block includes `total` and `hasMore`. See [the pagination guide](/docs/fundamentals/pagination) for SDK auto-paging helpers.
 
 ### Example
 
@@ -120,8 +120,8 @@ $invoice_id = 'invoice_id_example'; // string | Filter by invoice ID
 $created_gte = 3.4; // float | Filter by created_at >= (Unix timestamp)
 $created_lte = 3.4; // float | Filter by created_at <= (Unix timestamp)
 $limit = 20; // int | Maximum number of results (1-100)
-$starting_after = 'starting_after_example'; // string | Cursor for pagination - return results after this ID
-$ending_before = 'ending_before_example'; // string | Cursor for pagination - return results before this ID
+$starting_after = 'starting_after_example'; // string | Cursor for pagination: return transactions after this transaction ID. Mutually exclusive with `ending_before` — supplying both is rejected with 400 `parameter_invalid`. The ID must name a transaction of the authenticated merchant, or the request is rejected with 400 `resource_missing`.
+$ending_before = 'ending_before_example'; // string | Cursor for pagination: return transactions before this transaction ID. Mutually exclusive with `starting_after` — supplying both is rejected with 400 `parameter_invalid`. The ID must name a transaction of the authenticated merchant, or the request is rejected with 400 `resource_missing`.
 
 try {
     $result = $apiInstance->transactionsList($type, $status, $customer_id, $invoice_id, $created_gte, $created_lte, $limit, $starting_after, $ending_before);
@@ -142,8 +142,8 @@ try {
 | **created_gte** | **float**| Filter by created_at &gt;&#x3D; (Unix timestamp) | [optional] |
 | **created_lte** | **float**| Filter by created_at &lt;&#x3D; (Unix timestamp) | [optional] |
 | **limit** | **int**| Maximum number of results (1-100) | [optional] [default to 20] |
-| **starting_after** | **string**| Cursor for pagination - return results after this ID | [optional] |
-| **ending_before** | **string**| Cursor for pagination - return results before this ID | [optional] |
+| **starting_after** | **string**| Cursor for pagination: return transactions after this transaction ID. Mutually exclusive with &#x60;ending_before&#x60; — supplying both is rejected with 400 &#x60;parameter_invalid&#x60;. The ID must name a transaction of the authenticated merchant, or the request is rejected with 400 &#x60;resource_missing&#x60;. | [optional] |
+| **ending_before** | **string**| Cursor for pagination: return transactions before this transaction ID. Mutually exclusive with &#x60;starting_after&#x60; — supplying both is rejected with 400 &#x60;parameter_invalid&#x60;. The ID must name a transaction of the authenticated merchant, or the request is rejected with 400 &#x60;resource_missing&#x60;. | [optional] |
 
 ### Return type
 

@@ -1,4 +1,4 @@
-# # BillingPreviewErrorResponse
+# BillingPreviewErrorResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CartSessionErrorResponse
+# CartSessionErrorResponse
 
 ## Properties
 

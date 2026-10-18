@@ -1,4 +1,4 @@
-# # UpdatePriceRequest
+# UpdatePriceRequest
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # SetupIntentList
+# SetupIntentList
 
 ## Properties
 

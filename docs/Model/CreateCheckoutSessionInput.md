@@ -1,13 +1,11 @@
-# # CreateCheckoutSessionInput
+# CreateCheckoutSessionInput
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**invoice_id** | **string** |  | [optional]
-**product_id** | **string** |  | [optional]
-**amount_minor** | **int** |  | [optional]
-**currency** | **string** |  | [optional] [default to 'USD']
+**invoice_id** | **string** |  |
+**currency** | **string** | Three-letter ISO currency code. Defaults to the merchant&#39;s default currency. | [optional]
 **success_url** | **string** |  | [optional]
 **cancel_url** | **string** |  | [optional]
 **allowed_methods** | **string[]** | Payment methods to offer. Intersected with merchant capabilities. Defaults to merchant config. | [optional]

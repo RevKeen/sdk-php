@@ -1,4 +1,4 @@
-# # SubscriptionScheduleErrorResponse
+# SubscriptionScheduleErrorResponse
 
 ## Properties
 

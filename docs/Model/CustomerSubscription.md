@@ -1,4 +1,4 @@
-# # CustomerSubscription
+# CustomerSubscription
 
 ## Properties
 
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 **current_period_start** | **string** |  |
 **current_period_end** | **string** |  |
 **cancel_at_period_end** | **bool** |  |
-**canceled_at** | **string** |  |
+**canceled_at** | **\DateTime** |  |
 **trial_end** | **string** |  |
-**created_at** | **string** |  |
-**updated_at** | **string** |  |
+**created_at** | **\DateTime** |  |
+**updated_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)

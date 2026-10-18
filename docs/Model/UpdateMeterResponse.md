@@ -1,4 +1,4 @@
-# # UpdateMeterResponse
+# UpdateMeterResponse
 
 ## Properties
 

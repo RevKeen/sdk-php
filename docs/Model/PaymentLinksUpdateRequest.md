@@ -1,4 +1,4 @@
-# # PaymentLinksUpdateRequest
+# PaymentLinksUpdateRequest
 
 ## Properties
 

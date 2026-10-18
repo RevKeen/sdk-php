@@ -1,4 +1,4 @@
-# # SubscriptionRetrieveResponse
+# SubscriptionRetrieveResponse
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # InvoicesMarginEstimate200Response
+# InvoicesMarginEstimate200Response
 
 ## Properties
 

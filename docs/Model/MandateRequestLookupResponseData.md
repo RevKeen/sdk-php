@@ -1,4 +1,4 @@
-# # MandateRequestLookupResponseData
+# MandateRequestLookupResponseData
 
 ## Properties
 
@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **merchant_slug** | **string** | Merchant slug |
 **customer_id** | **string** | Customer ID |
 **invoice_id** | **string** | Invoice ID, if the request is tied to an invoice |
-**expires_at** | **string** | Expiry timestamp (ISO 8601) |
+**expires_at** | **\DateTime** | Expiry timestamp (ISO 8601) |
 **status** | **string** | Mandate request status |
 **merchant** | [**\RevKeen\Model\MandateRequestLookupResponseDataMerchant**](MandateRequestLookupResponseDataMerchant.md) |  |
 **customer** | [**\RevKeen\Model\MandateRequestLookupResponseDataCustomer**](MandateRequestLookupResponseDataCustomer.md) |  |

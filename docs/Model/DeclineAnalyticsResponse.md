@@ -1,4 +1,4 @@
-# # DeclineAnalyticsResponse
+# DeclineAnalyticsResponse
 
 ## Properties
 

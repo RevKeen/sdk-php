@@ -1,4 +1,4 @@
-# # CreditNoteLine
+# CreditNoteLine
 
 ## Properties
 
@@ -10,8 +10,8 @@ Name | Type | Description | Notes
 **invoice_line_item_id** | **string** | The invoice line item this credit line applies to, when the credit was scoped to a specific line. Null for invoice-level credits. |
 **description** | **string** |  |
 **quantity** | **int** |  |
-**unit_amount_minor** | **int** | Per-unit credit amount in cents |
-**total_amount_minor** | **int** | Total credit for this line in cents |
+**unit_amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Per-unit credit amount in cents |
+**total_amount_minor** | [**MoneyMinor**](MoneyMinor.md) | Total credit for this line in cents |
 **metadata** | **array<string,mixed>** |  |
 **created_at** | **\DateTime** |  |
 

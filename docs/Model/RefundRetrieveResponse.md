@@ -1,4 +1,4 @@
-# # RefundRetrieveResponse
+# RefundRetrieveResponse
 
 ## Properties
 

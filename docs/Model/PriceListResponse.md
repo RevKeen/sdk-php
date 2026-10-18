@@ -1,4 +1,4 @@
-# # PriceListResponse
+# PriceListResponse
 
 ## Properties
 

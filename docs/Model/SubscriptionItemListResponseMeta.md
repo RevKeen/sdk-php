@@ -1,4 +1,4 @@
-# # SubscriptionItemListResponseMeta
+# SubscriptionItemListResponseMeta
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # PortalMandate
+# PortalMandate
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# # CvvCodeInterpretation
+# CvvCodeInterpretation
 
 ## Properties
 

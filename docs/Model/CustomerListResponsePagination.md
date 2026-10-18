@@ -1,4 +1,4 @@
-# # CustomerListResponsePagination
+# CustomerListResponsePagination
 
 ## Properties
 

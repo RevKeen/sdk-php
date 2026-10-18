@@ -1,4 +1,4 @@
-# # MandateRequestLookupResponse
+# MandateRequestLookupResponse
 
 ## Properties
 

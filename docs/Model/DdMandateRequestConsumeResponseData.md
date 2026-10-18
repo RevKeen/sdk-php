@@ -1,4 +1,4 @@
-# # DdMandateRequestConsumeResponseData
+# DdMandateRequestConsumeResponseData
 
 ## Properties
 
@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **customer_id** | **string** |  |
 **invoice_id** | **string** |  |
 **mandate_id** | **string** |  |
-**consumed_at** | **string** |  |
+**consumed_at** | **\DateTime** |  |
 **status** | **string** |  |
 **idempotent** | **bool** |  | [optional]
 **pdf_documents** | [**\RevKeen\Model\DdMandatePdfReference[]**](DdMandatePdfReference.md) |  | [optional]

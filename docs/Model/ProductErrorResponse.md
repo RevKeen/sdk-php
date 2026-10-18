@@ -1,4 +1,4 @@
-# # ProductErrorResponse
+# ProductErrorResponse
 
 ## Properties
 
